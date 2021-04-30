@@ -2,10 +2,11 @@ import React, { useEffect, useRef, useState } from "react";
 import { View, StyleSheet, Image } from "react-native";
 import Canvas, { Image as canvasImage } from "react-native-canvas";
 import { baseToBase } from "./scripts/base64Processing";
+import { placeText, refactoredText } from "./scripts/textRefactoring";
 
 function AppCreateImage({
   font,
-  backgroundColor,
+  backgroundColor = "tomato",
   textColor,
   src,
   text,
@@ -25,7 +26,7 @@ function AppCreateImage({
     }
   }, [buttonState]);
 
-  const handleCanvas = (canvas) => {
+  const handleCanvas = async (canvas) => {
     if (!readyImage.current) {
       if (canvas) {
         //Random size for initialization
@@ -40,7 +41,13 @@ function AppCreateImage({
         const overlayImage = new canvasImage(canvas);
         overlayImage.src = src;
         overlayImage.crossOrigin = "";
-        overlayImage.addEventListener("load", () => {
+        overlayImage.addEventListener("load", async () => {
+          const [fontSize, space] = await refactoredText(
+            text,
+            context,
+            overlayImage.width
+          );
+
           const canvasSize = {
             width: canvas.width,
             height: canvas.height,
@@ -49,24 +56,15 @@ function AppCreateImage({
           if (JSON.stringify(canvasSize) !== JSON.stringify(size)) {
             setSize({
               width: overlayImage.width,
-              height: overlayImage.height + overlayImage.height / 10,
+              height: overlayImage.height + space, //overlayImage.height / 10,
             });
           } else {
             //Create Background
-            context.fillStyle = "tomato";
+            context.fillStyle = backgroundColor;
             context.fillRect(0, 0, canvas.width, canvas.height);
 
             //Create Text
-            context.font = "bold 15pt Menlo";
-            context.textAlign = "center";
-            context.textBaseline = "top";
-
-            //const splitted = text.split("\n")[0];
-            const textOnImage = text;
-            const textX = size.width / 2;
-            const textY = size.height - size.height / 15;
-            context.fillStyle = "#fff";
-            context.fillText(textOnImage, textX, textY);
+            await placeText(context, text, size, fontSize, space);
 
             //Create Image on Canvas
             context.drawImage(

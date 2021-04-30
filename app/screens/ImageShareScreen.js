@@ -63,6 +63,7 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     backgroundColor: themes.colors.background,
+    borderRadius: 25,
     flex: 1,
     ...themes.shadow,
     shadowOpacity: 0.3,
