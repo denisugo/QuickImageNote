@@ -22,11 +22,15 @@ const separateText = async (
     const wordCount = words.length;
 
     await asyncForEach(words, async (word, index) => {
-      const textWidth =
-        (await context.measureText(lineText + " " + word)).width + 10;
+      const textWidth = (await context.measureText(lineText + " " + word))
+        .width;
       if (width < textWidth) {
         checkedText = [...checkedText, lineText]; // Add one line
         lineText = word;
+        if (index === wordCount - 1) {
+          checkedText = [...checkedText, lineText];
+          lineText = "";
+        }
       } else {
         lineText = lineText + " " + word;
         if (index === wordCount - 1) {
@@ -35,8 +39,10 @@ const separateText = async (
         }
       }
     });
+    // checkedText = [...checkedText, lineText];
+    // lineText = "";
   });
-
+  console.log(checkedText);
   return checkedText;
 };
 
@@ -67,16 +73,16 @@ export const placeText = async (
 };
 
 export const refactoredText = async (text, context, width) => {
-  var splitted = await separateText(text, width, context);
-  var numberOfLines = splitted.length;
+  //var splitted = await separateText(text, width, context);
+  //var numberOfLines = splitted.length;
   var fontSize = 18;
 
-  splitted.forEach((line) => {
-    if (fontSize > width / 30) fontSize = width / 30;
-  });
+  //splitted.forEach((line) => {
+  if (fontSize > width / 30) fontSize = width / 30;
+  // });
 
-  splitted = await separateText(text, width, context, "Menlo", fontSize);
-  var numberOfLines = splitted.length;
+  const splitted = await separateText(text, width, context, "Menlo", fontSize);
+  const numberOfLines = splitted.length;
 
   const space =
     JSON.stringify(splitted) !== JSON.stringify([""])
