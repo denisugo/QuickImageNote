@@ -49,12 +49,24 @@ export default {
     justifyContent: "center",
     flex: 1,
   },
-  imageOnModale: {
-    height: "70%",
-    width: "90%",
-    borderRadius: 20,
-    overflow: "hidden",
-  },
+  imageOnModale:
+    Platform.OS === "ios"
+      ? {
+          height: "70%",
+          width: "90%",
+          ...shadow,
+          justifyContent: "center",
+          alignItems: "center",
+        }
+      : {
+          width: "90%",
+          height: "70%",
+          // backgroundColor: colors.lightTheme.backgroundThird,
+          // ...shadow,
+          justifyContent: "center",
+          alignItems: "center",
+        },
+
   card: {
     alignItems: "center",
     backgroundColor: colors.lightTheme.backgroundSecondary,
@@ -68,6 +80,10 @@ export default {
     // //backgroundColor: colors.lightTheme.backgroundThird,
     // justifyContent: "center",
     // overflow: "hidden",
+    width: "95%",
+    height: 300,
+    overflow: "hidden",
+    borderRadius: 20,
   },
   textInput: {
     backgroundColor: colors.lightTheme.background,

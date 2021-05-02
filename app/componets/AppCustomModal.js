@@ -5,6 +5,7 @@ import {
   TouchableWithoutFeedback,
   Image,
   LogBox,
+  Platform,
 } from "react-native";
 
 import themes from "../config/themes";
@@ -32,13 +33,16 @@ function AppCustomModal({
         >
           <View style={styles.innerContainer}>
             <AppActivityIndicator visible={!imageUri} />
-            <View style={styles.imageContainer}>
-              <Image
-                resizeMode="contain"
-                style={styles.image}
-                source={{ uri: imageUri }}
-              />
-            </View>
+            {imageUri && (
+              <View style={styles.imageContainer}>
+                <Image
+                  resizeMode="contain"
+                  style={{ width: "100%", height: "100%" }}
+                  //style={styles.image}
+                  source={{ uri: imageUri }}
+                />
+              </View>
+            )}
           </View>
         </TouchableWithoutFeedback>
       </View>
@@ -53,20 +57,11 @@ const styles = StyleSheet.create({
     height: "100%",
     backgroundColor: themes.colors.backgroundThird,
   },
-  image: {
-    ...themes.imageOnModale,
-  },
+  // image: {
+  //   ...themes.imageOnModale,
+  // },
   imageContainer: {
-    height: "100%",
-    width: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-    ...themes.shadow,
-    // shadowColor: themes.colors.shadow,
-    // shadowOpacity: 1,
-    // shadowOffset: { width: 0, height: 10 },
-    // shadowRadius: 10,
-    // elevation: 20, //Android only
+    ...themes.imageOnModale,
   },
   innerContainer: {
     flex: 1,

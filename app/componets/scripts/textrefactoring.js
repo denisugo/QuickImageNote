@@ -9,7 +9,7 @@ const separateText = async (
 ) => {
   const splitted = text.split("\n"); //array
 
-  var additionalLines = 0;
+  //var additionalLines = 0;
   var lineText = "";
   var checkedText = []; // Separated lines of text
 
@@ -17,32 +17,56 @@ const separateText = async (
   context.textAlign = "left";
   context.textBaseline = "top";
 
+  const saveArea = width / 30;
   await asyncForEach(splitted, async (line) => {
     const words = line.split(" "); //array
     const wordCount = words.length;
 
     await asyncForEach(words, async (word, index) => {
-      const textWidth = (await context.measureText(lineText + " " + word))
-        .width;
-      if (width < textWidth) {
-        checkedText = [...checkedText, lineText]; // Add one line
-        lineText = word;
-        if (index === wordCount - 1) {
-          checkedText = [...checkedText, lineText];
-          lineText = "";
+      const wordWidth = (await context.measureText(word)).width;
+      if (width < wordWidth + saveArea) {
+        for (let i = 0; i < word.length; i++) {
+          const textWidth = (await context.measureText(lineText)).width;
+          if (lineText === "") lineText = " ";
+          if (width < textWidth + saveArea) {
+            checkedText = [...checkedText, lineText];
+            lineText = word[i];
+          } else {
+            lineText = lineText + word[i];
+          }
         }
+
+        // if (index === wordCount - 1) {
+        //   checkedText = [...checkedText, lineText];
+        //   lineText = "";
+        // }
       } else {
-        lineText = lineText + " " + word;
-        if (index === wordCount - 1) {
-          checkedText = [...checkedText, lineText];
-          lineText = "";
+        const textWidth = (await context.measureText(lineText + " " + word))
+          .width;
+        if (width < textWidth + saveArea) {
+          checkedText = [...checkedText, lineText]; // Add one line
+          lineText = word;
+          //   if (index === wordCount - 1) {
+          //     checkedText = [...checkedText, lineText];
+          //     lineText = "";
+          //   }
+        } else {
+          lineText = lineText + " " + word;
+          //   if (index === wordCount - 1) {
+          //     checkedText = [...checkedText, lineText];
+          //     lineText = "";
+          //   }
         }
+      }
+      if (index === wordCount - 1) {
+        checkedText = [...checkedText, lineText];
+        lineText = "";
       }
     });
     // checkedText = [...checkedText, lineText];
     // lineText = "";
   });
-  console.log(checkedText);
+  //console.log(checkedText);
   return checkedText;
 };
 
@@ -85,7 +109,7 @@ export const refactoredText = async (text, context, width) => {
   const numberOfLines = splitted.length;
 
   const space =
-    JSON.stringify(splitted) !== JSON.stringify([""])
+    JSON.stringify(splitted) !== JSON.stringify(["  "])
       ? numberOfLines * fontSize * 2 //2-line space
       : 0;
 
