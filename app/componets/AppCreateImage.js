@@ -6,7 +6,7 @@ import { placeText, refactoredText } from "./scripts/textRefactoring";
 
 function AppCreateImage({
   font,
-  backgroundColor = "tomato",
+  backgroundColor = "#52BE80",
   textColor,
   src,
   text,

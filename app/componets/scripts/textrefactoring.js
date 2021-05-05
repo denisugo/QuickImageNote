@@ -1,10 +1,12 @@
 import asyncForEach from "./asyncForEach";
 
+const SAFE_AREA_PERCENTAGE = 30;
+
 const separateText = async (
   text,
   width,
   context,
-  font = "Menlo",
+  font = "Avenir",
   fontSize = 18
 ) => {
   const splitted = text.split("\n"); //array
@@ -17,45 +19,39 @@ const separateText = async (
   context.textAlign = "left";
   context.textBaseline = "top";
 
-  const saveArea = width / 30;
+  const safeArea = width / SAFE_AREA_PERCENTAGE;
   await asyncForEach(splitted, async (line) => {
     const words = line.split(" "); //array
     const wordCount = words.length;
 
     await asyncForEach(words, async (word, index) => {
       const wordWidth = (await context.measureText(word)).width;
-      if (width < wordWidth + saveArea) {
+
+      if (width < wordWidth + safeArea) {
+        //Long word at the begining of the line
+        if (lineText === "") lineText = " ";
+        //Long word after the thext
+        else lineText = lineText + " ";
+
         for (let i = 0; i < word.length; i++) {
-          const textWidth = (await context.measureText(lineText)).width;
-          if (lineText === "") lineText = " ";
-          if (width < textWidth + saveArea) {
+          const textWidth = (await context.measureText(lineText + word[i]))
+            .width;
+
+          if (width < textWidth + safeArea) {
             checkedText = [...checkedText, lineText];
             lineText = word[i];
           } else {
             lineText = lineText + word[i];
           }
         }
-
-        // if (index === wordCount - 1) {
-        //   checkedText = [...checkedText, lineText];
-        //   lineText = "";
-        // }
       } else {
         const textWidth = (await context.measureText(lineText + " " + word))
           .width;
-        if (width < textWidth + saveArea) {
+        if (width < textWidth + safeArea) {
           checkedText = [...checkedText, lineText]; // Add one line
           lineText = word;
-          //   if (index === wordCount - 1) {
-          //     checkedText = [...checkedText, lineText];
-          //     lineText = "";
-          //   }
         } else {
           lineText = lineText + " " + word;
-          //   if (index === wordCount - 1) {
-          //     checkedText = [...checkedText, lineText];
-          //     lineText = "";
-          //   }
         }
       }
       if (index === wordCount - 1) {
@@ -86,10 +82,11 @@ export const placeText = async (
     font,
     fontSize
   );
-  var numberOfLines = splitted.length;
+  const numberOfLines = splitted.length;
+  const safeArea = size.width / SAFE_AREA_PERCENTAGE;
 
   splitted.forEach((line, index) => {
-    const textX = 3;
+    const textX = safeArea;
     const textY = size.height - space + (space / numberOfLines) * index;
     context.fillStyle = textColor;
     context.fillText(line, textX, textY);
@@ -99,18 +96,17 @@ export const placeText = async (
 export const refactoredText = async (text, context, width) => {
   //var splitted = await separateText(text, width, context);
   //var numberOfLines = splitted.length;
-  var fontSize = 18;
+  var fontSize = 25;
 
-  //splitted.forEach((line) => {
-  if (fontSize > width / 30) fontSize = width / 30;
-  // });
+  //Font size
+  if (fontSize > width / 20) fontSize = width / 20;
 
-  const splitted = await separateText(text, width, context, "Menlo", fontSize);
+  const splitted = await separateText(text, width, context, "Avenir", fontSize);
   const numberOfLines = splitted.length;
 
   const space =
-    JSON.stringify(splitted) !== JSON.stringify(["  "])
-      ? numberOfLines * fontSize * 2 //2-line space
+    JSON.stringify(splitted) !== JSON.stringify([" "])
+      ? numberOfLines * fontSize * 1.5 //1.5-line space
       : 0;
 
   return [fontSize, space];

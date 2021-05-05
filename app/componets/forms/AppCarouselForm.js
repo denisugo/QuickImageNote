@@ -39,7 +39,7 @@ function AppCarouselForm(props) {
         data={data.current}
         sliderWidth={400}
         itemWidth={400}
-        //containerCustomStyle={{ flex: 0 }}
+        containerCustomStyle={{ paddingBottom: 20 }}
         //slideStyle={{ flex: 1 }}
         renderItem={({ item, index }) => (
           <AppCard imageUri={item.image} value={item.text} index={index} />

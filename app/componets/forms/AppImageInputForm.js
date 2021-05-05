@@ -1,9 +1,14 @@
 import { useFormikContext } from "formik";
 import React, { useRef } from "react";
 import { View, StyleSheet } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+
 import AppImageInput from "../AppImageInput";
+import routes from "../../navigation/routes";
 
 function AppImageInputForm({ imageUri, index }) {
+  const navigation = useNavigation();
+
   const { setFieldValue, values } = useFormikContext();
 
   const updatedValue = useRef();
@@ -32,13 +37,25 @@ function AppImageInputForm({ imageUri, index }) {
       );
     }
   };
+
   //   const handleRemove = (uri) => {
   //     setFieldValue(
   //       field,
   //       values[field].filter((imageUri) => imageUri !== uri)
   //     );
   //   };
-  return <AppImageInput imageUri={imageUri} onChangeImage={handleChange} />;
+  return (
+    <AppImageInput
+      imageUri={imageUri}
+      onChangeImage={handleChange}
+      onLongPress={() =>
+        navigation.navigate(routes.REARRANGE, {
+          values,
+          setFieldValue,
+        })
+      }
+    />
+  );
 }
 
 const styles = StyleSheet.create({

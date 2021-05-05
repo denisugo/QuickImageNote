@@ -13,9 +13,9 @@ function AppCard({ imageUri, value, index, of }) {
     <View style={styles.container}>
       <AppImageInputForm imageUri={imageUri} index={index} />
       {/* <AppImageInput imageUri={imageUri} /> */}
-      <View style={{ backgroundColor: "tomato" }}>
+      {/* <View style={{ backgroundColor: themes.colors.placeholder }}>
         <AppText>{index + 1}</AppText>
-      </View>
+      </View> */}
       <AppTextImputForm index={index} />
       {/* <AppTextInput placeholder="Text Here" value={value} /> */}
     </View>

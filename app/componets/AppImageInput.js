@@ -7,13 +7,15 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
+import { useFormikContext } from "formik";
 
 import AppIcon from "./AppIcon";
 import themes from "../config/themes";
-import colors from "../config/colors";
 import AppActivityIndicator from "../componets/AppActivityIndicator";
 
-function AppImageInput({ imageUri, onChangeImage }) {
+function AppImageInput({ imageUri, onChangeImage, onLongPress }) {
+  const { values, setFieldValue } = useFormikContext();
+
   useEffect(() => {
     requestPermission();
   }, []);
@@ -39,7 +41,7 @@ function AppImageInput({ imageUri, onChangeImage }) {
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        quality: 0.5,
+        quality: 0.5, //check it later
       });
       setLoading(false);
       if (!result.cancelled) onChangeImage(result.uri);
@@ -48,7 +50,10 @@ function AppImageInput({ imageUri, onChangeImage }) {
     }
   };
   return (
-    <TouchableWithoutFeedback onPress={handlePress}>
+    <TouchableWithoutFeedback
+      onPress={handlePress}
+      onLongPress={() => onLongPress()}
+    >
       <View style={styles.container}>
         {!loading && (
           <>
@@ -56,8 +61,8 @@ function AppImageInput({ imageUri, onChangeImage }) {
               <AppIcon
                 name="camera"
                 size={200}
-                iconColor={themes.colors.background}
-                backgroundColor={colors.lightTheme.backgroundThird}
+                iconColor={themes.colors.placeholder}
+                backgroundColor={themes.colors.background}
               />
             )}
             {imageUri && (

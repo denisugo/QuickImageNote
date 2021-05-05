@@ -13,12 +13,12 @@ export default {
   lightTheme: {
     background: "#F4F6F7",
     backgroundSecondary: "#EAEDED",
-    backgroundThird: "#D0D3D4",
+    backgroundThird: "#FEF9E7",
     text: "#2E4053",
     textPlaceholder: "#B3B6B7",
-    button: "#F39C12",
-    buttonSecondary: "#58D68D",
-    buttonThird: "#2E86C1",
+    button: "#FAD7A0",
+    buttonSecondary: "#A3E4D7",
+    buttonThird: "#AED6F1",
     shadow: "gray",
   },
 };

@@ -1,9 +1,19 @@
 import React from "react";
-import ImageShareScreen from "./app/screens/ImageShareScreen";
-import ButtonTestScreen from "./app/screens/TemporaryScreens/ButtonTestScreen";
-import CardTestScreen from "./app/screens/TemporaryScreens/CardTestScreen";
-import ImplementationTestScreen from "./app/screens/TemporaryScreens/ImplementationTestScreen";
+import { NavigationContainer } from "@react-navigation/native";
 
+import ImageShareScreen from "./app/screens/ImageShareScreen";
+import ImageScreensNavigator from "./app/navigation/ImageScreensNavigator";
+// import { LogBox } from "react-native";
+
+// LogBox.ignoreLogs([
+//   "ReactNative.NativeModules.LottieAnimationView.resume",
+//   "ReactNative.NativeModules.LottieAnimationView.pause",
+//   "Non-serializable values were found in the navigation state. Check:",
+// ]);
 export default function App() {
-  return <ImageShareScreen />;
+  return (
+    <NavigationContainer>
+      <ImageScreensNavigator />
+    </NavigationContainer>
+  );
 }

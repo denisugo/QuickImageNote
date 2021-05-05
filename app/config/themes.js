@@ -1,16 +1,17 @@
-import { Platform } from "react-native";
+import { Dimensions, Platform } from "react-native";
 import colors from "./colors";
 
 const shadow = {
-  shadowColor: colors.lightTheme.shadow,
-  shadowOpacity: 0.8,
+  //shadowColor: colors.lightTheme.shadow,
+  shadowOpacity: 0.5,
   shadowOffset: { width: 0, height: 10 },
   shadowRadius: 10,
-  elevation: 20, //Android only
+  elevation: 10, //Android only
 };
 
 export default {
   colors: {
+    text: colors.lightTheme.text,
     placeholder: colors.lightTheme.textPlaceholder,
     background: colors.lightTheme.background,
     backgroundSecondary: colors.lightTheme.backgroundSecondary,
@@ -35,12 +36,11 @@ export default {
     height: 60,
     borderRadius: 15,
     //borderWidth: 2,
-    ...shadow,
+    //...shadow,
   },
   threeButtons: {
     flexDirection: "row",
-    paddingTop: 30,
-    width: "100%",
+    paddingVertical: 30,
     justifyContent: "center",
   },
   modal: {
@@ -72,8 +72,11 @@ export default {
     backgroundColor: colors.lightTheme.backgroundSecondary,
     margin: 15,
     borderRadius: 20,
-    //borderWidth: 2,
+
     ...shadow,
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.3,
+    shadowRadius: 10,
   },
   imageOnCard: {
     // alignItems: "center",
@@ -85,6 +88,20 @@ export default {
     overflow: "hidden",
     borderRadius: 20,
   },
+  listItem: {
+    flex: 1,
+    borderRadius: 20,
+    height: 70,
+    // width: 350,
+    width: Dimensions.get("screen").width - 50,
+    marginTop: 10,
+    backgroundColor: colors.lightTheme.buttonSecondary,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  listItemIsActive: {
+    backgroundColor: colors.lightTheme.button,
+  },
   textInput: {
     backgroundColor: colors.lightTheme.background,
     borderRadius: 20,
@@ -92,5 +109,13 @@ export default {
     marginBottom: 10,
     padding: 10,
     maxHeight: 120,
+  },
+  containerForThreeButtons: {
+    alignSelf: "center",
+    backgroundColor: colors.lightTheme.backgroundSecondary,
+    borderRadius: 25,
+    width: "92%",
+    ...shadow,
+    shadowOpacity: 0.3,
   },
 };
