@@ -62,7 +62,6 @@ const separateText = async (
     // checkedText = [...checkedText, lineText];
     // lineText = "";
   });
-  //console.log(checkedText);
   return checkedText;
 };
 
@@ -83,7 +82,12 @@ export const placeText = async (
     fontSize
   );
   const numberOfLines = splitted.length;
-  const safeArea = size.width / SAFE_AREA_PERCENTAGE;
+  var safeArea = size.width / SAFE_AREA_PERCENTAGE;
+
+  if (numberOfLines === 1) {
+    context.textAlign = "center";
+    safeArea = size.width / 2;
+  }
 
   splitted.forEach((line, index) => {
     const textX = safeArea;

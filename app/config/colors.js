@@ -14,7 +14,7 @@ export default {
     background: "#F4F6F7",
     backgroundSecondary: "#EAEDED",
     backgroundThird: "#FEF9E7",
-    text: "#2E4053",
+    text: "#5D6D7E",
     textPlaceholder: "#B3B6B7",
     button: "#FAD7A0",
     buttonSecondary: "#A3E4D7",

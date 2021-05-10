@@ -7,14 +7,15 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import { useFormikContext } from "formik";
+//import { useFormikContext } from "formik";
 
 import AppIcon from "./AppIcon";
 import themes from "../config/themes";
 import AppActivityIndicator from "../componets/AppActivityIndicator";
+import { addPrefix } from "./scripts/base64Processing";
 
 function AppImageInput({ imageUri, onChangeImage, onLongPress }) {
-  const { values, setFieldValue } = useFormikContext();
+  //const { values, setFieldValue } = useFormikContext();
 
   useEffect(() => {
     requestPermission();
@@ -40,11 +41,18 @@ function AppImageInput({ imageUri, onChangeImage, onLongPress }) {
   const selectImage = async () => {
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
+        allowsEditing: false,
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        quality: 0.5, //check it later
+        quality: 1, //check it later
+        exif: false,
+        base64: false,
       });
+      //console.log(result);
+      //setLoading(false);
+      // if (!result.cancelled) onChangeImage(result.uri);
+      //if (!result.cancelled && result.base64) onChangeImage(addPrefix(result));
+      if (!result.cancelled && result.height !== 0) onChangeImage(result.uri);
       setLoading(false);
-      if (!result.cancelled) onChangeImage(result.uri);
     } catch (error) {
       console.log("Error occured while retrieving image", error);
     }
@@ -81,7 +89,7 @@ const styles = StyleSheet.create({
     //...themes.imageOnCard,
     alignItems: "center",
     borderRadius: 20,
-    width: "95%",
+    width: "100%",
     height: 300,
     margin: 10,
     justifyContent: "center",

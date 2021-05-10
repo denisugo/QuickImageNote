@@ -100,7 +100,8 @@ function AppThreeButtonsForm({ setVisible, setImageUri, imageUri }) {
         onPress={() => handlePreview()}
         style={{
           backgroundColor: themes.colors.button,
-          marginHorizontal: 10,
+          //marginLeft: 0,
+          //marginHorizontal: 10,
         }}
       />
       <AppButton
@@ -108,7 +109,7 @@ function AppThreeButtonsForm({ setVisible, setImageUri, imageUri }) {
         onPress={() => console.log()}
         style={{
           backgroundColor: themes.colors.buttonSecondary,
-          marginHorizontal: 10,
+          //marginHorizontal: 10,
         }}
       />
       <AppButton
@@ -116,7 +117,8 @@ function AppThreeButtonsForm({ setVisible, setImageUri, imageUri }) {
         onPress={() => handleShare()}
         style={{
           backgroundColor: themes.colors.buttonThird,
-          marginHorizontal: 10,
+          //marginHorizontal: 10,
+          //marginRight: 0,
         }}
       />
     </View>

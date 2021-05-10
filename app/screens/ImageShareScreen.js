@@ -5,6 +5,7 @@ import {
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
   Keyboard,
+  ImageBackground,
 } from "react-native";
 
 import AppCustomModal from "../componets/AppCustomModal";
@@ -19,42 +20,52 @@ function ImageShareScreen(props) {
   const [imageUri, setImageUri] = useState(null);
 
   return (
-    <View style={{ backgroundColor: themes.colors.backgroundThird, flex: 1 }}>
-      <KeyboardAvoidingView
-        behavior="position"
-        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 100}
-        style={styles.container}
+    <View
+      style={{
+        // backgroundColor: themes.colors.backgroundThird,
+        flex: 1,
+      }}
+    >
+      <ImageBackground
+        source={require("../assets/background-light.png")}
+        style={{ flex: 1, resizeMode: "cover", justifyContent: "center" }}
       >
-        <View style={{ paddingTop: 50 }}>
-          <AppForm
-            initialValues={{
-              image: [null],
-              text: [""],
-              position: 0,
-            }}
-          >
-            <AppCarouselForm />
-            <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-              <View style={{ flex: 1 }}>
-                <View style={styles.bottomContainer}>
-                  <AppThreeButtonsForm
-                    setVisible={setVisible}
-                    setImageUri={setImageUri}
-                    imageUri={imageUri}
-                  />
+        <KeyboardAvoidingView
+          behavior="position"
+          keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 100}
+          style={styles.container}
+        >
+          <View style={{ paddingTop: 40 }}>
+            <AppForm
+              initialValues={{
+                image: [null],
+                text: [""],
+                position: 0,
+              }}
+            >
+              <AppCarouselForm />
+              <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+                <View style={{ flex: 1 }}>
+                  <View style={styles.bottomContainer}>
+                    <AppThreeButtonsForm
+                      setVisible={setVisible}
+                      setImageUri={setImageUri}
+                      imageUri={imageUri}
+                    />
+                  </View>
                 </View>
-              </View>
-            </TouchableWithoutFeedback>
-          </AppForm>
-        </View>
-      </KeyboardAvoidingView>
+              </TouchableWithoutFeedback>
+            </AppForm>
+          </View>
+        </KeyboardAvoidingView>
 
-      <AppCustomModal
-        visible={visible}
-        setVisible={setVisible}
-        imageUri={imageUri}
-        setImageUri={setImageUri}
-      />
+        <AppCustomModal
+          visible={visible}
+          setVisible={setVisible}
+          imageUri={imageUri}
+          setImageUri={setImageUri}
+        />
+      </ImageBackground>
     </View>
   );
 }

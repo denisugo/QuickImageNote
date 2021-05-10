@@ -26,7 +26,7 @@ function AppTextImputForm({ index }) {
         setFieldValue(field, updatedValue.current);
       }}
       value={values[field][index]}
-      placeholder="Write your text here"
+      placeholder="write your text here"
       multiline
       //width={width}
       //{...otherProps}

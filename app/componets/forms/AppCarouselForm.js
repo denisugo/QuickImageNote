@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Dimensions } from "react-native";
 
 import { useFormikContext } from "formik";
 import Carousel from "react-native-snap-carousel";
@@ -7,6 +7,8 @@ import Carousel from "react-native-snap-carousel";
 import AppCard from "../../componets/AppCard";
 
 function AppCarouselForm(props) {
+  const width = Dimensions.get("screen").width;
+
   const {
     //setFieldTouched,
     setFieldValue,
@@ -37,8 +39,8 @@ function AppCarouselForm(props) {
         layout={"default"}
         //ref={(ref) => (this.carousel = ref)}
         data={data.current}
-        sliderWidth={400}
-        itemWidth={400}
+        sliderWidth={width}
+        itemWidth={width}
         containerCustomStyle={{ paddingBottom: 20 }}
         //slideStyle={{ flex: 1 }}
         renderItem={({ item, index }) => (
