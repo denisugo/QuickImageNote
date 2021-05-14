@@ -1,11 +1,48 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
-import AppText from "../componets/AppText";
+import {
+  View,
+  StyleSheet,
+  Button,
+  ImageBackground,
+  FlatList,
+} from "react-native";
 
-function HomeScreen(props) {
+import AppIconButton from "../componets/AppIconButton";
+import AppText from "../componets/AppText";
+import routes from "../navigation/routes";
+import themes from "../config/themes";
+import { createList, keys, values } from "../test/homeScreenTestValues";
+import AppImageListItem from "../componets/AppImageListItem";
+
+function HomeScreen({ navigation }) {
+  const data = createList(keys.reverse(), values);
+
   return (
     <View style={styles.container}>
-      <AppText>Home Screen</AppText>
+      <ImageBackground
+        source={require("../assets/background-light-home.png")}
+        style={styles.imageBackground}
+      >
+        <View style={styles.settingButton}>
+          <AppIconButton
+            name="cog-outline"
+            onPress={() => navigation.navigate(routes.SETTINGS)}
+          />
+        </View>
+        <View style={styles.innerContainer}>
+          <FlatList
+            data={data}
+            renderItem={({ item }) => AppImageListItem({ item, navigation })}
+            keyExtractor={(item, index) => index.toString()}
+            horizontal={false}
+            numColumns={3}
+          />
+          <Button
+            title="Go to images"
+            onPress={() => navigation.navigate(routes.IMAGE_NAVIGATOR)}
+          />
+        </View>
+      </ImageBackground>
     </View>
   );
 }
@@ -13,8 +50,18 @@ function HomeScreen(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  settingButton: {
+    ...themes.settingButton,
+  },
+  imageBackground: {
+    flex: 1,
+    resizeMode: "cover",
+  },
+  innerContainer: {
     justifyContent: "center",
     alignItems: "center",
+    flex: 1,
   },
 });
 

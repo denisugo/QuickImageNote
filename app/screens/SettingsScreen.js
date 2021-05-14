@@ -1,8 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, StyleSheet } from "react-native";
+
 import AppText from "../componets/AppText";
 
-function SettingScreen(props) {
+function SettingsScreen({ navigation }) {
+  useEffect(() => {
+    navigation.addListener("blur", () => {
+      // Screen was unfocused
+      // Do something
+      console.log("Leaving setting screen");
+    });
+  }, [navigation]);
+
   return (
     <View style={styles.container}>
       <AppText>Setting screen </AppText>
@@ -18,4 +27,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SettingScreen;
+export default SettingsScreen;

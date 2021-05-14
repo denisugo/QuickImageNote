@@ -7,7 +7,6 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-//import { useFormikContext } from "formik";
 
 import AppIcon from "./AppIcon";
 import themes from "../config/themes";
@@ -15,11 +14,10 @@ import AppActivityIndicator from "../componets/AppActivityIndicator";
 import { addPrefix } from "./scripts/base64Processing";
 
 function AppImageInput({ imageUri, onChangeImage, onLongPress }) {
-  //const { values, setFieldValue } = useFormikContext();
-
   useEffect(() => {
     requestPermission();
   }, []);
+
   const [loading, setLoading] = useState(false);
 
   const requestPermission = async () => {
@@ -47,12 +45,9 @@ function AppImageInput({ imageUri, onChangeImage, onLongPress }) {
         exif: false,
         base64: false,
       });
-      //console.log(result);
-      //setLoading(false);
-      // if (!result.cancelled) onChangeImage(result.uri);
-      //if (!result.cancelled && result.base64) onChangeImage(addPrefix(result));
+
       if (!result.cancelled && result.height !== 0) onChangeImage(result.uri);
-      setLoading(false);
+      //setLoading(false);
     } catch (error) {
       console.log("Error occured while retrieving image", error);
     }
@@ -67,16 +62,21 @@ function AppImageInput({ imageUri, onChangeImage, onLongPress }) {
           <>
             {!imageUri && (
               <AppIcon
-                name="camera"
+                name="camera-outline"
                 size={200}
                 iconColor={themes.colors.placeholder}
                 backgroundColor={themes.colors.background}
               />
             )}
-            {imageUri && (
-              <Image style={styles.image} source={{ uri: imageUri }} />
-            )}
           </>
+        )}
+        {imageUri && (
+          <Image
+            onLoadStart={() => setLoading(true)}
+            onLoadEnd={() => setLoading(false)}
+            style={styles.image}
+            source={{ uri: imageUri }}
+          />
         )}
         <AppActivityIndicator visible={loading} />
       </View>
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 20,
     width: "100%",
-    height: 300,
+    height: 250, //300
     margin: 10,
     justifyContent: "center",
   },

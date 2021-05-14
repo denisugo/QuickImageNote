@@ -99,7 +99,8 @@ function AppThreeButtonsForm({ setVisible, setImageUri, imageUri }) {
         title="Preview"
         onPress={() => handlePreview()}
         style={{
-          backgroundColor: themes.colors.button,
+          flex: 0.33,
+          borderColor: themes.colors.button,
           //marginLeft: 0,
           //marginHorizontal: 10,
         }}
@@ -108,7 +109,8 @@ function AppThreeButtonsForm({ setVisible, setImageUri, imageUri }) {
         title="Send All"
         onPress={() => console.log()}
         style={{
-          backgroundColor: themes.colors.buttonSecondary,
+          flex: 0.33,
+          borderColor: themes.colors.buttonSecondary,
           //marginHorizontal: 10,
         }}
       />
@@ -116,7 +118,8 @@ function AppThreeButtonsForm({ setVisible, setImageUri, imageUri }) {
         title="Send"
         onPress={() => handleShare()}
         style={{
-          backgroundColor: themes.colors.buttonThird,
+          flex: 0.33,
+          borderColor: themes.colors.buttonThird,
           //marginHorizontal: 10,
           //marginRight: 0,
         }}

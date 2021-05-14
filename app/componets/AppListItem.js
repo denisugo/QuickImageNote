@@ -24,16 +24,25 @@ function AppListItem({ item, index, drag, isActive }) {
       <AppText
         numberOfLines={1}
         style={{
-          width:
-            styles.container.width -
-            styles.image.width * 2 -
-            styles.image.marginHorizontal * 2,
-          marginRight: styles.image.marginHorizontal,
+          flex: 0.8,
+
+          // width:
+          //   styles.container.width -
+          //   styles.image.width * 2 -
+          //   styles.image.marginHorizontal * 2,
+          // marginRight: styles.image.marginHorizontal,
         }}
       >
         {item[fieldSecondary]}
       </AppText>
-      <AppIcon name="menu" iconColor={themes.colors.text} />
+      <View
+        style={{
+          flex: 0.2,
+          alignItems: "center",
+        }}
+      >
+        <AppIcon name="menu" iconColor={themes.colors.text} />
+      </View>
     </TouchableOpacity>
   );
 }
@@ -47,13 +56,7 @@ const styles = StyleSheet.create({
     ...themes.listItemIsActive,
   },
   image: {
-    width: 65,
-    height: 65,
-    //paddingHorizontal: 20,
-    marginHorizontal: 20,
-    borderRadius: 5,
-    overflow: "hidden",
-    //justifyContent: "flex-start",
+    ...themes.imageOnListItem,
   },
 });
 

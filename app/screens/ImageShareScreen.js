@@ -7,27 +7,33 @@ import {
   Keyboard,
   ImageBackground,
 } from "react-native";
+import AppButton from "../componets/AppButton";
 
 import AppCustomModal from "../componets/AppCustomModal";
+import AppHeader from "../componets/AppHeader";
+import AppIconButton from "../componets/AppIconButton";
 import AppCarouselForm from "../componets/forms/AppCarouselForm";
 import AppForm from "../componets/forms/AppForm";
 import AppThreeButtonsForm from "../componets/forms/AppThreeButtonsForm";
 import themes from "../config/themes";
 import routes from "../navigation/routes";
 
-function ImageShareScreen(props) {
+function ImageShareScreen({ navigation, route }) {
   const [visible, setVisible] = useState(false);
   const [imageUri, setImageUri] = useState(null);
+
+  const images = route.params ? route.params.images : null;
+  const texts = route.params ? route.params.texts : null;
+  const name = route.params ? route.params.name : null;
 
   return (
     <View
       style={{
-        // backgroundColor: themes.colors.backgroundThird,
         flex: 1,
       }}
     >
       <ImageBackground
-        source={require("../assets/background-light.png")}
+        source={require("../assets/background-light-edit.png")}
         style={{ flex: 1, resizeMode: "cover", justifyContent: "center" }}
       >
         <KeyboardAvoidingView
@@ -35,17 +41,23 @@ function ImageShareScreen(props) {
           keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 100}
           style={styles.container}
         >
-          <View style={{ paddingTop: 40 }}>
+          <View style={styles.innerContainer}>
             <AppForm
               initialValues={{
-                image: [null],
-                text: [""],
+                name: name ? name : "Untitled",
+                image: images ? [...images, null] : [null],
+                text: texts ? [...texts, ""] : [""],
                 position: 0,
               }}
             >
+              <AppHeader />
               <AppCarouselForm />
               <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-                <View style={{ flex: 1 }}>
+                <View
+                  style={{
+                    flex: 1,
+                  }}
+                >
                   <View style={styles.bottomContainer}>
                     <AppThreeButtonsForm
                       setVisible={setVisible}
@@ -78,6 +90,9 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     ...themes.containerForThreeButtons,
+  },
+  innerContainer: {
+    //paddingTop: "10%",
   },
 });
 

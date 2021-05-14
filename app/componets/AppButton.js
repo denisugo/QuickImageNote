@@ -1,14 +1,18 @@
 import React from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 import AppText from "./AppText";
 import themes from "../config/themes";
 
 function AppButton({ title, onPress, style }) {
   return (
-    <TouchableOpacity style={[styles.button, style]} onPress={() => onPress()}>
-      <AppText>{title}</AppText>
-    </TouchableOpacity>
+    <View style={[styles.button, { ...style }]}>
+      <TouchableOpacity onPress={() => onPress()}>
+        <View style={{ flex: 1, justifyContent: "center" }}>
+          <AppText>{title}</AppText>
+        </View>
+      </TouchableOpacity>
+    </View>
   );
 }
 
