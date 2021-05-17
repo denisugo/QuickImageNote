@@ -5,11 +5,13 @@ import {
   TouchableWithoutFeedback,
   Image,
   LogBox,
-  Platform,
+  Text,
 } from "react-native";
 
 import themes from "../config/themes";
 import AppActivityIndicator from "./AppActivityIndicator";
+import AppPreview from "./AppPreview";
+import AppText from "./AppText";
 
 LogBox.ignoreLogs([
   "ReactNative.NativeModules.LottieAnimationView.resume",
@@ -18,32 +20,34 @@ LogBox.ignoreLogs([
 
 function AppCustomModal({
   visible = false,
-  imageUri,
   setVisible,
-  setImageUri,
+  onPress,
+  //imageUri,
+  // text,
+  children,
+  backgroundColor = themes.colors.backgroundThird,
+  opacity = 1,
 }) {
   return (
     visible && (
       <View style={styles.container}>
+        <View
+          style={[
+            styles.background,
+            { backgroundColor: backgroundColor, opacity: opacity },
+          ]}
+        />
         <TouchableWithoutFeedback
           onPress={() => {
-            setImageUri(null);
+            onPress();
             setVisible(false);
           }}
         >
-          <View style={styles.innerContainer}>
-            <AppActivityIndicator visible={!imageUri} />
-            {imageUri && (
-              <View style={styles.imageContainer}>
-                <Image
-                  resizeMode="contain"
-                  style={{ width: "100%", height: "100%" }}
-                  //style={styles.image}
-                  source={{ uri: imageUri }}
-                />
-              </View>
-            )}
-          </View>
+          <View style={{ flex: 1 }}>{children}</View>
+
+          {/* <View style={{ flex: 1 }}>
+            <AppPreview imageUri={imageUri} />
+          </View> */}
         </TouchableWithoutFeedback>
       </View>
     )
@@ -52,21 +56,12 @@ function AppCustomModal({
 
 const styles = StyleSheet.create({
   container: {
+    ...themes.customModal,
+  },
+  background: {
+    height: "100%",
     position: "absolute",
     width: "100%",
-    height: "100%",
-    backgroundColor: themes.colors.backgroundThird,
-  },
-  // image: {
-  //   ...themes.imageOnModale,
-  // },
-  imageContainer: {
-    ...themes.imageOnModale,
-  },
-  innerContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
   },
 });
 

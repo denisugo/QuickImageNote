@@ -33,14 +33,16 @@ function HomeScreen({ navigation }) {
           <FlatList
             data={data}
             renderItem={({ item }) => AppImageListItem({ item, navigation })}
+            //renderItem={(item) => AppImageListItem(item, navigation)}
             keyExtractor={(item, index) => index.toString()}
             horizontal={false}
             numColumns={3}
+            columnWrapperStyle={{ paddingHorizontal: 20, paddingTop: 7 }}
           />
-          <Button
+          {/* <Button
             title="Go to images"
             onPress={() => navigation.navigate(routes.IMAGE_NAVIGATOR)}
-          />
+          /> */}
         </View>
       </ImageBackground>
     </View>

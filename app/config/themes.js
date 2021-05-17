@@ -52,6 +52,14 @@ export default {
     backgroundColor: colors.lightTheme.backgroundSecondary,
     justifyContent: "center",
   },
+  customModal: {
+    //backgroundColor: colors.lightTheme.backgroundThird,
+    height: "100%",
+    position: "absolute",
+    width: "100%",
+    zIndex: 10,
+  },
+
   imageOnModale:
     Platform.OS === "ios"
       ? {
@@ -98,7 +106,7 @@ export default {
     width: Dimensions.get("screen").width - 50,
   },
   listItemIsActive: {
-    backgroundColor: colors.lightTheme.button,
+    backgroundColor: colors.lightTheme.buttonThird,
   },
   imageOnListItem: {
     borderRadius: 5,
@@ -119,6 +127,7 @@ export default {
     alignSelf: "center",
     backgroundColor: colors.lightTheme.backgroundSecondary,
     borderRadius: 25,
+    flex: 0.5,
     ...shadow,
     shadowOpacity: 0.3,
     width: "95%",

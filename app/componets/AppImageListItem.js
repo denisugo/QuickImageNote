@@ -4,11 +4,13 @@ import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
 import themes from "../config/themes";
 import AppText from "./AppText";
 import routes from "../navigation/routes";
+import AppIcon from "./AppIcon";
 
 function AppImageListItem({ item, navigation }) {
-  const field = "images";
-  const fieldSecondary = "key";
-  const fieldThird = "texts";
+  const imageField = "images";
+  const keyField = "key";
+  const textsField = "texts";
+  const textSettingsField = "textSettings";
 
   return (
     <TouchableOpacity
@@ -16,17 +18,21 @@ function AppImageListItem({ item, navigation }) {
         navigation.navigate(routes.IMAGE_NAVIGATOR, {
           screen: routes.IMAGES,
           params: {
-            images: item[field],
-            name: item[fieldSecondary],
-            texts: item[fieldThird],
+            images: item[imageField],
+            name: item[keyField],
+            texts: item[textsField],
+            textSettings: item[textSettingsField],
           },
         })
       }
     >
       <View style={styles.container}>
-        <Image style={styles.image} source={{ uri: item[field][0] }} />
+        {!item[imageField] && <AppIcon name="folder-plus-outline" size={80} />}
+        {item[imageField] && (
+          <Image style={styles.image} source={{ uri: item[imageField][0] }} />
+        )}
         <AppText numberOfLines={1} style={styles.text}>
-          {item[fieldSecondary]}
+          {item[keyField]}
         </AppText>
       </View>
     </TouchableOpacity>
@@ -43,12 +49,13 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     marginBottom: 20,
     width: 90,
+    ...themes.shadow,
   },
   image: {
     borderRadius: 20,
     height: 80,
     overflow: "hidden",
-    paddingTop: 5,
+    //paddingTop: 5,
     width: 80,
   },
   text: {

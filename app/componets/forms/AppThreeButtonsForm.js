@@ -1,6 +1,13 @@
 import { useFormikContext } from "formik";
 import React, { useEffect, useRef, useState } from "react";
-import { View, StyleSheet, Keyboard } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Keyboard,
+  Text,
+  ScrollView,
+  TouchableWithoutFeedback,
+} from "react-native";
 import * as ImageManipulator from "expo-image-manipulator";
 import * as Sharing from "expo-sharing";
 import * as FileSystem from "expo-file-system";
@@ -11,6 +18,7 @@ import AppCreateImage from "../AppCreateImage";
 import AppModal from "../AppModal";
 import AppCreateImageTest from "../AppCreateImageTest";
 import { addPrefix, removePrefix } from "../scripts/base64Processing";
+import AppTextSettingsForm from "./AppTextSettingsForm";
 
 function AppThreeButtonsForm({ setVisible, setImageUri, imageUri }) {
   const { values } = useFormikContext();
@@ -18,6 +26,9 @@ function AppThreeButtonsForm({ setVisible, setImageUri, imageUri }) {
   const field = "image";
   const fieldSecondary = "text";
   const fieldThird = "position";
+  const textSettingField = "textSettings";
+
+  const backgroundColorField = "backgroundColor";
 
   const imageUriFromValues = useRef(null);
   const [src, setSrc] = useState(null);
@@ -85,46 +96,67 @@ function AppThreeButtonsForm({ setVisible, setImageUri, imageUri }) {
   };
 
   return (
-    <View style={styles.container}>
+    <>
       <AppCreateImage
         setImageUri={setImageUri}
         src={src}
         text={text}
         buttonState={buttonState}
+        backgroundColor={values[textSettingField][backgroundColorField]}
         imageUri={imageUri}
         setSrc={setSrc}
       />
 
-      <AppButton
-        title="Preview"
-        onPress={() => handlePreview()}
-        style={{
-          flex: 0.33,
-          borderColor: themes.colors.button,
-          //marginLeft: 0,
-          //marginHorizontal: 10,
-        }}
-      />
-      <AppButton
-        title="Send All"
-        onPress={() => console.log()}
-        style={{
-          flex: 0.33,
-          borderColor: themes.colors.buttonSecondary,
-          //marginHorizontal: 10,
-        }}
-      />
-      <AppButton
-        title="Send"
-        onPress={() => handleShare()}
-        style={{
-          flex: 0.33,
-          borderColor: themes.colors.buttonThird,
-          //marginHorizontal: 10,
-          //marginRight: 0,
-        }}
-      />
-    </View>
+      <ScrollView
+      //contentContainerStyle={{ height: "100%" }}
+      // style={{ height: 100 }}
+      >
+        <TouchableWithoutFeedback>
+          <View style={{ flex: 1 }}>
+            <View style={styles.container}>
+              <AppButton
+                title="Preview"
+                onPress={() => handlePreview()}
+                style={{
+                  flex: 0.33,
+                  borderColor: themes.colors.button,
+                  //marginLeft: 0,
+                  //marginHorizontal: 10,
+                }}
+              />
+              <AppButton
+                title="Send All"
+                onPress={() => console.log()}
+                style={{
+                  flex: 0.33,
+                  borderColor: themes.colors.buttonSecondary,
+                  //marginHorizontal: 10,
+                }}
+              />
+              <AppButton
+                title="Send"
+                onPress={() => handleShare()}
+                style={{
+                  flex: 0.33,
+                  borderColor: themes.colors.buttonThird,
+                  //marginHorizontal: 10,
+                  //marginRight: 0,
+                }}
+              />
+            </View>
+            {/* <View
+              style={{
+                alignSelf: "center",
+                backgroundColor: themes.colors.placeholder,
+                height: 3,
+                width: "95%",
+              }}
+            /> */}
+            <AppTextSettingsForm />
+          </View>
+        </TouchableWithoutFeedback>
+      </ScrollView>
+    </>
   );
 }
 
