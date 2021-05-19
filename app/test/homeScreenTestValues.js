@@ -50,10 +50,11 @@ export const values = {
   empty: {
     images: null,
     texts: "",
+    textSettings: null,
   },
   textSettingsGlobal: {
-    bold: true,
-    italic: false,
+    bold: false,
+    italic: true,
     outline: false,
     up: false,
     textColor: "#fff",
@@ -61,7 +62,14 @@ export const values = {
   },
 };
 
-export const keys = ["12.5.2021", "Hawai", "Bum", "Hanalooloo", "empty"];
+export const keys = [
+  "12.5.2021",
+  "Hawai",
+  "Bum",
+  "Hanalooloo",
+  "empty",
+  "textSettingsGlobal",
+];
 
 export const createList = (keys, values) => {
   var data = [];

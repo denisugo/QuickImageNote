@@ -108,8 +108,8 @@ function AppThreeButtonsForm({ setVisible, setImageUri, imageUri }) {
       />
 
       <ScrollView
-      //contentContainerStyle={{ height: "100%" }}
-      // style={{ height: 100 }}
+      //contentContainerStyle={{ overflow: "hidden" }}
+      // style={{ overflow: "hidden" }}
       >
         <TouchableWithoutFeedback>
           <View style={{ flex: 1 }}>

@@ -47,7 +47,7 @@ function AppImageInput({ imageUri, onChangeImage, onLongPress }) {
       });
 
       if (!result.cancelled && result.height !== 0) onChangeImage(result.uri);
-      //setLoading(false);
+      if (result.cancelled) setLoading(false);
     } catch (error) {
       console.log("Error occured while retrieving image", error);
     }

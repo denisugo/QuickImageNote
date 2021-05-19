@@ -17,7 +17,7 @@ function AppHeader() {
 
   const [visible, setVisible] = useState(false);
 
-  const field = "name";
+  const nameField = "name";
 
   return (
     <>
@@ -46,7 +46,7 @@ function AppHeader() {
               borderWidth: 0,
               flex: 0.6,
             }}
-            title={values[field]}
+            title={values[nameField]}
             onPress={() => setVisible(true)}
           />
           <AppIconButton

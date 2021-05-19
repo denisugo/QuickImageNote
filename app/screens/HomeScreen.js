@@ -13,9 +13,13 @@ import routes from "../navigation/routes";
 import themes from "../config/themes";
 import { createList, keys, values } from "../test/homeScreenTestValues";
 import AppImageListItem from "../componets/AppImageListItem";
+import keyfields from "../memory/keyfields";
 
 function HomeScreen({ navigation }) {
-  const data = createList(keys.reverse(), values);
+  const data = createList(
+    keys.filter((key) => key !== keyfields.GLOBAL_TEXT_SETTINGS).reverse(),
+    values
+  );
 
   return (
     <View style={styles.container}>
