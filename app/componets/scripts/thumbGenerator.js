@@ -1,4 +1,5 @@
 import * as ImageManipulator from "expo-image-manipulator";
+import keyfields from "../../memory/keyfields";
 
 import asyncForEach from "./asyncForEach";
 
@@ -19,9 +20,9 @@ export const getThumbs = async (values, field, fieldSecondary, setData) => {
       parsedValues = [
         ...parsedValues,
         {
-          image: values[field][index],
-          text: values[fieldSecondary][index],
-          thumbnail: thumbnail.uri,
+          [keyfields.IMAGES]: values[field][index],
+          [keyfields.TEXTS]: values[fieldSecondary][index],
+          [keyfields.THUMB]: thumbnail.uri,
         },
       ];
     }
@@ -30,12 +31,15 @@ export const getThumbs = async (values, field, fieldSecondary, setData) => {
 };
 
 export const restoreData = (data, field, fieldSecondary, setFieldValue) => {
-  var reversedValues = { image: [], text: [] };
+  var reversedValues = { [keyfields.IMAGES]: [], [keyfields.TEXTS]: [] };
 
   data.forEach((element, index) => {
     reversedValues = {
-      image: [...reversedValues[field], element[field]],
-      text: [...reversedValues[fieldSecondary], element[fieldSecondary]],
+      [keyfields.IMAGES]: [...reversedValues[field], element[field]],
+      [keyfields.TEXTS]: [
+        ...reversedValues[fieldSecondary],
+        element[fieldSecondary],
+      ],
     };
   });
 

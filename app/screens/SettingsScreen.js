@@ -31,43 +31,39 @@ function SettingsScreen({ navigation }) {
       console.log("Leaving setting screen");
     });
   }, [navigation]);
-  const [values, setValues] = useState(defaultValues);
-
-  const updateSettings = (field, value) => {
-    const asArray = Object.entries(values);
-
-    // Use `filter()` to filter the key/value array
-    const filteredArray = asArray.filter(([key, value]) => key !== field);
-
-    // Convert the key/value array back to an object:
-    const filteredObject = Object.fromEntries(filteredArray);
-    setValues({ ...filteredObject, [field]: value });
-  };
 
   return (
-    <ScrollView>
-      <AppTextSettings
-        values={values}
-        onPress={(field, value) => {
-          updateSettings(field, value);
-        }}
-      />
-      {/* <AppColorPicker item="#F39C12" />
-      <AppColorPicker item="#F39C12" />
-      <AppColorPicker item="#F39C12" />
-      <AppColorPicker item="#F39C12" />
-      <AppColorPicker item="#F39C12" />
-      <AppColorPicker item="#F39C12" />
-      <AppColorPicker item="#F39C12" />
-      <AppColorPicker item="#F39C12" />
-      <AppColorPicker item="#F39C12" />
-      <AppColorPicker item="#F39C12" />
-      <AppColorPicker item="#F39C12" />
-      <AppColorPicker item="#F39C12" /> */}
-    </ScrollView>
+    <View style={styles.container}>
+      <View style={{ flex: 1, justifyContent: "center" }}>
+        <AppButton title="Clear All" style={{ borderColor: "tomato" }} />
+        <AppButton title="Toggle theme" />
+      </View>
+
+      <View style={{ flex: 1, justifyContent: "center" }}>
+        <AppButton title="buy premium" />
+      </View>
+
+      <View style={{ alignItems: "center", flex: 1, justifyContent: "center" }}>
+        <View
+          style={{ alignItems: "center", flex: 1, justifyContent: "flex-end" }}
+        >
+          <AppText>Our Instagram</AppText>
+        </View>
+
+        <View
+          style={{ alignItems: "center", flex: 1, justifyContent: "center" }}
+        >
+          <AppText>support us</AppText>
+        </View>
+      </View>
+    </View>
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
 
 export default SettingsScreen;

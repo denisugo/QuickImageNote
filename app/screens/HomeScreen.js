@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -11,15 +11,31 @@ import AppIconButton from "../componets/AppIconButton";
 import AppText from "../componets/AppText";
 import routes from "../navigation/routes";
 import themes from "../config/themes";
-import { createList, keys, values } from "../test/homeScreenTestValues";
+// import { createList, keys, values } from "../test/homeScreenTestValues";
 import AppImageListItem from "../componets/AppImageListItem";
 import keyfields from "../memory/keyfields";
+import { getAllKeys, getData, createList } from "../memory/useStorage";
 
 function HomeScreen({ navigation }) {
-  const data = createList(
-    keys.filter((key) => key !== keyfields.GLOBAL_TEXT_SETTINGS).reverse(),
-    values
-  );
+  // const data = createList(
+  //   keys.filter((key) => key !== keyfields.GLOBAL_TEXT_SETTINGS).reverse(),
+  //   values
+  // );
+  const [data, setData] = useState(false);
+
+  const keys = getAllKeys();
+
+  useEffect(() => {
+    readStorage();
+  }, [keys]);
+
+  const readStorage = async () => {
+    setData(await createList());
+  };
+
+  // console.log(data);
+
+  if (!data) return <View />;
 
   return (
     <View style={styles.container}>

@@ -1,6 +1,7 @@
 export const values = {
   "12.5.2021": {
     images: ["https://picsum.photos/800/800", "https://picsum.photos/800/600"],
+    thumb: "https://picsum.photos/100/100",
     texts: ["KOLLER", "Britney"],
     textSettings: {
       bold: true,
@@ -13,6 +14,7 @@ export const values = {
   },
   Hawai: {
     images: ["https://picsum.photos/800/600", "https://picsum.photos/800/601"],
+    thumb: "https://picsum.photos/100/100",
     texts: ["Our long road", "Jessica"],
     textSettings: {
       bold: true,
@@ -25,6 +27,7 @@ export const values = {
   },
   Bum: {
     images: ["https://picsum.photos/800/600", "https://picsum.photos/800/801"],
+    thumb: "https://picsum.photos/100/100",
     texts: ["Our long road", "Jessica"],
     textSettings: {
       bold: true,
@@ -37,6 +40,7 @@ export const values = {
   },
   Hanalooloo: {
     images: ["https://picsum.photos/800/600", "https://picsum.photos/800/801"],
+    thumb: "https://picsum.photos/100/100",
     texts: ["Our long road", "Jessica"],
     textSettings: {
       bold: true,
@@ -49,6 +53,7 @@ export const values = {
   },
   empty: {
     images: null,
+    thumb: null,
     texts: "",
     textSettings: null,
   },

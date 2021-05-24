@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -19,6 +19,7 @@ import AppNameImputForm from "../componets/forms/AppNameInputForm";
 import AppThreeButtonsForm from "../componets/forms/AppThreeButtonsForm";
 import themes from "../config/themes";
 import keyfields from "../memory/keyfields";
+import { storeData } from "../memory/useStorage";
 import routes from "../navigation/routes";
 import { createList, values } from "../test/homeScreenTestValues";
 
@@ -41,43 +42,53 @@ function ImageShareScreen({ navigation, route }) {
         source={require("../assets/background-light-edit.png")}
         style={{ flex: 1, resizeMode: "cover", justifyContent: "center" }}
       >
-        <View style={styles.container}>
+        <KeyboardAvoidingView
+          behavior="position"
+          keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 100}
+          style={styles.container}
+        >
+          {/* <View style={styles.container}> */}
           <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View style={styles.innerContainer}>
               <AppForm
                 initialValues={{
-                  name: name && name !== "empty" ? name : "Untitled",
-                  image: images ? [...images, null] : [null],
-                  text: texts ? [...texts, ""] : [""],
-                  textSettings: textSettings
+                  [keyfields.NAME]:
+                    name && name !== "empty" ? name : "untitled",
+                  [keyfields.IMAGES]: images ? [...images] : [null],
+                  // [keyfields.IMAGES]: images ? [...images, null] : [null],
+                  [keyfields.TEXTS]: texts ? [...texts] : [""],
+                  // [keyfields.TEXTS]: texts ? [...texts, ""] : [""],
+                  [keyfields.TEXT_SETTINGS]: textSettings
                     ? textSettings
                     : createList([keyfields.GLOBAL_TEXT_SETTINGS], values)[0], //return array with object
-                  position: 0,
+                  [keyfields.POSITION]: 0,
+                  [keyfields.ORIGINAL_NAME]: name,
                 }}
               >
                 <AppHeader />
 
-                <KeyboardAvoidingView
+                {/* <KeyboardAvoidingView
                   behavior="position"
                   keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 100}
                   style={{ height: 440 }}
-                >
-                  <AppCarouselForm />
-                </KeyboardAvoidingView>
+                > */}
+                <AppCarouselForm />
+                {/* </KeyboardAvoidingView> */}
 
-                <View style={{ flex: 1 }}>
-                  <View style={styles.bottomContainer}>
-                    <AppThreeButtonsForm
-                      setVisible={setVisible} //for preview
-                      setImageUri={setImageUri} //for preview
-                      imageUri={imageUri} //for preview
-                    />
-                  </View>
+                {/* <View style={{ flex: 1 }}> */}
+                <View style={styles.bottomContainer}>
+                  <AppThreeButtonsForm
+                    setVisible={setVisible} //for preview
+                    setImageUri={setImageUri} //for preview
+                    imageUri={imageUri} //for preview
+                  />
                 </View>
+                {/* </View> */}
               </AppForm>
             </View>
           </TouchableWithoutFeedback>
-        </View>
+        </KeyboardAvoidingView>
+        {/* </View> */}
 
         <AppCustomModal
           visible={visible}

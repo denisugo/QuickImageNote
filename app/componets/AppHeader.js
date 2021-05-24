@@ -1,6 +1,6 @@
 import { useFormikContext } from "formik";
-import React, { useState } from "react";
-import { View, StyleSheet } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, StyleSheet, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import routes from "../navigation/routes";
@@ -9,6 +9,10 @@ import AppIconButton from "./AppIconButton";
 import AppCustomModal from "./AppCustomModal";
 import AppNameImputForm from "./forms/AppNameInputForm";
 import themes from "../config/themes";
+import { storeData } from "../memory/useStorage";
+import keyfields from "../memory/keyfields";
+import { isNameAlreadyExists, isRenamed } from "../memory/namesStorageHandler";
+import saveDataForm from "../memory/saveDataForm";
 
 function AppHeader() {
   const navigation = useNavigation();
@@ -17,14 +21,43 @@ function AppHeader() {
 
   const [visible, setVisible] = useState(false);
 
-  const nameField = "name";
+  const [isGoHome, setIsGoHome] = useState(false);
+  const [isForcedRename, setIsForcedRename] = useState(false);
+
+  //giving one more rerender
+  const goHome = async () => {
+    if (isGoHome) {
+      if (values[keyfields.ORIGINAL_NAME] !== values[keyfields.NAME]) {
+        if (!isForcedRename)
+          await isRenamed(values[keyfields.ORIGINAL_NAME], values);
+        else {
+          setIsForcedRename(false);
+          await saveDataForm(values);
+        }
+      } else {
+        await saveDataForm(values);
+      }
+      navigation.navigate(routes.HOME_NAVIGATOR);
+
+      setIsGoHome(false);
+    }
+  };
+
+  useEffect(() => {
+    goHome();
+  }, [isGoHome]);
+
+  // const nameField = "name";
 
   return (
     <>
       <AppCustomModal
         visible={visible}
         setVisible={setVisible}
-        onPress={() => {}}
+        onPress={() => {
+          // if (values[keyfields.NAME] !== values[keyfields.ORIGINAL_NAME])
+          //   isNameAlreadyExists(values, setFieldValue, setIsForcedRename);
+        }}
         backgroundColor={themes.colors.buttonThird}
         // opacity={0.95}
       >
@@ -39,14 +72,37 @@ function AppHeader() {
               ...styles.button,
             }}
             name="home-outline"
-            onPress={() => navigation.navigate(routes.HOME_NAVIGATOR)}
+            onPress={async () => {
+              await isNameAlreadyExists(
+                values,
+                setFieldValue,
+                setIsForcedRename
+              );
+
+              setIsGoHome(true);
+
+              // if (values[keyfields.ORIGINAL_NAME] !== values[keyfields.NAME]) {
+              //   await isRenamed(values[keyfields.ORIGINAL_NAME], values);
+              // } else {
+              //   await saveDataForm(values);
+              //   console.log("now here 2", values[keyfields.NAME]);
+              // }
+
+              // navigation.navigate(routes.HOME_NAVIGATOR);
+              // await storeData(values[keyfields.NAME], {
+              //   [keyfields.IMAGES]: values[keyfields.IMAGES],
+              //   [keyfields.TEXTS]: values[keyfields.TEXTS],
+              //   [keyfields.THUMB]: values[keyfields.IMAGES][0],
+              //   [keyfields.TEXT_SETTINGS]: values[keyfields.TEXT_SETTINGS],
+              // });
+            }}
           />
           <AppButton
             style={{
               borderWidth: 0,
               flex: 0.6,
             }}
-            title={values[nameField]}
+            title={values[keyfields.NAME]}
             onPress={() => setVisible(true)}
           />
           <AppIconButton

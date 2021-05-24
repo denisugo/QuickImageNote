@@ -5,6 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 
 import AppImageInput from "../AppImageInput";
 import routes from "../../navigation/routes";
+import keyfields from "../../memory/keyfields";
 
 function AppImageInputForm({ imageUri, index }) {
   const navigation = useNavigation();
@@ -12,28 +13,29 @@ function AppImageInputForm({ imageUri, index }) {
   const { setFieldValue, values } = useFormikContext();
 
   const updatedValue = useRef();
-  const field = "image";
-  const fieldSecondary = "text";
+  // const imageField = "image";
+  // const textField = "text";
   //console.log("values are ", values);
+
   const handleChange = (uri) => {
     if (uri) {
       //Returns image from image gallery
-      updatedValue.current = values[field];
+      updatedValue.current = values[keyfields.IMAGES];
       updatedValue.current[index] = uri;
-      setFieldValue(field, [...updatedValue.current, null]);
-      setFieldValue(fieldSecondary, [...values[fieldSecondary], ""]);
+      setFieldValue(keyfields.IMAGES, [...updatedValue.current, null]);
+      setFieldValue(keyfields.TEXTS, [...values[keyfields.TEXTS], ""]);
     } else {
       //Remove image request
-      const imageValue = values[field][index];
+      const imageValue = values[keyfields.IMAGES][index];
       setFieldValue(
-        field,
-        values[field].filter((imageUri) => imageUri !== imageValue)
+        keyfields.IMAGES,
+        values[keyfields.IMAGES].filter((imageUri) => imageUri !== imageValue)
       );
 
-      const textValue = values[fieldSecondary][index];
+      const textValue = values[keyfields.TEXTS][index];
       setFieldValue(
-        fieldSecondary,
-        values[fieldSecondary].filter((text) => text !== textValue)
+        keyfields.TEXTS,
+        values[keyfields.TEXTS].filter((text) => text !== textValue)
       );
     }
   };

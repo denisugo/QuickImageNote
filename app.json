@@ -1,14 +1,14 @@
 {
   "expo": {
-    "name": "QuickImageNote",
-    "slug": "QuickImageNote",
+    "name": "Commentee",
+    "slug": "commentee",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./app/assets/icon.png",
     "splash": {
       "image": "./app/assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "resizeMode": "cover",
+      "backgroundColor": "#0E0B44"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -28,6 +28,6 @@
     "web": {
       "favicon": "./app/assets/favicon.png"
     },
-    "description": ""
+    "description": "This app will provide simple adding of your comment to your pictures"
   }
 }

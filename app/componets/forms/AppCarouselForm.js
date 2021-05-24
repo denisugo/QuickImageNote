@@ -5,6 +5,7 @@ import { useFormikContext } from "formik";
 import Carousel from "react-native-snap-carousel";
 
 import AppCard from "../../componets/AppCard";
+import keyfields from "../../memory/keyfields";
 
 function AppCarouselForm(props) {
   const width = Dimensions.get("screen").width;
@@ -19,16 +20,16 @@ function AppCarouselForm(props) {
 
   // should be: data = [{image:"", text:""},{image:"", text:""},{image:"", text:""}]
   const data = useRef([]);
-  const imageField = "image";
-  const textField = "text";
-  const positionField = "position";
+  // const imageField = "image";
+  // const textField = "text";
+  // const positionField = "position";
 
   //Converting into sliced objects
   data.current = [];
-  values[imageField].forEach((imageUri, index) => {
+  values[keyfields.IMAGES].forEach((imageUri, index) => {
     data.current[index] = {
       image: imageUri,
-      text: values[textField][index],
+      text: values[keyfields.TEXTS][index],
     };
   });
   //console.log("Data is ", data.current);
@@ -46,7 +47,7 @@ function AppCarouselForm(props) {
         renderItem={({ item, index }) => (
           <AppCard imageUri={item.image} value={item.text} index={index} />
         )}
-        onSnapToItem={(index) => setFieldValue(positionField, index)}
+        onSnapToItem={(index) => setFieldValue(keyfields.POSITION, index)}
       />
     </View>
   );

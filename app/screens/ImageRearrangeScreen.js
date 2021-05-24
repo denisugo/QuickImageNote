@@ -4,6 +4,7 @@ import DraggableFlatList, {
   RenderItemParams,
 } from "react-native-draggable-flatlist";
 import * as ImageManipulator from "expo-image-manipulator";
+import * as Haptics from "expo-haptics";
 
 import AppListItem from "../componets/AppListItem";
 import AppText from "../componets/AppText";
@@ -12,6 +13,7 @@ import themes from "../config/themes";
 import routes from "../navigation/routes";
 import AppActivityIndicator from "../componets/AppActivityIndicator";
 import { getThumbs, restoreData } from "../componets/scripts/thumbGenerator";
+import keyfields from "../memory/keyfields";
 
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state. Check:",
@@ -21,83 +23,51 @@ function ImageRearrangeScreen({ route, navigation }) {
   const setFieldValue = (field, value) =>
     route.params.setFieldValue(field, value);
   const values = route.params.values;
-  const field = "image";
-  const fieldSecondary = "text";
   //now it is values ={image:[], text[]}
   //should be values = [{image, text}, {image, text}]
-  // const parsedValues = useRef([]);
-  // const reversedValues = useRef({ image: [], text: [] });
 
-  //const [data, setData] = useState(parsedValues.current);
+  // const keyfields.IMAGES = "image";
+  //const keyfields.TEXTS = "text";
 
   const [data, setData] = useState();
 
-  // const imageRefactoring = async () => {
-  //   await asyncForEach(values[field], async (image, index) => {
-  //     if (index !== values[field].length - 1) {
-  //       const thumbnail = await ImageManipulator.manipulateAsync(
-  //         image,
-  //         [{ resize: { width: 100 } }],
-  //         {
-  //           compress: 1,
-  //           format: ImageManipulator.SaveFormat.PNG,
-  //         }
-  //       );
+  var lastIndex = 0;
 
-  //       parsedValues.current = [
-  //         ...parsedValues.current,
-  //         {
-  //           image: values[field][index],
-  //           text: values[fieldSecondary][index],
-  //           thumbnail: thumbnail.uri,
-  //         },
-  //       ];
-  //     }
-  //   });
-  //   setData(parsedValues.current);
-  // };
   useEffect(() => {
     //imageRefactoring();
-    getThumbs(values, field, fieldSecondary, setData);
+    getThumbs(values, keyfields.IMAGES, keyfields.TEXTS, setData);
   }, []);
 
   useEffect(() => {
     //back parsing
     if (data) {
-      restoreData(data, field, fieldSecondary, setFieldValue);
-      // data.forEach((element, index) => {
-      //   reversedValues.current = {
-      //     image: [...reversedValues.current[field], element[field]],
-      //     text: [
-      //       ...reversedValues.current[fieldSecondary],
-      //       element[fieldSecondary],
-      //     ],
-      //   };
-      // });
-      // setFieldValue(field, [...reversedValues.current[field], null]);
-      // setFieldValue(fieldSecondary, [
-      //   ...reversedValues.current[fieldSecondary],
-      //   "",
-      // ]);
-      // parsedValues.current = [];
-      // reversedValues.current = { image: [], text: [] };
+      restoreData(data, keyfields.IMAGES, keyfields.TEXTS, setFieldValue);
     }
   }, [data]);
 
   return (
     <View style={styles.container}>
       <View style={styles.innerContainer}>
-        {/* <Button
-        title="go back"
-        onPress={() => navigation.navigate(routes.IMAGES)}
-      /> */}
         <AppActivityIndicator visible={!data} />
         {data && (
           <DraggableFlatList
             data={data}
             renderItem={AppListItem}
             keyExtractor={(item, index) => index.toString()}
-            onDragEnd={({ data }) => setData(data)}
+            onDragBegin={(index) => {
+              if (index === 0)
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+            }}
+            onPlaceholderIndexChange={(index) => {
+              if (lastIndex !== index && index !== -1) {
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                lastIndex = index;
+              }
+            }}
+            onDragEnd={({ data }) => {
+              setData(data);
+              lastIndex = 0;
+            }}
           />
         )}
       </View>

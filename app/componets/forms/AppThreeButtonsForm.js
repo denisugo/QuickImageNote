@@ -19,14 +19,15 @@ import AppModal from "../AppModal";
 import AppCreateImageTest from "../AppCreateImageTest";
 import { addPrefix, removePrefix } from "../scripts/base64Processing";
 import AppTextSettingsForm from "./AppTextSettingsForm";
+import keyfields from "../../memory/keyfields";
 
 function AppThreeButtonsForm({ setVisible, setImageUri, imageUri }) {
   const { values } = useFormikContext();
 
-  const field = "image";
-  const fieldSecondary = "text";
-  const fieldThird = "position";
-  const textSettingField = "textSettings";
+  // const keyfields.IMAGES = "image";
+  // const keyfields.TEXTS = "text";
+  // const keyfields.POSITION = "position";
+  // const keyfield.TEXT_SETTINGS = "textSettings";
 
   const backgroundColorField = "backgroundColor";
 
@@ -67,7 +68,8 @@ function AppThreeButtonsForm({ setVisible, setImageUri, imageUri }) {
 
     setButtonState(!buttonState);
 
-    imageUriFromValues.current = values[field][parseInt(values[fieldThird])];
+    imageUriFromValues.current =
+      values[keyfields.IMAGES][parseInt(values[keyfields.POSITION])];
 
     if (imageUriFromValues.current) {
       ImageManipulator.manipulateAsync(
@@ -81,7 +83,7 @@ function AppThreeButtonsForm({ setVisible, setImageUri, imageUri }) {
       });
     } else setSrc(null);
 
-    setText(values[fieldSecondary][parseInt(values[fieldThird])]);
+    setText(values[keyfields.TEXTS][parseInt(values[keyfields.POSITION])]);
   };
 
   const handlePreview = () => {
@@ -102,7 +104,7 @@ function AppThreeButtonsForm({ setVisible, setImageUri, imageUri }) {
         src={src}
         text={text}
         buttonState={buttonState}
-        backgroundColor={values[textSettingField][backgroundColorField]}
+        backgroundColor={values[keyfields.TEXT_SETTINGS][backgroundColorField]}
         imageUri={imageUri}
         setSrc={setSrc}
       />

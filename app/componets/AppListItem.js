@@ -1,16 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, StyleSheet, TouchableOpacity, Image } from "react-native";
 // import * as ImageManipulator from "expo-image-manipulator";
 // import { Image as ImageWithThumb } from "react-native-expo-image-cache";
+// import * as Haptics from "expo-haptics";
 
 import themes from "../config/themes";
+import keyfields from "../memory/keyfields";
 import AppIcon from "./AppIcon";
 import AppText from "./AppText";
 
 function AppListItem({ item, index, drag, isActive }) {
-  const field = "image";
-  const fieldSecondary = "text";
-  const fieldThird = "thumbnail";
+  // const field = "image";
+  // const fieldSecondary = "text";
+  // const fieldThird = "thumbnail";
+
+  // isActive && Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 
   return (
     <TouchableOpacity
@@ -19,7 +23,7 @@ function AppListItem({ item, index, drag, isActive }) {
       style={isActive ? styles.containerIsActive : styles.container}
     >
       {/* <Image style={styles.image} source={{ uri: item[field] }} /> */}
-      <Image style={styles.image} source={{ uri: item[fieldThird] }} />
+      <Image style={styles.image} source={{ uri: item[keyfields.THUMB] }} />
 
       <AppText
         numberOfLines={1}
@@ -33,7 +37,7 @@ function AppListItem({ item, index, drag, isActive }) {
           // marginRight: styles.image.marginHorizontal,
         }}
       >
-        {item[fieldSecondary]}
+        {item[keyfields.TEXTS]}
       </AppText>
       <View
         style={{

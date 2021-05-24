@@ -9,6 +9,8 @@ const shadow = {
   shadowRadius: 10,
 };
 
+const stylesStatusBar = ["default", "dark-content", "light-content"];
+
 export default {
   colors: {
     text: colors.lightTheme.text,
@@ -138,5 +140,8 @@ export default {
   settingButton: {
     alignSelf: "flex-end",
     paddingTop: 30,
+  },
+  statusBar: {
+    style: stylesStatusBar[1],
   },
 };
