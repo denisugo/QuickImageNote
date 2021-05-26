@@ -31,6 +31,7 @@ function ImageShareScreen({ navigation, route }) {
   const texts = route.params ? route.params.texts : null;
   const name = route.params ? route.params.name : null;
   const textSettings = route.params ? route.params.textSettings : null;
+  const key = route.params ? route.params.key : null;
 
   return (
     <View
@@ -63,6 +64,7 @@ function ImageShareScreen({ navigation, route }) {
                     : createList([keyfields.GLOBAL_TEXT_SETTINGS], values)[0], //return array with object
                   [keyfields.POSITION]: 0,
                   [keyfields.ORIGINAL_NAME]: name,
+                  [keyfields.KEY]: key,
                 }}
               >
                 <AppHeader />

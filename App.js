@@ -9,9 +9,10 @@ import { initStorage, removeData } from "./app/memory/useStorage";
 import keyfields from "./app/memory/keyfields";
 
 export default function App() {
-  useEffect(() => {
-    initStorage();
-  }, []);
+  // useEffect(() => {
+  //   console.log("AppScreen");
+  //   //initStorage();
+  // }, []);
 
   return (
     <>

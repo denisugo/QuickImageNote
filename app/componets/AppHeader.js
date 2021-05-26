@@ -11,7 +11,7 @@ import AppNameImputForm from "./forms/AppNameInputForm";
 import themes from "../config/themes";
 import { storeData } from "../memory/useStorage";
 import keyfields from "../memory/keyfields";
-import { isNameAlreadyExists, isRenamed } from "../memory/namesStorageHandler";
+import { isNameAlreadyExists, reStore } from "../memory/namesStorageHandler";
 import saveDataForm from "../memory/saveDataForm";
 
 function AppHeader() {
@@ -22,21 +22,22 @@ function AppHeader() {
   const [visible, setVisible] = useState(false);
 
   const [isGoHome, setIsGoHome] = useState(false);
-  const [isForcedRename, setIsForcedRename] = useState(false);
+  // const [isForcedRename, setIsForcedRename] = useState(false);
 
   //giving one more rerender
   const goHome = async () => {
     if (isGoHome) {
-      if (values[keyfields.ORIGINAL_NAME] !== values[keyfields.NAME]) {
-        if (!isForcedRename)
-          await isRenamed(values[keyfields.ORIGINAL_NAME], values);
-        else {
-          setIsForcedRename(false);
-          await saveDataForm(values);
-        }
-      } else {
-        await saveDataForm(values);
-      }
+      // if (values[keyfields.ORIGINAL_NAME] !== values[keyfields.NAME]) {
+      //   // if (!isForcedRename)
+      //   // else {
+      //   await saveDataForm(values);
+
+      //   //   setIsForcedRename(false);
+      //   //   await saveDataForm(values);
+      //   // }
+      // } else {
+      await reStore(values[keyfields.KEY], values);
+      // }
       navigation.navigate(routes.HOME_NAVIGATOR);
 
       setIsGoHome(false);
@@ -73,13 +74,14 @@ function AppHeader() {
             }}
             name="home-outline"
             onPress={async () => {
+              //Validates the name value
               await isNameAlreadyExists(
                 values,
-                setFieldValue,
-                setIsForcedRename
+                setFieldValue
+                // setIsForcedRename
               );
 
-              setIsGoHome(true);
+              setIsGoHome(true); //going to rerender
 
               // if (values[keyfields.ORIGINAL_NAME] !== values[keyfields.NAME]) {
               //   await isRenamed(values[keyfields.ORIGINAL_NAME], values);

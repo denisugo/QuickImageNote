@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, StyleSheet, Image, TouchableOpacity, Alert } from "react-native";
 import * as Haptics from "expo-haptics";
 
@@ -9,7 +9,7 @@ import AppIcon from "./AppIcon";
 import keyfields from "../memory/keyfields";
 import { getAllKeys, removeData } from "../memory/useStorage";
 
-function AppImageListItem({ item, navigation }) {
+function AppImageListItem({ item, navigation, setStorageUsed, storageUsed }) {
   // const keyfields.IMAGES = "images";
   // const keyields.KEY = "key";
   // const keyfields.TEXTS = "texts";
@@ -34,7 +34,12 @@ function AppImageListItem({ item, navigation }) {
             {
               text: "Yes",
               onPress: async () => {
-                await removeData([item[keyfields.KEY]]);
+                await removeData(
+                  [item[keyfields.KEY]],
+                  setStorageUsed,
+                  storageUsed
+                );
+                // await removeData([item[keyfields.KEY]]);
               },
             },
           ]);
@@ -44,10 +49,12 @@ function AppImageListItem({ item, navigation }) {
         navigation.navigate(routes.IMAGE_NAVIGATOR, {
           screen: routes.IMAGES,
           params: {
-            images: item[keyfields.VALUE][keyfields.IMAGES],
-            name: item[keyfields.KEY],
-            texts: item[keyfields.VALUE][keyfields.TEXTS],
-            textSettings: item[keyfields.VALUE][keyfields.TEXT_SETTINGS],
+            [keyfields.IMAGES]: item[keyfields.VALUE][keyfields.IMAGES],
+            [keyfields.NAME]: item[keyfields.VALUE][keyfields.NAME],
+            [keyfields.KEY]: item[keyfields.KEY],
+            [keyfields.TEXTS]: item[keyfields.VALUE][keyfields.TEXTS],
+            [keyfields.TEXT_SETTINGS]:
+              item[keyfields.VALUE][keyfields.TEXT_SETTINGS],
             // images: item[imageField],
             // name: item[keyField],
             // texts: item[textsField],
@@ -60,7 +67,7 @@ function AppImageListItem({ item, navigation }) {
         {!thumb && <AppIcon name="folder-plus-outline" size={80} />}
         {thumb && <Image style={styles.image} source={{ uri: thumb }} />}
         <AppText numberOfLines={1} style={styles.text}>
-          {item[keyfields.KEY]}
+          {item[keyfields.VALUE][keyfields.NAME]}
         </AppText>
       </View>
     </TouchableOpacity>

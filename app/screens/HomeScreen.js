@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { createContext, useEffect, useRef, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -14,24 +14,48 @@ import themes from "../config/themes";
 // import { createList, keys, values } from "../test/homeScreenTestValues";
 import AppImageListItem from "../componets/AppImageListItem";
 import keyfields from "../memory/keyfields";
-import { getAllKeys, getData, createList } from "../memory/useStorage";
+import {
+  getAllKeys,
+  getData,
+  createList,
+  initStorage,
+  storeData,
+} from "../memory/useStorage";
+import storageContext from "../memory/storageContext";
 
 function HomeScreen({ navigation }) {
   // const data = createList(
   //   keys.filter((key) => key !== keyfields.GLOBAL_TEXT_SETTINGS).reverse(),
   //   values
   // );
-  const [data, setData] = useState(false);
+  const [data, setData] = useState();
+  const [storageUsed, setStorageUsed] = useState(false);
 
-  const keys = getAllKeys();
+  // console.log("storageUsed ", storageUsed);
+  // let keys; //= getAllKeys();
+  // useEffect(() => {
+  //   keys = getAllKeys();
+  //   console.log("keys set");
+  // }, []);
 
   useEffect(() => {
+    // console.log(data);
     readStorage();
-  }, [keys]);
+    // console.log("new list was set");
+  }, [storageUsed]);
 
   const readStorage = async () => {
     setData(await createList());
   };
+
+  useEffect(() => {
+    navigation.addListener("focus", () => {
+      initStorage();
+      readStorage();
+      // setStorageUsed(!storageUsed);
+      // console.log("focused", storageUsed);
+    });
+  }, [navigation]);
 
   // console.log(data);
 
@@ -50,9 +74,18 @@ function HomeScreen({ navigation }) {
           />
         </View>
         <View style={styles.innerContainer}>
+          {/* <storageContext.Provider value={[storageUsed, setStorageUsed]}> */}
           <FlatList
             data={data}
-            renderItem={({ item }) => AppImageListItem({ item, navigation })}
+            renderItem={({ item }) => (
+              <AppImageListItem
+                item={item}
+                navigation={navigation}
+                setStorageUsed={setStorageUsed}
+                storageUsed={storageUsed}
+              />
+            )}
+            // renderItem={({ item }) => AppImageListItem({ item, navigation })}
             //renderItem={(item) => AppImageListItem(item, navigation)}
             keyExtractor={(item, index) => index.toString()}
             horizontal={false}
@@ -63,6 +96,7 @@ function HomeScreen({ navigation }) {
             title="Go to images"
             onPress={() => navigation.navigate(routes.IMAGE_NAVIGATOR)}
           /> */}
+          {/* </storageContext.Provider> */}
         </View>
       </ImageBackground>
     </View>
