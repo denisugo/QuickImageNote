@@ -2,20 +2,22 @@ import * as ImageManipulator from "expo-image-manipulator";
 import keyfields from "../../memory/keyfields";
 
 import asyncForEach from "./asyncForEach";
+import createThumb from "./createThumb";
 
 export const getThumbs = async (values, field, fieldSecondary, setData) => {
   var parsedValues = [];
 
   await asyncForEach(values[field], async (image, index) => {
     if (index !== values[field].length - 1) {
-      const thumbnail = await ImageManipulator.manipulateAsync(
-        image,
-        [{ resize: { width: 100 } }],
-        {
-          compress: 1,
-          format: ImageManipulator.SaveFormat.PNG,
-        }
-      );
+      const thumbnail = await createThumb(100, 1, image);
+      // const thumbnail = await ImageManipulator.manipulateAsync(
+      //   image,
+      //   [{ resize: { width: 100 } }],
+      //   {
+      //     compress: 1,
+      //     format: ImageManipulator.SaveFormat.PNG,
+      //   }
+      // );
 
       parsedValues = [
         ...parsedValues,

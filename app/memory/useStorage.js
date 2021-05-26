@@ -79,7 +79,7 @@ const initStorage = async () => {
 const createList = async () => {
   let keys = await getAllKeys();
 
-  console.log(keys);
+  // console.log(keys);
   keys = keys.filter((key) => key !== keyfields.GLOBAL_TEXT_SETTINGS); //.reverse();
   keys = keys.filter((key) => key !== keyfields.EMPTY); //.reverse();
   keys = keys.sort((a, b) => {

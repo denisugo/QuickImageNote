@@ -14,6 +14,7 @@ import routes from "../navigation/routes";
 import AppActivityIndicator from "../componets/AppActivityIndicator";
 import { getThumbs, restoreData } from "../componets/scripts/thumbGenerator";
 import keyfields from "../memory/keyfields";
+import { reStore } from "../memory/namesStorageHandler";
 
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state. Check:",
@@ -29,7 +30,7 @@ function ImageRearrangeScreen({ route, navigation }) {
   // const keyfields.IMAGES = "image";
   //const keyfields.TEXTS = "text";
 
-  const [data, setData] = useState();
+  const [data, setData] = useState(null);
 
   var lastIndex = 0;
 
@@ -38,12 +39,54 @@ function ImageRearrangeScreen({ route, navigation }) {
     getThumbs(values, keyfields.IMAGES, keyfields.TEXTS, setData);
   }, []);
 
+  const [isChanged, setIsChanged] = useState(false);
+  // console.log(values[keyfields.KEY]);
+
+  useEffect(() => {
+    if (isChanged) {
+      updateStorage();
+    }
+  }, [isChanged]);
+
   useEffect(() => {
     //back parsing
     if (data) {
       restoreData(data, keyfields.IMAGES, keyfields.TEXTS, setFieldValue);
+      setIsChanged(true);
     }
   }, [data]);
+
+  const [key, setKey] = useState(null);
+
+  const updateStorage = async () => {
+    let extractedValues = values;
+    extractedValues[keyfields.TEXTS] = [];
+    extractedValues[keyfields.IMAGES] = [];
+
+    extractedValues[keyfields.KEY] = key ? key : values[keyfields.KEY];
+
+    data.forEach((element) => {
+      extractedValues[keyfields.TEXTS] = [
+        ...extractedValues[keyfields.TEXTS],
+        element[keyfields.TEXTS],
+      ];
+      extractedValues[keyfields.IMAGES] = [
+        ...extractedValues[keyfields.IMAGES],
+        element[keyfields.IMAGES],
+      ];
+    });
+    extractedValues[keyfields.TEXTS] = [
+      ...extractedValues[keyfields.TEXTS],
+      "",
+    ];
+    (extractedValues[keyfields.IMAGES] = [
+      ...extractedValues[keyfields.IMAGES],
+      null,
+    ]),
+      await reStore(setFieldValue, values, setKey);
+    // await reStore(setFieldValue, extractedValues);
+    setIsChanged(false);
+  };
 
   return (
     <View style={styles.container}>

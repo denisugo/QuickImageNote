@@ -10,4 +10,5 @@ export default Object.freeze({
   KEY: "key",
   VALUE: "value",
   ORIGINAL_NAME: "originalName",
+  UNSAVED: "unsaved",
 });

@@ -1,3 +1,4 @@
+import { useFormikContext } from "formik";
 import { Alert } from "react-native";
 import AlertAsync from "react-native-alert-async";
 import asyncForEach from "../componets/scripts/asyncForEach";
@@ -5,7 +6,7 @@ import keyfields from "./keyfields";
 import saveDataForm from "./saveDataForm";
 import { getAllKeys, getData, removeData } from "./useStorage";
 
-export const isNameAlreadyExists = async (
+export const nameAlreadyExists = async (
   values,
   setFieldValue
   // setIsForcedRename
@@ -20,14 +21,14 @@ export const isNameAlreadyExists = async (
   await asyncForEach(keys, async (element) => {
     names = [...names, (await getData(element))[keyfields.NAME]];
   });
-  console.log("names ", names);
+  // console.log("names ", names);
   if (
     names.includes(values[keyfields.NAME]) &&
     // keys.includes(values[keyfields.NAME]) &&
-    (values[keyfields.NAME] !== values[keyfields.ORIGINAL_NAME] ||
-      // values[keyfields.ORIGINAL_NAME] === "empty" //)
-      // values[keyfields.ORIGINAL_NAME] === "untitled")
-      values[keyfields.KEY] === "empty")
+    // (values[keyfields.NAME] !== values[keyfields.ORIGINAL_NAME] ||
+    // values[keyfields.ORIGINAL_NAME] === "empty" //)
+    // values[keyfields.ORIGINAL_NAME] === "untitled")
+    values[keyfields.KEY] === "empty" //)
   ) {
     let name;
     let addNumber = 0;
@@ -68,7 +69,11 @@ export const isNameAlreadyExists = async (
   // );
 };
 
-export const reStore = async (oldKey, values) => {
-  await saveDataForm(values);
-  await removeData([oldKey]);
+export const reStore = async (setFieldValue, values, setValue) => {
+  await removeData([values[keyfields.KEY]]);
+  //await saveDataForm(values, setFieldValue);
+  setValue(await saveDataForm(values, setFieldValue));
+  // await saveDataForm(values);
+  // await removeData([oldKey]);
+  // console.log("restored");
 };

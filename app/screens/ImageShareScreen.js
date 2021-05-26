@@ -65,6 +65,7 @@ function ImageShareScreen({ navigation, route }) {
                   [keyfields.POSITION]: 0,
                   [keyfields.ORIGINAL_NAME]: name,
                   [keyfields.KEY]: key,
+                  // [keyfields.UNSAVED]: true,
                 }}
               >
                 <AppHeader />

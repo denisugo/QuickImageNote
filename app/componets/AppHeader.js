@@ -11,13 +11,14 @@ import AppNameImputForm from "./forms/AppNameInputForm";
 import themes from "../config/themes";
 import { storeData } from "../memory/useStorage";
 import keyfields from "../memory/keyfields";
-import { isNameAlreadyExists, reStore } from "../memory/namesStorageHandler";
+import { nameAlreadyExists, reStore } from "../memory/namesStorageHandler";
 import saveDataForm from "../memory/saveDataForm";
 
 function AppHeader() {
   const navigation = useNavigation();
 
   const { setFieldValue, values } = useFormikContext();
+  // console.log(values[keyfields.UNSAVED]);
 
   const [visible, setVisible] = useState(false);
 
@@ -55,12 +56,15 @@ function AppHeader() {
       <AppCustomModal
         visible={visible}
         setVisible={setVisible}
-        onPress={() => {
-          // if (values[keyfields.NAME] !== values[keyfields.ORIGINAL_NAME])
-          //   isNameAlreadyExists(values, setFieldValue, setIsForcedRename);
+        onPress={async () => {
+          // if (values[keyfields.UNSAVED]) {
+          await nameAlreadyExists(values, setFieldValue);
+          //   setFieldValue(keyfields.UNSAVED, false);
+          // }
+          const setValue = () => {};
+          await reStore(setFieldValue, values, setValue);
         }}
         backgroundColor={themes.colors.buttonThird}
-        // opacity={0.95}
       >
         <AppNameImputForm />
       </AppCustomModal>
@@ -75,13 +79,13 @@ function AppHeader() {
             name="home-outline"
             onPress={async () => {
               //Validates the name value
-              await isNameAlreadyExists(
-                values,
-                setFieldValue
-                // setIsForcedRename
-              );
 
-              setIsGoHome(true); //going to rerender
+              // await nameAlreadyExists(values, setFieldValue);
+
+              // setIsGoHome(true); //going to rerender
+              // await reStore(values[keyfields.KEY], values);
+
+              navigation.navigate(routes.HOME_NAVIGATOR);
 
               // if (values[keyfields.ORIGINAL_NAME] !== values[keyfields.NAME]) {
               //   await isRenamed(values[keyfields.ORIGINAL_NAME], values);
