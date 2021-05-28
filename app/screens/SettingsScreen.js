@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, ScrollView, FlatList } from "react-native";
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  FlatList,
+  SafeAreaView,
+} from "react-native";
 
 import AppText from "../componets/AppText";
 import AppButton from "../componets/AppButton";
-import themes from "../config/themes";
+import themes, { colorScheme } from "../config/themes";
 import AppColorPicker from "../componets/AppColorPicker";
 import colors from "../config/colors";
 import AppTextSettings from "../componets/AppTextSettings";
@@ -33,10 +39,14 @@ function SettingsScreen({ navigation }) {
   }, [navigation]);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={{ flex: 1, justifyContent: "center" }}>
         <AppButton title="Clear All" style={{ borderColor: "tomato" }} />
-        <AppButton title="Toggle theme" />
+        {colorScheme === "dark" && (
+          <View style={{ paddingTop: 15 }}>
+            <AppButton title="light off" />
+          </View>
+        )}
       </View>
 
       <View style={{ flex: 1, justifyContent: "center" }}>
@@ -56,13 +66,14 @@ function SettingsScreen({ navigation }) {
           <AppText>support us</AppText>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: themes.colors.backgroundSecondary,
   },
 });
 

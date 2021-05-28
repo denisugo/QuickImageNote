@@ -6,8 +6,8 @@ const separateText = async (
   text,
   width,
   context,
-  font = "Avenir",
-  fontSize = 18
+  font = "Menlo",
+  fontSize = 25
 ) => {
   const splitted = text.split("\n"); //array
 
@@ -30,7 +30,7 @@ const separateText = async (
       if (width < wordWidth + safeArea) {
         //Long word at the begining of the line
         if (lineText === "") lineText = " ";
-        //Long word after the thext
+        //Long word after the text
         else lineText = lineText + " ";
 
         for (let i = 0; i < word.length; i++) {
@@ -62,6 +62,7 @@ const separateText = async (
     // checkedText = [...checkedText, lineText];
     // lineText = "";
   });
+  console.log(checkedText);
   return checkedText;
 };
 
@@ -73,6 +74,7 @@ export const placeText = async (
   space,
   textColor = "#fff",
   font = "Menlo"
+  // font = "Avenir"
 ) => {
   const splitted = await separateText(
     text,
@@ -81,6 +83,7 @@ export const placeText = async (
     font,
     fontSize
   );
+
   const numberOfLines = splitted.length;
   var safeArea = size.width / SAFE_AREA_PERCENTAGE;
 
@@ -105,12 +108,13 @@ export const refactoredText = async (text, context, width) => {
   //Font size
   if (fontSize > width / 20) fontSize = width / 20;
 
-  const splitted = await separateText(text, width, context, "Avenir", fontSize);
+  const splitted = await separateText(text, width, context, "Menlo", fontSize);
+
   const numberOfLines = splitted.length;
 
   const space =
     JSON.stringify(splitted) !== JSON.stringify([" "])
-      ? numberOfLines * fontSize * 1.5 //1.5-line space
+      ? numberOfLines * fontSize * 1.5 + 5 //1.5-line space
       : 0;
 
   return [fontSize, space];

@@ -1,8 +1,14 @@
 import React from "react";
 import { View } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import themes from "../config/themes";
 
-function AppIcon({ name, size = 40, backgroundColor, iconColor }) {
+function AppIcon({
+  name,
+  size = 40,
+  backgroundColor,
+  iconColor = themes.colors.icon,
+}) {
   return (
     <View
       style={{

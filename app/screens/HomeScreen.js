@@ -64,7 +64,8 @@ function HomeScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={require("../assets/background-light-home.png")}
+        //source={require("../assets/background-light-home.png")}
+        source={themes.backgroundImages.home}
         style={styles.imageBackground}
       >
         <View style={styles.settingButton}>

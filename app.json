@@ -28,6 +28,7 @@
     "web": {
       "favicon": "./app/assets/favicon.png"
     },
-    "description": "This app will provide simple adding of your comment to your pictures"
+    "description": "This app will provide simple adding of your comment to your pictures",
+    "userInterfaceStyle": "automatic"
   }
 }

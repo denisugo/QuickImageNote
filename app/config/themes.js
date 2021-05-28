@@ -1,33 +1,58 @@
-import { Dimensions, Platform } from "react-native";
+import { Dimensions, Platform, Appearance } from "react-native";
 import colors from "./colors";
+
+const stylesStatusBar = ["default", "dark-content", "light-content"];
+
+const colorScheme = Appearance.getColorScheme();
+
+export { colorScheme };
 
 const shadow = {
   elevation: 10, //Android only
   //shadowColor: colors.lightTheme.shadow,
+  shadowColor:
+    colorScheme === "dark" ? colors.darkTheme.shadow : colors.lightTheme.shadow,
   shadowOffset: { width: 0, height: 10 },
   shadowOpacity: 0.5,
   shadowRadius: 10,
 };
 
-const stylesStatusBar = ["default", "dark-content", "light-content"];
-
 export default {
-  colors: {
-    text: colors.lightTheme.text,
-    placeholder: colors.lightTheme.textPlaceholder,
-    background: colors.lightTheme.background,
-    backgroundSecondary: colors.lightTheme.backgroundSecondary,
-    backgroundThird: colors.lightTheme.backgroundThird,
-    button: colors.lightTheme.button,
-    buttonSecondary: colors.lightTheme.buttonSecondary,
-    buttonThird: colors.lightTheme.buttonThird,
-    //shadow: colors.lightTheme.shadow,
+  colors: colorScheme === "dark" ? colors.darkTheme : colors.lightTheme, //{
+
+  // text:
+  //   colorScheme === "dark" ? colors.darkTheme.text : colors.lightTheme.text,
+  // placeholder:
+  //   colorScheme === "dark"
+  //     ? colors.darkTheme.textPlaceholder
+  //     : colors.lightTheme.textPlaceholder,
+  // background:
+  //   colorScheme === "dark"
+  //     ? colors.darkTheme.background
+  //     : colors.lightTheme.background,
+  // backgroundSecondary:colorScheme === "dark" ?colors.darkTheme.backgroundSecondary: colors.lightTheme.backgroundSecondary,
+  // backgroundThird:colorScheme === "dark" ?colors.darkTheme.backgroundThird colors.lightTheme.backgroundThird,
+  // button: colors.lightTheme.button,
+  // buttonSecondary: colors.lightTheme.buttonSecondary,
+  // buttonThird: colors.lightTheme.buttonThird,
+  // //shadow: colors.lightTheme.shadow,
+  //},
+  backgroundImages: {
+    home:
+      colorScheme === "dark"
+        ? require("../assets/background-dark-home.png")
+        : require("../assets/background-light-home.png"),
+    edit:
+      colorScheme === "dark"
+        ? require("../assets/background-dark-edit.png")
+        : require("../assets/background-light-edit.png"),
   },
   shadow: {
     ...shadow,
   },
   text: {
-    color: colors.lightTheme.text,
+    color:
+      colorScheme === "dark" ? colors.darkTheme.text : colors.lightTheme.text,
     fontFamily: Platform.OS === "android" ? "Roboto" : "Avenir",
     fontSize: 20,
     textTransform: "lowercase",
@@ -53,7 +78,10 @@ export default {
   modal: {
     alignItems: "center",
     flex: 1,
-    backgroundColor: colors.lightTheme.backgroundSecondary,
+    backgroundColor:
+      colorScheme === "dark"
+        ? colors.darkTheme.backgroundSecondary
+        : colors.lightTheme.backgroundSecondary,
     justifyContent: "center",
   },
   customModal: {
@@ -84,7 +112,10 @@ export default {
 
   card: {
     alignItems: "center",
-    backgroundColor: colors.lightTheme.backgroundSecondary,
+    backgroundColor:
+      colorScheme === "dark"
+        ? colors.darkTheme.backgroundSecondary
+        : colors.lightTheme.backgroundSecondary,
     borderRadius: 20,
     marginHorizontal: 15,
     marginVertical: 10,
@@ -99,9 +130,13 @@ export default {
     overflow: "hidden",
     width: "95%",
   },
+
   listItem: {
     alignItems: "center",
-    borderColor: colors.lightTheme.buttonThird,
+    borderColor:
+      colorScheme === "dark"
+        ? colors.darkTheme.buttonThird
+        : colors.lightTheme.buttonThird,
     borderRadius: 20,
     borderWidth: 5,
     flexDirection: "row",
@@ -111,7 +146,10 @@ export default {
     width: Dimensions.get("screen").width - 50,
   },
   listItemIsActive: {
-    backgroundColor: colors.lightTheme.buttonThird,
+    backgroundColor:
+      colorScheme === "dark"
+        ? colors.darkTheme.buttonThird
+        : colors.lightTheme.buttonThird,
   },
   imageOnListItem: {
     borderRadius: 5,
@@ -121,7 +159,10 @@ export default {
     width: 60,
   },
   textInput: {
-    backgroundColor: colors.lightTheme.background,
+    backgroundColor:
+      colorScheme === "dark"
+        ? colors.darkTheme.background
+        : colors.lightTheme.background,
     borderRadius: 20,
     marginTop: 10,
     marginBottom: 10,
@@ -130,7 +171,10 @@ export default {
   },
   containerForThreeButtons: {
     alignSelf: "center",
-    backgroundColor: colors.lightTheme.backgroundSecondary,
+    backgroundColor:
+      colorScheme === "dark"
+        ? colors.darkTheme.backgroundSecondary
+        : colors.lightTheme.backgroundSecondary,
     borderRadius: 25,
     flex: 0.9,
     ...shadow,
@@ -142,6 +186,6 @@ export default {
     paddingTop: 30,
   },
   statusBar: {
-    style: stylesStatusBar[1],
+    style: colorScheme === "dark" ? stylesStatusBar[2] : stylesStatusBar[1],
   },
 };

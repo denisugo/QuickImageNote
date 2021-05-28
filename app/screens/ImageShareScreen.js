@@ -40,7 +40,8 @@ function ImageShareScreen({ navigation, route }) {
       }}
     >
       <ImageBackground
-        source={require("../assets/background-light-edit.png")}
+        source={themes.backgroundImages.edit}
+        // source={require("../assets/background-light-edit.png")}
         style={{ flex: 1, resizeMode: "cover", justifyContent: "center" }}
       >
         <KeyboardAvoidingView
