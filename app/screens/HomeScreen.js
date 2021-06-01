@@ -31,7 +31,7 @@ function HomeScreen({ navigation }) {
   const [data, setData] = useState();
   const [storageUsed, setStorageUsed] = useState(false);
 
-  // console.log("storageUsed ", storageUsed);
+  // console.log("storageUsed ");
   // let keys; //= getAllKeys();
   // useEffect(() => {
   //   keys = getAllKeys();
@@ -71,7 +71,12 @@ function HomeScreen({ navigation }) {
         <View style={styles.settingButton}>
           <AppIconButton
             name="cog-outline"
-            onPress={() => navigation.navigate(routes.SETTINGS)}
+            onPress={() =>
+              navigation.navigate(routes.SETTINGS, {
+                setStorageUsed: setStorageUsed,
+                storageUsed: storageUsed,
+              })
+            }
           />
         </View>
         <View style={styles.innerContainer}>

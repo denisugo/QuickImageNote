@@ -33,7 +33,6 @@ const getAllKeys = async () => {
 };
 
 const removeData = async (dataKeys, setStorageUsed, storageUsed) => {
-  //const [storageUsed, setStorageUsed()] = useContext(storageContext);
   //dataKeys should be an array
   const keys = [...dataKeys];
   try {
@@ -55,20 +54,35 @@ const initStorage = async () => {
   });
 
   const keys = await getAllKeys();
-  let isHere = false;
+  let isTextSettingsHere = false;
+  let isSettingsHere = false;
 
   keys.forEach((element) => {
-    if (element === keyfields.GLOBAL_TEXT_SETTINGS) isHere = true;
+    if (element === keyfields.GLOBAL_TEXT_SETTINGS) isTextSettingsHere = true;
+    if (element === keyfields.SETTINGS) isSettingsHere = true;
   });
 
-  if (!isHere) {
+  if (!isSettingsHere) {
+    await storeData(keyfields.SETTINGS, {
+      [keyfields.PREMIUM]: false,
+      [keyfields.LIGHTS_OFF]: false,
+    });
+  }
+
+  if (!isTextSettingsHere) {
     await storeData(keyfields.GLOBAL_TEXT_SETTINGS, {
-      bold: false,
-      italic: true,
-      outline: false,
-      up: false,
-      textColor: "#fff",
-      backgroundColor: "#F39C12",
+      [keyfields.BOLD]: false,
+      [keyfields.ITALIC]: true,
+      [keyfields.OUTLINE]: false,
+      [keyfields.TOP]: false,
+      [keyfields.TEXT_COLOR]: "#fff",
+      [keyfields.BACKGROUND_COLOR]: "#F39C12",
+      // bold: false,
+      // italic: true,
+      // outline: false,
+      // top: false,
+      // textColor: "#fff",
+      // backgroundColor: "#F39C12",
     });
   }
 
@@ -80,8 +94,9 @@ const createList = async () => {
   let keys = await getAllKeys();
 
   // console.log(keys);
-  keys = keys.filter((key) => key !== keyfields.GLOBAL_TEXT_SETTINGS); //.reverse();
-  keys = keys.filter((key) => key !== keyfields.EMPTY); //.reverse();
+  keys = keys.filter((key) => key !== keyfields.GLOBAL_TEXT_SETTINGS);
+  keys = keys.filter((key) => key !== keyfields.SETTINGS);
+  keys = keys.filter((key) => key !== keyfields.EMPTY);
   keys = keys.sort((a, b) => {
     return b - a;
   });
@@ -93,7 +108,7 @@ const createList = async () => {
     const value = await getData(element);
     data = [...data, { key: element, value }];
   });
-
+  //Array of items
   return data;
 };
 

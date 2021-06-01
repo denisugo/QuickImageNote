@@ -9,7 +9,7 @@ import AppIconButton from "./AppIconButton";
 import AppCustomModal from "./AppCustomModal";
 import AppNameImputForm from "./forms/AppNameInputForm";
 import themes from "../config/themes";
-import { storeData } from "../memory/useStorage";
+import { getAllKeys, storeData } from "../memory/useStorage";
 import keyfields from "../memory/keyfields";
 import { nameAlreadyExists, reStore } from "../memory/namesStorageHandler";
 import saveDataForm from "../memory/saveDataForm";
@@ -22,35 +22,36 @@ function AppHeader() {
 
   const [visible, setVisible] = useState(false);
 
-  const [isGoHome, setIsGoHome] = useState(false);
-  // const [isForcedRename, setIsForcedRename] = useState(false);
+  // const [isGoHome, setIsGoHome] = useState(false);
+  // // const [isForcedRename, setIsForcedRename] = useState(false);
 
-  //giving one more rerender
-  const goHome = async () => {
-    if (isGoHome) {
-      // if (values[keyfields.ORIGINAL_NAME] !== values[keyfields.NAME]) {
-      //   // if (!isForcedRename)
-      //   // else {
-      //   await saveDataForm(values);
+  // //giving one more rerender
+  // const goHome = async () => {
+  //   if (isGoHome) {
+  //     // if (values[keyfields.ORIGINAL_NAME] !== values[keyfields.NAME]) {
+  //     //   // if (!isForcedRename)
+  //     //   // else {
+  //     //   await saveDataForm(values);
 
-      //   //   setIsForcedRename(false);
-      //   //   await saveDataForm(values);
-      //   // }
-      // } else {
-      await reStore(values[keyfields.KEY], values);
-      // }
-      navigation.navigate(routes.HOME_NAVIGATOR);
+  //     //   //   setIsForcedRename(false);
+  //     //   //   await saveDataForm(values);
+  //     //   // }
+  //     // } else {
+  //     await reStore(values[keyfields.KEY], values);
+  //     // }
+  //     navigation.navigate(routes.HOME_NAVIGATOR);
 
-      setIsGoHome(false);
-    }
-  };
+  //     setIsGoHome(false);
+  //   }
+  // };
 
-  useEffect(() => {
-    goHome();
-  }, [isGoHome]);
+  // useEffect(() => {
+  //   goHome();
+  // }, [isGoHome]);
 
   // const nameField = "name";
 
+  console.log(values[keyfields.KEY]);
   return (
     <>
       <AppCustomModal
@@ -84,6 +85,22 @@ function AppHeader() {
 
               // setIsGoHome(true); //going to rerender
               // await reStore(values[keyfields.KEY], values);
+              let keys = [];
+
+              // do {
+              //   keys = await getAllKeys();
+              //   console.log(keys.includes(values[keyfields.KEY]));
+              // } while (
+              //   !keys.includes(values[keyfields.KEY]) &&
+              //   values[keyfields.KEY] === "empty"
+              // );
+
+              while (
+                !keys.includes(values[keyfields.KEY]) &&
+                values[keyfields.KEY] === "empty"
+              ) {
+                keys = await getAllKeys();
+              }
 
               navigation.navigate(routes.HOME_NAVIGATOR);
 

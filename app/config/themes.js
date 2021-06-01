@@ -188,4 +188,13 @@ export default {
   statusBar: {
     style: colorScheme === "dark" ? stylesStatusBar[2] : stylesStatusBar[1],
   },
+  clearAllButton: {
+    borderColor: "tomato",
+    width: "90%",
+  },
+  premiumButton: {
+    borderColor: "gold",
+    paddingHorizontal: 5,
+    // width: "90%",
+  },
 };

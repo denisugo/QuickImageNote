@@ -12,14 +12,15 @@ import AppButton from "../componets/AppButton";
 import themes from "../config/themes";
 import AppColorPicker from "../componets/AppColorPicker";
 import colors from "../config/colors";
+import keyfields from "../memory/keyfields";
 
 function AppTextSettings({ onPress, onPressRestore, onPressUpdate, values }) {
-  const boldField = "bold";
-  const italicField = "italic";
-  const outlineField = "outline";
-  const upField = "up";
-  const textColorfield = "textColor";
-  const backgroundColorField = "backgroundColor";
+  // const boldField = "bold";
+  // const italicField = "italic";
+  // const outlineField = "outline";
+  // const topField = "top";
+  // const textColorfield = "textColor";
+  // const backgroundColorField = "backgroundColor";
 
   return (
     //   {/* // <ScrollView contentContainerStyle={styles.container}> */}
@@ -28,9 +29,13 @@ function AppTextSettings({ onPress, onPressRestore, onPressUpdate, values }) {
       <View style={styles.fourButton}>
         <AppButton
           title="B"
-          onPress={() => onPress(boldField, !values[boldField])}
+          onPress={() => onPress(keyfields.BOLD, !values[keyfields.BOLD])}
+          // onPress={() => onPress(boldField, !values[boldField])}
           style={{
-            backgroundColor: values[boldField] ? themes.colors.button : null,
+            backgroundColor: values[keyfields.BOLD]
+              ? themes.colors.button
+              : null,
+            // backgroundColor: values[boldField] ? themes.colors.button : null,
             borderColor: themes.colors.button,
             flex: 0.25,
           }}
@@ -40,11 +45,15 @@ function AppTextSettings({ onPress, onPressRestore, onPressUpdate, values }) {
         />
         <AppButton
           title="i"
-          onPress={() => onPress(italicField, !values[italicField])}
+          onPress={() => onPress(keyfields.ITALIC, !values[keyfields.ITALIC])}
+          // onPress={() => onPress(italicField, !values[italicField])}
           style={{
-            backgroundColor: values[italicField]
+            backgroundColor: values[keyfields.ITALIC]
               ? themes.colors.buttonSecondary
               : null,
+            // backgroundColor: values[italicField]
+            //   ? themes.colors.buttonSecondary
+            //   : null,
             borderColor: themes.colors.buttonSecondary,
             flex: 0.25,
           }}
@@ -56,11 +65,15 @@ function AppTextSettings({ onPress, onPressRestore, onPressUpdate, values }) {
         />
         <AppButton
           title="o"
-          onPress={() => onPress(outlineField, !values[outlineField])}
+          onPress={() => onPress(keyfields.OUTLINE, !values[keyfields.OUTLINE])}
+          // onPress={() => onPress(outlineField, !values[outlineField])}
           style={{
-            backgroundColor: values[outlineField]
+            backgroundColor: values[keyfields.OUTLINE]
               ? themes.colors.buttonThird
               : null,
+            // backgroundColor: values[outlineField]
+            //   ? themes.colors.buttonThird
+            //   : null,
             borderColor: themes.colors.buttonThird,
             flex: 0.25,
           }}
@@ -70,11 +83,15 @@ function AppTextSettings({ onPress, onPressRestore, onPressUpdate, values }) {
           }}
         />
         <AppButton
-          title="u"
-          onPress={() => onPress(upField, !values[upField])}
+          title="t"
+          onPress={() => onPress(keyfields.TOP, !values[keyfields.TOP])}
+          // onPress={() => onPress(topField, !values[topField])}
           style={{
-            backgroundColor: values[upField] ? themes.colors.text : null,
-            borderColor: themes.colors.text,
+            backgroundColor: values[keyfields.TOP]
+              ? themes.colors.placeholder
+              : null,
+            // backgroundColor: values[topField] ? themes.colors.text : null,
+            borderColor: themes.colors.placeholder,
             flex: 0.25,
           }}
           textStyle={{
@@ -90,8 +107,10 @@ function AppTextSettings({ onPress, onPressRestore, onPressUpdate, values }) {
           renderItem={({ item }) => (
             <AppColorPicker
               item={item}
-              onPress={(itemColor) => onPress(textColorfield, itemColor)}
-              color={values[textColorfield]}
+              onPress={(itemColor) => onPress(keyfields.TEXT_COLOR, itemColor)}
+              color={values[keyfields.TEXT_COLOR]}
+              // onPress={(itemColor) => onPress(textColorfield, itemColor)}
+              // color={values[textColorfield]}
             />
           )}
           data={colors.palete}
@@ -106,8 +125,12 @@ function AppTextSettings({ onPress, onPressRestore, onPressUpdate, values }) {
           renderItem={({ item }) => (
             <AppColorPicker
               item={item}
-              onPress={(itemColor) => onPress(backgroundColorField, itemColor)}
-              color={values[backgroundColorField]}
+              onPress={(itemColor) =>
+                onPress(keyfields.BACKGROUND_COLOR, itemColor)
+              }
+              color={values[keyfields.BACKGROUND_COLOR]}
+              // onPress={(itemColor) => onPress(backgroundColorField, itemColor)}
+              // color={values[backgroundColorField]}
             />
           )}
           data={colors.palete}

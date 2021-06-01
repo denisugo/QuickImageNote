@@ -29,7 +29,7 @@ function AppThreeButtonsForm({ setVisible, setImageUri, imageUri }) {
   // const keyfields.POSITION = "position";
   // const keyfield.TEXT_SETTINGS = "textSettings";
 
-  const backgroundColorField = "backgroundColor";
+  // const backgroundColorField = "backgroundColor";
 
   const imageUriFromValues = useRef(null);
   const [src, setSrc] = useState(null);
@@ -104,7 +104,14 @@ function AppThreeButtonsForm({ setVisible, setImageUri, imageUri }) {
         src={src}
         text={text}
         buttonState={buttonState}
-        backgroundColor={values[keyfields.TEXT_SETTINGS][backgroundColorField]}
+        backgroundColor={
+          values[keyfields.TEXT_SETTINGS][keyfields.BACKGROUND_COLOR]
+        }
+        textColor={values[keyfields.TEXT_SETTINGS][keyfields.TEXT_COLOR]}
+        outline={values[keyfields.TEXT_SETTINGS][keyfields.OUTLINE]}
+        bold={values[keyfields.TEXT_SETTINGS][keyfields.BOLD]}
+        italic={values[keyfields.TEXT_SETTINGS][keyfields.ITALIC]}
+        top={values[keyfields.TEXT_SETTINGS][keyfields.TOP]}
         imageUri={imageUri}
         setSrc={setSrc}
       />

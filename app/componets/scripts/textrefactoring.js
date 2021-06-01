@@ -6,6 +6,9 @@ const separateText = async (
   text,
   width,
   context,
+  bold = true,
+  italic = false,
+  // top = false,
   font = "Menlo",
   fontSize = 25
 ) => {
@@ -15,7 +18,9 @@ const separateText = async (
   var lineText = "";
   var checkedText = []; // Separated lines of text
 
-  context.font = `bold ${fontSize}pt ${font}`; //"bold 15pt Menlo";
+  context.font = `${bold ? "bold" : ""} ${
+    italic ? "italic" : ""
+  } ${fontSize}pt ${font}`; //"bold 15pt Menlo";
   context.textAlign = "left";
   context.textBaseline = "top";
 
@@ -62,7 +67,7 @@ const separateText = async (
     // checkedText = [...checkedText, lineText];
     // lineText = "";
   });
-  console.log(checkedText);
+  // console.log(checkedText);
   return checkedText;
 };
 
@@ -72,7 +77,11 @@ export const placeText = async (
   size,
   fontSize,
   space,
-  textColor = "#fff",
+  textColor = "##D35400",
+  outline = false,
+  bold = true,
+  italic = false,
+  top = false,
   font = "Menlo"
   // font = "Avenir"
 ) => {
@@ -80,6 +89,9 @@ export const placeText = async (
     text,
     size.width,
     context,
+    bold,
+    italic,
+    // top,
     font,
     fontSize
   );
@@ -95,12 +107,19 @@ export const placeText = async (
   splitted.forEach((line, index) => {
     const textX = safeArea;
     const textY = size.height - space + (space / numberOfLines) * index;
-    context.fillStyle = textColor;
-    context.fillText(line, textX, textY);
+
+    if (outline) {
+      context.strokeStyle = textColor;
+      context.lineWidth = 2;
+      context.strokeText(line, textX, textY);
+    } else {
+      context.fillStyle = textColor;
+      context.fillText(line, textX, textY);
+    }
   });
 };
 
-export const refactoredText = async (text, context, width) => {
+export const refactoredText = async (text, context, width, bold, italic) => {
   //var splitted = await separateText(text, width, context);
   //var numberOfLines = splitted.length;
   var fontSize = 25;
@@ -108,7 +127,15 @@ export const refactoredText = async (text, context, width) => {
   //Font size
   if (fontSize > width / 20) fontSize = width / 20;
 
-  const splitted = await separateText(text, width, context, "Menlo", fontSize);
+  const splitted = await separateText(
+    text,
+    width,
+    context,
+    bold,
+    italic,
+    "Menlo",
+    fontSize
+  );
 
   const numberOfLines = splitted.length;
 

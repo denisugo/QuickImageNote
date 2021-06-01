@@ -7,7 +7,11 @@ import { placeText, refactoredText } from "./scripts/textRefactoring";
 function AppCreateImage({
   font,
   backgroundColor = "#52BE80",
-  textColor,
+  bold = true,
+  italic = false,
+  outline = false,
+  top = false,
+  textColor = "#ECF0F1",
   src,
   text,
   setImageUri,
@@ -45,7 +49,9 @@ function AppCreateImage({
           const [fontSize, space] = await refactoredText(
             text,
             context,
-            overlayImage.width
+            overlayImage.width,
+            bold,
+            italic
           );
 
           const canvasSize = {
@@ -64,7 +70,18 @@ function AppCreateImage({
             context.fillRect(0, 0, canvas.width, canvas.height);
 
             //Create Text
-            await placeText(context, text, size, fontSize, space);
+            await placeText(
+              context,
+              text,
+              size,
+              fontSize,
+              space,
+              textColor,
+              outline,
+              bold,
+              italic,
+              top
+            );
 
             //Create Image on Canvas
             context.drawImage(
