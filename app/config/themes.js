@@ -8,8 +8,7 @@ const colorScheme = Appearance.getColorScheme();
 export { colorScheme };
 
 const shadow = {
-  elevation: 10, //Android only
-  //shadowColor: colors.lightTheme.shadow,
+  elevation: 20, //Android only
   shadowColor:
     colorScheme === "dark" ? colors.darkTheme.shadow : colors.lightTheme.shadow,
   shadowOffset: { width: 0, height: 10 },
@@ -133,6 +132,10 @@ export default {
 
   listItem: {
     alignItems: "center",
+    backgroundColor:
+      colorScheme === "dark"
+        ? colors.darkTheme.placeholder
+        : colors.lightTheme.placeholder,
     borderColor:
       colorScheme === "dark"
         ? colors.darkTheme.buttonThird
@@ -186,14 +189,30 @@ export default {
     paddingTop: 30,
   },
   statusBar: {
-    style: colorScheme === "dark" ? stylesStatusBar[2] : stylesStatusBar[1],
+    style:
+      // Platform.OS === "android"
+      //   ? stylesStatusBar[0]
+      // :
+      colorScheme === "dark" ? stylesStatusBar[2] : stylesStatusBar[1],
   },
   clearAllButton: {
-    borderColor: "tomato",
+    borderColor:
+      colorScheme === "dark"
+        ? colors.darkTheme.delete
+        : colors.lightTheme.delete,
     width: "90%",
   },
+  clearAllButtonText: {
+    color:
+      colorScheme === "dark"
+        ? colors.darkTheme.delete
+        : colors.lightTheme.delete,
+  },
   premiumButton: {
-    borderColor: "gold",
+    borderColor:
+      colorScheme === "dark"
+        ? colors.darkTheme.premium
+        : colors.lightTheme.premium,
     paddingHorizontal: 5,
     // width: "90%",
   },

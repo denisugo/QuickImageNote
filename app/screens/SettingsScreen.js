@@ -38,13 +38,13 @@ function SettingsScreen({ navigation, route }) {
   const storageUsed = route.params.storageUsed;
   const setStorageUsed = () => route.params.setStorageUsed();
 
-  useEffect(() => {
-    navigation.addListener("blur", () => {
-      // Screen was unfocused
-      // Do something
-      console.log("Leaving setting screen");
-    });
-  }, [navigation]);
+  // useEffect(() => {
+  //   navigation.addListener("blur", () => {
+  //     // Screen was unfocused
+  //     // Do something
+  //     console.log("Leaving setting screen");
+  //   });
+  // }, [navigation]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -52,6 +52,7 @@ function SettingsScreen({ navigation, route }) {
         <AppButton
           title="Clear All"
           style={{ ...themes.clearAllButton }}
+          textStyle={{ ...themes.clearAllButtonText }}
           onPress={async () => {
             await AlertAsync(
               "Clear all",
@@ -75,7 +76,7 @@ function SettingsScreen({ navigation, route }) {
 
                     // await removeData(keys, setStorageUsed, storageUsed);
                     await removeData(keys);
-                    setStorageUsed(!storageUsed); //calls a rerender on homescreen
+                    setStorageUsed(true); //calls a rerender on homescreen
                   },
                 },
                 { text: "No", style: "cancel" },
@@ -102,13 +103,13 @@ function SettingsScreen({ navigation, route }) {
           <AppIcon
             name="star-four-points-outline"
             size={100}
-            iconColor="gold"
+            iconColor={themes.colors.premium}
           />
           <AppButton title="buy premium" style={{ ...themes.premiumButton }} />
           <AppIcon
             name="star-four-points-outline"
             size={100}
-            iconColor="gold"
+            iconColor={themes.colors.premium}
           />
         </View>
       </View>

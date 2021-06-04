@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
+import { RootSiblingParent } from "react-native-root-siblings";
 
 import ImageShareScreen from "./app/screens/ImageShareScreen";
 import RootNavigator from "./app/navigation/RootNavigator";
@@ -17,9 +18,11 @@ export default function App() {
   return (
     <>
       <AppStatusBar />
-      <NavigationContainer>
-        <RootNavigator />
-      </NavigationContainer>
+      <RootSiblingParent>
+        <NavigationContainer>
+          <RootNavigator />
+        </NavigationContainer>
+      </RootSiblingParent>
     </>
   );
 }

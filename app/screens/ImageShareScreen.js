@@ -21,7 +21,7 @@ import themes from "../config/themes";
 import keyfields from "../memory/keyfields";
 import { storeData } from "../memory/useStorage";
 import routes from "../navigation/routes";
-import { createList, values } from "../test/homeScreenTestValues";
+// import { createList, values } from "../test/homeScreenTestValues";
 
 function ImageShareScreen({ navigation, route }) {
   const [visible, setVisible] = useState(false);
@@ -60,9 +60,9 @@ function ImageShareScreen({ navigation, route }) {
                   // [keyfields.IMAGES]: images ? [...images, null] : [null],
                   [keyfields.TEXTS]: texts ? [...texts] : [""],
                   // [keyfields.TEXTS]: texts ? [...texts, ""] : [""],
-                  [keyfields.TEXT_SETTINGS]: textSettings
-                    ? textSettings
-                    : createList([keyfields.GLOBAL_TEXT_SETTINGS], values)[0], //return array with object
+                  [keyfields.TEXT_SETTINGS]: textSettings,
+
+                  // : createList([keyfields.GLOBAL_TEXT_SETTINGS], values)[0], //return array with object
                   [keyfields.POSITION]: 0,
                   [keyfields.ORIGINAL_NAME]: name,
                   [keyfields.KEY]: key,

@@ -51,7 +51,6 @@ function AppHeader() {
 
   // const nameField = "name";
 
-  console.log(values[keyfields.KEY]);
   return (
     <>
       <AppCustomModal

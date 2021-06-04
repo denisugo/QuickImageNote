@@ -13,6 +13,7 @@ import themes from "../config/themes";
 import AppColorPicker from "../componets/AppColorPicker";
 import colors from "../config/colors";
 import keyfields from "../memory/keyfields";
+import { getAllKeys, getData, storeData } from "../memory/useStorage";
 
 function AppTextSettings({ onPress, onPressRestore, onPressUpdate, values }) {
   // const boldField = "bold";
@@ -137,15 +138,17 @@ function AppTextSettings({ onPress, onPressRestore, onPressUpdate, values }) {
           keyExtractor={(item, index) => index.toString()}
         />
       </View>
-      <View style={styles.twoButtons}>
-        <AppButton
+      <View style={styles.updateButton}>
+        {/* <AppButton
           title="restore global"
           onPress={() => {}}
           style={styles.button}
-        />
+        /> */}
         <AppButton
           title="update global"
-          onPress={() => {}}
+          onPress={async () => {
+            await storeData(keyfields.GLOBAL_TEXT_SETTINGS, values);
+          }}
           style={styles.button}
         />
       </View>
@@ -171,14 +174,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     paddingBottom: 20,
   },
-  twoButtons: {
+  updateButton: {
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
   },
   button: {
-    marginBottom: 20,
     borderColor: themes.colors.placeholder,
+    marginBottom: 20,
+    paddingHorizontal: 5,
   },
 });
 

@@ -84,10 +84,13 @@ function AppCreateImage({
             );
 
             //Create Image on Canvas
+            let y = 0;
+            if (top) y = space;
+
             context.drawImage(
               overlayImage,
               0,
-              0,
+              y, // 0
               overlayImage.width,
               overlayImage.height
             );

@@ -45,12 +45,14 @@ const removeData = async (dataKeys, setStorageUsed, storageUsed) => {
 
 const initStorage = async () => {
   // setStorageUsed(!storageUsed);
+  textSettings = await getData(keyfields.GLOBAL_TEXT_SETTINGS);
+
   await storeData(keyfields.EMPTY, {
     [keyfields.NAME]: "empty",
     [keyfields.IMAGES]: null,
     [keyfields.THUMB]: null,
     [keyfields.TEXTS]: "",
-    [keyfields.TEXT_SETTINGS]: null,
+    [keyfields.TEXT_SETTINGS]: textSettings,
   });
 
   const keys = await getAllKeys();
@@ -69,20 +71,16 @@ const initStorage = async () => {
     });
   }
 
+  // removeData(["textSettingsGlobal"]);
+  // console.log(await getAllKeys());
   if (!isTextSettingsHere) {
     await storeData(keyfields.GLOBAL_TEXT_SETTINGS, {
-      [keyfields.BOLD]: false,
-      [keyfields.ITALIC]: true,
+      [keyfields.BOLD]: true,
+      [keyfields.ITALIC]: false,
       [keyfields.OUTLINE]: false,
       [keyfields.TOP]: false,
       [keyfields.TEXT_COLOR]: "#fff",
       [keyfields.BACKGROUND_COLOR]: "#F39C12",
-      // bold: false,
-      // italic: true,
-      // outline: false,
-      // top: false,
-      // textColor: "#fff",
-      // backgroundColor: "#F39C12",
     });
   }
 

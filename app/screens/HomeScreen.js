@@ -6,6 +6,7 @@ import {
   ImageBackground,
   FlatList,
 } from "react-native";
+import AppLoading from "expo-app-loading";
 
 import AppIconButton from "../componets/AppIconButton";
 import AppText from "../componets/AppText";
@@ -28,7 +29,7 @@ function HomeScreen({ navigation }) {
   //   keys.filter((key) => key !== keyfields.GLOBAL_TEXT_SETTINGS).reverse(),
   //   values
   // );
-  const [data, setData] = useState();
+  const [data, setData] = useState(null);
   const [storageUsed, setStorageUsed] = useState(false);
 
   // console.log("storageUsed ");
@@ -40,18 +41,26 @@ function HomeScreen({ navigation }) {
 
   useEffect(() => {
     // console.log(data);
-    readStorage();
+    if (storageUsed) {
+      readStorage();
+      setStorageUsed(false);
+    }
     // console.log("new list was set");
   }, [storageUsed]);
 
   const readStorage = async () => {
     setData(await createList());
   };
+  const initHomeScreen = async () => {
+    await initStorage();
+    await readStorage();
+  };
 
   useEffect(() => {
     navigation.addListener("focus", () => {
-      initStorage();
-      readStorage();
+      initHomeScreen();
+      // initStorage();
+      // readStorage();
       // setStorageUsed(!storageUsed);
       // console.log("focused", storageUsed);
     });
@@ -59,7 +68,7 @@ function HomeScreen({ navigation }) {
 
   // console.log(data);
 
-  if (!data) return <View />;
+  if (!data) return <AppLoading />;
 
   return (
     <View style={styles.container}>

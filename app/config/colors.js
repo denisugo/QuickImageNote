@@ -10,6 +10,9 @@ export default {
     buttonThird: "#8E44AD",
     shadow: "#D5DBDB",
     icon: "#F0F3F4",
+    premium: "gold",
+    delete: "tomato",
+    error: "#E74C3C",
   },
   lightTheme: {
     background: "#F4F6F7",
@@ -22,6 +25,9 @@ export default {
     buttonThird: "#AED6F1",
     shadow: "gray",
     icon: "#000",
+    premium: "gold",
+    delete: "tomato",
+    error: "#E74C3C",
   },
   palete: [
     "#000",

@@ -106,7 +106,9 @@ export const placeText = async (
 
   splitted.forEach((line, index) => {
     const textX = safeArea;
-    const textY = size.height - space + (space / numberOfLines) * index;
+    const textY = top
+      ? (space / numberOfLines) * index
+      : size.height - space + (space / numberOfLines) * index;
 
     if (outline) {
       context.strokeStyle = textColor;

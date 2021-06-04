@@ -11,6 +11,7 @@ import {
 import * as ImageManipulator from "expo-image-manipulator";
 import * as Sharing from "expo-sharing";
 import * as FileSystem from "expo-file-system";
+import Toast from "react-native-root-toast";
 
 import themes from "../../config/themes";
 import AppButton from "../AppButton";
@@ -81,7 +82,19 @@ function AppThreeButtonsForm({ setVisible, setImageUri, imageUri }) {
       ).then((image) => {
         setSrc(addPrefix(image));
       });
-    } else setSrc(null);
+    } else {
+      Toast.show("No image selected", {
+        backgroundColor: themes.colors.error,
+        textColor: themes.colors.text,
+        opacity: 1,
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+        hideOnPress: true,
+      });
+      setSrc(null);
+    }
 
     setText(values[keyfields.TEXTS][parseInt(values[keyfields.POSITION])]);
   };
@@ -117,8 +130,9 @@ function AppThreeButtonsForm({ setVisible, setImageUri, imageUri }) {
       />
 
       <ScrollView
-      //contentContainerStyle={{ overflow: "hidden" }}
-      // style={{ overflow: "hidden" }}
+        //contentContainerStyle={{ overflow: "hidden" }}
+        // style={{ overflow: "hidden" }}
+        showsVerticalScrollIndicator={false}
       >
         <TouchableWithoutFeedback>
           <View style={{ flex: 1 }}>
