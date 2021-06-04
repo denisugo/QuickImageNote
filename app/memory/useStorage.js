@@ -45,15 +45,6 @@ const removeData = async (dataKeys, setStorageUsed, storageUsed) => {
 
 const initStorage = async () => {
   // setStorageUsed(!storageUsed);
-  textSettings = await getData(keyfields.GLOBAL_TEXT_SETTINGS);
-
-  await storeData(keyfields.EMPTY, {
-    [keyfields.NAME]: "empty",
-    [keyfields.IMAGES]: null,
-    [keyfields.THUMB]: null,
-    [keyfields.TEXTS]: "",
-    [keyfields.TEXT_SETTINGS]: textSettings,
-  });
 
   const keys = await getAllKeys();
   let isTextSettingsHere = false;
@@ -84,6 +75,15 @@ const initStorage = async () => {
     });
   }
 
+  let textSettings = await getData(keyfields.GLOBAL_TEXT_SETTINGS);
+
+  await storeData(keyfields.EMPTY, {
+    [keyfields.NAME]: "empty",
+    [keyfields.IMAGES]: null,
+    [keyfields.THUMB]: null,
+    [keyfields.TEXTS]: "",
+    [keyfields.TEXT_SETTINGS]: textSettings,
+  });
   // const data = await getData(keyfields.EMPTY);
   // console.log("data: ", data);
 };

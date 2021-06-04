@@ -61,7 +61,7 @@ function AppThreeButtonsForm({ setVisible, setImageUri, imageUri }) {
 
   //Share processing here
   useEffect(() => {
-    share();
+    // share();
   }, [imageUri, buttonShare]);
 
   const handleButton = () => {
