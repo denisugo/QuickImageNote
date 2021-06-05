@@ -7,17 +7,17 @@ import {
   Text,
   ScrollView,
   TouchableWithoutFeedback,
+  Platform,
 } from "react-native";
 import * as ImageManipulator from "expo-image-manipulator";
-import * as Sharing from "expo-sharing";
-import * as FileSystem from "expo-file-system";
+// import * as Sharing from "expo-sharing";
+// import * as FileSystem from "expo-file-system";
 import Toast from "react-native-root-toast";
+import Share from "react-native-share";
 
 import themes from "../../config/themes";
 import AppButton from "../AppButton";
 import AppCreateImage from "../AppCreateImage";
-import AppModal from "../AppModal";
-import AppCreateImageTest from "../AppCreateImageTest";
 import { addPrefix, removePrefix } from "../scripts/base64Processing";
 import AppTextSettingsForm from "./AppTextSettingsForm";
 import keyfields from "../../memory/keyfields";
@@ -40,20 +40,49 @@ function AppThreeButtonsForm({ setVisible, setImageUri, imageUri }) {
 
   const share = async () => {
     if (imageUri && buttonShare) {
+      const options = Platform.select({
+        ios: {
+          activityItemSources: [
+            {
+              placeholderItem: {
+                type: "url",
+                content: "https://picsum.photos/200/300",
+              },
+              item: {
+                default: {
+                  type: "uri",
+                  content: "https://picsum.photos/200/300",
+                },
+              },
+            },
+          ],
+        },
+        default: {
+          title: "title",
+          message: "message",
+        },
+      });
+
       try {
-        const filename = "share.jpg"; // or some other way to generate filename
-        const filepath = `${FileSystem.documentDirectory}/${filename}`;
-        await FileSystem.writeAsStringAsync(filepath, removePrefix(imageUri), {
-          encoding: "base64",
-        });
-        if (!(await Sharing.isAvailableAsync())) {
-          alert(`Uh oh, sharing isn't available on your platform`);
-          return;
-        }
-        await Sharing.shareAsync(filepath, { UTI: "image/jpg" });
+        await Share.open({ ...options, failOnCancel: false });
       } catch (error) {
         alert(error.message);
       }
+
+      // try {
+      //   const filename = "share.jpg"; // or some other way to generate filename
+      //   const filepath = `${FileSystem.documentDirectory}/${filename}`;
+      //   await FileSystem.writeAsStringAsync(filepath, removePrefix(imageUri), {
+      //     encoding: "base64",
+      //   });
+      //   if (!(await Sharing.isAvailableAsync())) {
+      //     alert(`Uh oh, sharing isn't available on your platform`);
+      //     return;
+      //   }
+      //   await Sharing.shareAsync(filepath, { UTI: "image/jpg" });
+      // } catch (error) {
+      //   alert(error.message);
+      // }
       setButtonShare(false);
       setImageUri(null);
     }
@@ -61,7 +90,7 @@ function AppThreeButtonsForm({ setVisible, setImageUri, imageUri }) {
 
   //Share processing here
   useEffect(() => {
-    // share();
+    share();
   }, [imageUri, buttonShare]);
 
   const handleButton = () => {

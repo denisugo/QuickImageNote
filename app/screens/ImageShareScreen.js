@@ -7,8 +7,8 @@ import {
   Keyboard,
   ImageBackground,
 } from "react-native";
-import AppButton from "../componets/AppButton";
 
+import AppButton from "../componets/AppButton";
 import AppCustomModal from "../componets/AppCustomModal";
 import AppHeader from "../componets/AppHeader";
 import AppIconButton from "../componets/AppIconButton";
@@ -46,7 +46,7 @@ function ImageShareScreen({ navigation, route }) {
       >
         <KeyboardAvoidingView
           behavior="position"
-          keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 100}
+          // keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 100}
           style={styles.container}
         >
           {/* <View style={styles.container}> */}
@@ -112,6 +112,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     //justifyContent: "center",
+    borderColor: "tomato",
     flex: 1,
   },
   bottomContainer: {
