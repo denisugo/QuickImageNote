@@ -5,6 +5,7 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Alert,
+  Platform,
 } from "react-native";
 import { useFormikContext } from "formik";
 
@@ -26,7 +27,7 @@ function AppNameImputForm() {
   return (
     <KeyboardAvoidingView
       style={styles.container}
-      behavior="position"
+      behavior={Platform.OS === "ios" ? "position" : null}
       keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 100}
     >
       <View style={styles.innerContainer}>

@@ -10,8 +10,8 @@ import {
   Platform,
 } from "react-native";
 import * as ImageManipulator from "expo-image-manipulator";
-// import * as Sharing from "expo-sharing";
-// import * as FileSystem from "expo-file-system";
+import * as Sharing from "expo-sharing";
+import * as FileSystem from "expo-file-system";
 import Toast from "react-native-root-toast";
 import Share from "react-native-share";
 
@@ -21,6 +21,7 @@ import AppCreateImage from "../AppCreateImage";
 import { addPrefix, removePrefix } from "../scripts/base64Processing";
 import AppTextSettingsForm from "./AppTextSettingsForm";
 import keyfields from "../../memory/keyfields";
+import createBase64 from "../scripts/createBase64";
 
 function AppThreeButtonsForm({ setVisible, setImageUri, imageUri }) {
   const { values } = useFormikContext();
@@ -40,26 +41,38 @@ function AppThreeButtonsForm({ setVisible, setImageUri, imageUri }) {
 
   const share = async () => {
     if (imageUri && buttonShare) {
+      const filename = "share.jpg"; // or some other way to generate filename
+      const filepath = `${FileSystem.documentDirectory}/${filename}`;
+      await FileSystem.writeAsStringAsync(filepath, removePrefix(imageUri), {
+        encoding: "base64",
+      });
+
       const options = Platform.select({
-        ios: {
-          activityItemSources: [
-            {
-              placeholderItem: {
-                type: "url",
-                content: "https://picsum.photos/200/300",
-              },
-              item: {
-                default: {
-                  type: "uri",
-                  content: "https://picsum.photos/200/300",
-                },
-              },
-            },
-          ],
-        },
+        // ios: {
+        //   activityItemSources: [
+        //     {
+        //       thumbnailImage: {
+        //         default: imageUri,
+        //       },
+        //       placeholderItem: {
+        //         type: "url",
+        //         content: imageUri,
+        //       },
+        //       item: {
+        //         default: {
+        //           type: "url",
+        //           content: imageUri, //"https://picsum.photos/200/300",
+        //         },
+        //       },
+        //     },
+        //   ],
+        // },
         default: {
           title: "title",
-          message: "message",
+          // message: "",
+          url: filepath, //imageUri,
+          // urls: [filepath, filepath],
+          type: "image/jpg",
         },
       });
 
@@ -68,13 +81,8 @@ function AppThreeButtonsForm({ setVisible, setImageUri, imageUri }) {
       } catch (error) {
         alert(error.message);
       }
-
+      await FileSystem.deleteAsync(filepath);
       // try {
-      //   const filename = "share.jpg"; // or some other way to generate filename
-      //   const filepath = `${FileSystem.documentDirectory}/${filename}`;
-      //   await FileSystem.writeAsStringAsync(filepath, removePrefix(imageUri), {
-      //     encoding: "base64",
-      //   });
       //   if (!(await Sharing.isAvailableAsync())) {
       //     alert(`Uh oh, sharing isn't available on your platform`);
       //     return;
@@ -158,45 +166,45 @@ function AppThreeButtonsForm({ setVisible, setImageUri, imageUri }) {
         setSrc={setSrc}
       />
 
-      <ScrollView
+      {/* <ScrollView
         //contentContainerStyle={{ overflow: "hidden" }}
         // style={{ overflow: "hidden" }}
         showsVerticalScrollIndicator={false}
-      >
-        <TouchableWithoutFeedback>
-          <View style={{ flex: 1 }}>
-            <View style={styles.container}>
-              <AppButton
-                title="Preview"
-                onPress={() => handlePreview()}
-                style={{
-                  flex: 0.33,
-                  borderColor: themes.colors.button,
-                  //marginLeft: 0,
-                  //marginHorizontal: 10,
-                }}
-              />
-              <AppButton
-                title="Send All"
-                onPress={() => console.log()}
-                style={{
-                  flex: 0.33,
-                  borderColor: themes.colors.buttonSecondary,
-                  //marginHorizontal: 10,
-                }}
-              />
-              <AppButton
-                title="Send"
-                onPress={() => handleShare()}
-                style={{
-                  flex: 0.33,
-                  borderColor: themes.colors.buttonThird,
-                  //marginHorizontal: 10,
-                  //marginRight: 0,
-                }}
-              />
-            </View>
-            {/* <View
+      > */}
+      <TouchableWithoutFeedback>
+        <View style={{ flex: 1 }}>
+          <View style={styles.container}>
+            <AppButton
+              title="Preview"
+              onPress={() => handlePreview()}
+              style={{
+                flex: 0.33,
+                borderColor: themes.colors.button,
+                //marginLeft: 0,
+                //marginHorizontal: 10,
+              }}
+            />
+            <AppButton
+              title="Send All"
+              onPress={() => console.log()}
+              style={{
+                flex: 0.33,
+                borderColor: themes.colors.buttonSecondary,
+                //marginHorizontal: 10,
+              }}
+            />
+            <AppButton
+              title="Send"
+              onPress={() => handleShare()}
+              style={{
+                flex: 0.33,
+                borderColor: themes.colors.buttonThird,
+                //marginHorizontal: 10,
+                //marginRight: 0,
+              }}
+            />
+          </View>
+          {/* <View
               style={{
                 alignSelf: "center",
                 backgroundColor: themes.colors.placeholder,
@@ -204,10 +212,10 @@ function AppThreeButtonsForm({ setVisible, setImageUri, imageUri }) {
                 width: "95%",
               }}
             /> */}
-            <AppTextSettingsForm />
-          </View>
-        </TouchableWithoutFeedback>
-      </ScrollView>
+          <AppTextSettingsForm />
+        </View>
+      </TouchableWithoutFeedback>
+      {/* </ScrollView> */}
     </>
   );
 }

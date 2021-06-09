@@ -8,7 +8,7 @@ const colorScheme = Appearance.getColorScheme();
 export { colorScheme };
 
 const shadow = {
-  elevation: 20, //Android only
+  elevation: 10, //Android only
   shadowColor:
     colorScheme === "dark" ? colors.darkTheme.shadow : colors.lightTheme.shadow,
   shadowOffset: { width: 0, height: 10 },
@@ -71,7 +71,7 @@ export default {
   threeButtons: {
     flexDirection: "row",
     justifyContent: "center",
-    paddingVertical: 20,
+    paddingVertical: 15,
     marginHorizontal: 20,
   },
   modal: {
@@ -149,10 +149,12 @@ export default {
     width: Dimensions.get("screen").width - 50,
   },
   listItemIsActive: {
-    backgroundColor:
-      colorScheme === "dark"
-        ? colors.darkTheme.buttonThird
-        : colors.lightTheme.buttonThird,
+    // backgroundColor:
+    //   colorScheme === "dark"
+    //     ? colors.darkTheme.buttonThird
+    //     : colors.lightTheme.buttonThird,
+    marginTop: 5,
+    height: 80,
   },
   imageOnListItem: {
     borderRadius: 5,

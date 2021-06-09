@@ -6,6 +6,7 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   ImageBackground,
+  ScrollView,
 } from "react-native";
 
 import AppButton from "../componets/AppButton";
@@ -13,6 +14,7 @@ import AppCustomModal from "../componets/AppCustomModal";
 import AppHeader from "../componets/AppHeader";
 import AppIconButton from "../componets/AppIconButton";
 import AppPreview from "../componets/AppPreview";
+import AppRename from "../componets/AppRename";
 import AppCarouselForm from "../componets/forms/AppCarouselForm";
 import AppForm from "../componets/forms/AppForm";
 import AppNameImputForm from "../componets/forms/AppNameInputForm";
@@ -24,7 +26,8 @@ import routes from "../navigation/routes";
 // import { createList, values } from "../test/homeScreenTestValues";
 
 function ImageShareScreen({ navigation, route }) {
-  const [visible, setVisible] = useState(false);
+  const [visiblePreview, setVisiblePreview] = useState(false);
+  const [visibleRename, setVisibleRename] = useState(false);
   const [imageUri, setImageUri] = useState(null);
 
   const images = route.params ? route.params.images : null;
@@ -44,12 +47,12 @@ function ImageShareScreen({ navigation, route }) {
         // source={require("../assets/background-light-edit.png")}
         style={{ flex: 1, resizeMode: "cover", justifyContent: "center" }}
       >
-        <KeyboardAvoidingView
-          behavior="position"
-          // keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 100}
-          style={styles.container}
-        >
-          {/* <View style={styles.container}> */}
+        {/* <KeyboardAvoidingView
+            behavior="position"
+            keyboardVerticalOffset={0}
+            style={styles.container}
+          > */}
+        <View style={styles.container}>
           <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View style={styles.innerContainer}>
               <AppForm
@@ -69,34 +72,42 @@ function ImageShareScreen({ navigation, route }) {
                   // [keyfields.UNSAVED]: true,
                 }}
               >
-                <AppHeader />
-
-                {/* <KeyboardAvoidingView
-                  behavior="position"
-                  keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 100}
-                  style={{ height: 440 }}
-                > */}
-                <AppCarouselForm />
-                {/* </KeyboardAvoidingView> */}
-
-                {/* <View style={{ flex: 1 }}> */}
-                <View style={styles.bottomContainer}>
-                  <AppThreeButtonsForm
-                    setVisible={setVisible} //for preview
-                    setImageUri={setImageUri} //for preview
-                    imageUri={imageUri} //for preview
+                {visibleRename && (
+                  <AppRename
+                    visible={visibleRename}
+                    setVisible={setVisibleRename}
                   />
-                </View>
+                )}
+                <ScrollView showsVerticalScrollIndicator={false}>
+                  <AppHeader setVisible={setVisibleRename} />
+
+                  <KeyboardAvoidingView
+                    behavior={Platform.OS === "ios" ? "position" : null}
+                    keyboardVerticalOffset={0}
+                  >
+                    <AppCarouselForm />
+                  </KeyboardAvoidingView>
+
+                  {/* <View style={{ flex: 1 }}> */}
+                  <View style={styles.bottomContainer}>
+                    <AppThreeButtonsForm
+                      setVisible={setVisiblePreview} //for preview
+                      setImageUri={setImageUri} //for preview
+                      imageUri={imageUri} //for preview
+                    />
+                  </View>
+                </ScrollView>
                 {/* </View> */}
               </AppForm>
             </View>
           </TouchableWithoutFeedback>
-        </KeyboardAvoidingView>
+        </View>
+        {/* </KeyboardAvoidingView> */}
         {/* </View> */}
 
         <AppCustomModal
-          visible={visible}
-          setVisible={setVisible}
+          visible={visiblePreview}
+          setVisible={setVisiblePreview}
           onPress={() => setImageUri(null)}
           //opacity={0.95}
           //imageUri={imageUri}
@@ -112,8 +123,9 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     //justifyContent: "center",
-    borderColor: "tomato",
+    // backgroundColor: "tomato",
     flex: 1,
+    // top: 20,
   },
   bottomContainer: {
     ...themes.containerForThreeButtons,
@@ -121,6 +133,9 @@ const styles = StyleSheet.create({
   innerContainer: {
     //paddingTop: "10%",
     flex: 1,
+    // top: 100,
+    // paddingTop: 100,
+    // justifyContent: "flex-end",
   },
 });
 
