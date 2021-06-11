@@ -147,7 +147,6 @@ function AppHeader({ setVisible }) {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: Platform.OS === "ios" ? 20 : 0,
     // top: 20,
     // position: "absolute",
     width: "100%",

@@ -54,7 +54,7 @@ export default {
       colorScheme === "dark" ? colors.darkTheme.text : colors.lightTheme.text,
     fontFamily: Platform.OS === "android" ? "Roboto" : "Avenir",
     fontSize: 20,
-    textTransform: "lowercase",
+    textTransform: Platform.OS === "ios" ? "lowercase" : null,
     fontWeight: "bold",
   },
   button: {
@@ -153,8 +153,8 @@ export default {
     //   colorScheme === "dark"
     //     ? colors.darkTheme.buttonThird
     //     : colors.lightTheme.buttonThird,
-    marginTop: 5,
-    height: 80,
+    // marginTop: 5,
+    // height: 80,
   },
   imageOnListItem: {
     borderRadius: 5,

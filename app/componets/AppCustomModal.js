@@ -13,10 +13,10 @@ import AppActivityIndicator from "./AppActivityIndicator";
 import AppPreview from "./AppPreview";
 import AppText from "./AppText";
 
-LogBox.ignoreLogs([
-  "ReactNative.NativeModules.LottieAnimationView.resume",
-  "ReactNative.NativeModules.LottieAnimationView.pause",
-]);
+// LogBox.ignoreLogs([
+//   "ReactNative.NativeModules.LottieAnimationView.resume",
+//   "ReactNative.NativeModules.LottieAnimationView.pause",
+// ]);
 
 function AppCustomModal({
   visible = false,

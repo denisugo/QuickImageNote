@@ -37,7 +37,9 @@ function AppNameImputForm() {
           //   if (values[keyfields.NAME] !== values[keyfields.ORIGINAL_NAME])
           //     isNameAlreadyExists(values, setFieldValue);
           // }}
+
           onChangeText={(text) => {
+            // console.log(values[keyfields.NAME]);
             setFieldValue(keyfields.NAME, text);
           }}
           value={values[keyfields.NAME]}

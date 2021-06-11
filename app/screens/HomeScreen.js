@@ -22,7 +22,6 @@ import {
   initStorage,
   storeData,
 } from "../memory/useStorage";
-import storageContext from "../memory/storageContext";
 
 function HomeScreen({ navigation }) {
   // const data = createList(

@@ -2,7 +2,7 @@ import createThumb from "../componets/scripts/createThumb";
 import keyfields from "./keyfields";
 import { storeData } from "./useStorage";
 
-export default saveDataForm = async (values, setFieldValue) => {
+export default async (values, setFieldValue) => {
   const key = Date.now().toString();
   setFieldValue(keyfields.KEY, key);
   try {

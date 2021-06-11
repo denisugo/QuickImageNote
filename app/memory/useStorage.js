@@ -2,7 +2,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useContext, useState } from "react";
 import asyncForEach from "../componets/scripts/asyncForEach";
 import keyfields from "./keyfields";
-import storageContext from "./storageContext";
 
 const storeData = async (key, value) => {
   try {

@@ -7,6 +7,7 @@ import {
   Keyboard,
   ImageBackground,
   ScrollView,
+  Platform,
 } from "react-native";
 
 import AppButton from "../componets/AppButton";
@@ -79,23 +80,27 @@ function ImageShareScreen({ navigation, route }) {
                   />
                 )}
                 <ScrollView showsVerticalScrollIndicator={false}>
-                  <AppHeader setVisible={setVisibleRename} />
+                  <TouchableWithoutFeedback onPress={() => {}}>
+                    <View>
+                      <AppHeader setVisible={setVisibleRename} />
 
-                  <KeyboardAvoidingView
-                    behavior={Platform.OS === "ios" ? "position" : null}
-                    keyboardVerticalOffset={0}
-                  >
-                    <AppCarouselForm />
-                  </KeyboardAvoidingView>
+                      <KeyboardAvoidingView
+                        behavior={Platform.OS === "ios" ? "position" : null}
+                        keyboardVerticalOffset={0}
+                      >
+                        <AppCarouselForm />
+                      </KeyboardAvoidingView>
 
-                  {/* <View style={{ flex: 1 }}> */}
-                  <View style={styles.bottomContainer}>
-                    <AppThreeButtonsForm
-                      setVisible={setVisiblePreview} //for preview
-                      setImageUri={setImageUri} //for preview
-                      imageUri={imageUri} //for preview
-                    />
-                  </View>
+                      {/* <View style={{ flex: 1 }}> */}
+                      <View style={styles.bottomContainer}>
+                        <AppThreeButtonsForm
+                          setVisible={setVisiblePreview} //for preview
+                          setImageUri={setImageUri} //for preview
+                          imageUri={imageUri} //for preview
+                        />
+                      </View>
+                    </View>
+                  </TouchableWithoutFeedback>
                 </ScrollView>
                 {/* </View> */}
               </AppForm>
@@ -126,6 +131,7 @@ const styles = StyleSheet.create({
     // backgroundColor: "tomato",
     flex: 1,
     // top: 20,
+    paddingTop: Platform.OS === "ios" ? 20 : 0,
   },
   bottomContainer: {
     ...themes.containerForThreeButtons,
