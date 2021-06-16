@@ -5,8 +5,9 @@ export const baseToBase = (data) => {
 //Adds prefix to data
 export const addPrefix = (data) => {
   const prefix = "data:image/jpeg;base64,";
-  const body = data["base64"];
-  return prefix + body;
+  // const body = data["base64"];
+  // return prefix + body;
+  return prefix + data;
 };
 //Removes prefix from data
 

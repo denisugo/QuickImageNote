@@ -13,6 +13,7 @@ export default {
     premium: "gold",
     delete: "tomato",
     error: "#E74C3C",
+    errorText: "#F0F3F4",
   },
   lightTheme: {
     background: "#F4F6F7",
@@ -28,6 +29,7 @@ export default {
     premium: "gold",
     delete: "tomato",
     error: "#E74C3C",
+    errorText: "#F0F3F4",
   },
   palete: [
     "#000",
