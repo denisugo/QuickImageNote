@@ -14,6 +14,7 @@ export default {
     delete: "tomato",
     error: "#E74C3C",
     errorText: "#F0F3F4",
+    success: "#2ECC71",
   },
   lightTheme: {
     background: "#F4F6F7",
@@ -30,6 +31,7 @@ export default {
     delete: "tomato",
     error: "#E74C3C",
     errorText: "#F0F3F4",
+    success: "#2ECC71",
   },
   palete: [
     "#000",

@@ -8,6 +8,7 @@ import {
   ImageBackground,
   ScrollView,
   Platform,
+  LogBox,
 } from "react-native";
 
 import AppButton from "../componets/AppButton";
@@ -25,6 +26,8 @@ import keyfields from "../memory/keyfields";
 import { storeData } from "../memory/useStorage";
 import routes from "../navigation/routes";
 // import { createList, values } from "../test/homeScreenTestValues";
+
+LogBox.ignoreLogs(["Sending", "Error evaluating injectedJavaScript"]);
 
 function ImageShareScreen({ navigation, route }) {
   const [visiblePreview, setVisiblePreview] = useState(false);

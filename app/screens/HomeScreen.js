@@ -39,12 +39,10 @@ function HomeScreen({ navigation }) {
   // }, []);
 
   useEffect(() => {
-    // console.log(data);
     if (storageUsed) {
       readStorage();
-      setStorageUsed(false);
+      // setStorageUsed(false);
     }
-    // console.log("new list was set");
   }, [storageUsed]);
 
   const readStorage = async () => {

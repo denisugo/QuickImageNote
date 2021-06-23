@@ -7,6 +7,7 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
+import FastImage from "react-native-fast-image";
 
 import AppIcon from "./AppIcon";
 import themes from "../config/themes";
@@ -41,7 +42,7 @@ function AppImageInput({ imageUri, onChangeImage, onLongPress }) {
       const result = await ImagePicker.launchImageLibraryAsync({
         allowsEditing: false,
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        quality: 1, //check it later
+        quality: 1,
         exif: false,
         base64: false,
       });
@@ -62,7 +63,7 @@ function AppImageInput({ imageUri, onChangeImage, onLongPress }) {
           <>
             {!imageUri && (
               <AppIcon
-                name="camera-outline"
+                name="image-outline"
                 size={200}
                 iconColor={themes.colors.placeholder}
                 backgroundColor={themes.colors.background}
@@ -71,11 +72,11 @@ function AppImageInput({ imageUri, onChangeImage, onLongPress }) {
           </>
         )}
         {imageUri && (
-          <Image
+          <FastImage
             onLoadStart={() => setLoading(true)}
             onLoadEnd={() => setLoading(false)}
             style={styles.image}
-            source={{ uri: imageUri }}
+            source={{ uri: imageUri, priority: FastImage.priority.high }}
           />
         )}
         <AppActivityIndicator visible={loading} />

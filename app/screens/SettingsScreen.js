@@ -36,7 +36,7 @@ import keyfields from "../memory/keyfields";
 
 function SettingsScreen({ navigation, route }) {
   const storageUsed = route.params.storageUsed;
-  const setStorageUsed = () => route.params.setStorageUsed();
+  const setStorageUsed = (value) => route.params.setStorageUsed(value);
 
   // useEffect(() => {
   //   navigation.addListener("blur", () => {
@@ -74,9 +74,9 @@ function SettingsScreen({ navigation, route }) {
                     keys = keys.filter((key) => key !== keyfields.SETTINGS);
                     keys = keys.filter((key) => key !== keyfields.EMPTY);
 
-                    // await removeData(keys, setStorageUsed, storageUsed);
-                    await removeData(keys);
-                    setStorageUsed(true); //calls a rerender on homescreen
+                    await removeData(keys, setStorageUsed, storageUsed);
+                    // await removeData(keys);
+                    // setStorageUsed(true); //calls a rerender on homescreen
                   },
                 },
                 { text: "No", style: "cancel" },

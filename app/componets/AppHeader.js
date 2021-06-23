@@ -102,7 +102,11 @@ function AppHeader({ setVisible }) {
             keys = await getAllKeys();
           }
 
-          navigation.navigate(routes.HOME_NAVIGATOR);
+          if (
+            values[keyfields.KEY] !== "empty" &&
+            values[keyfields.IMAGES] !== [null]
+          )
+            navigation.navigate(routes.HOME_NAVIGATOR);
 
           // if (values[keyfields.ORIGINAL_NAME] !== values[keyfields.NAME]) {
           //   await isRenamed(values[keyfields.ORIGINAL_NAME], values);

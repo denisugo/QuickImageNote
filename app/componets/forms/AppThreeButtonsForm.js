@@ -4,13 +4,9 @@ import {
   View,
   StyleSheet,
   Keyboard,
-  Text,
-  ScrollView,
   TouchableWithoutFeedback,
-  Platform,
 } from "react-native";
 import * as ImageManipulator from "expo-image-manipulator";
-import * as Sharing from "expo-sharing";
 import * as FileSystem from "expo-file-system";
 import Toast from "react-native-root-toast";
 import Share from "react-native-share";
@@ -21,67 +17,58 @@ import AppCreateImage from "../AppCreateImage";
 import { addPrefix, removePrefix } from "../scripts/base64Processing";
 import AppTextSettingsForm from "./AppTextSettingsForm";
 import keyfields from "../../memory/keyfields";
-import createBase64 from "../scripts/createBase64";
 import asyncForEach from "../scripts/asyncForEach";
 import AppActivityIndicator from "../AppActivityIndicator";
 
 function AppThreeButtonsForm({ setVisible, setImageUri, imageUri }) {
   const { values } = useFormikContext();
 
-  // const keyfields.IMAGES = "image";
-  // const keyfields.TEXTS = "text";
-  // const keyfields.POSITION = "position";
-  // const keyfield.TEXT_SETTINGS = "textSettings";
-
-  // const backgroundColorField = "backgroundColor";
-
   const imageUriFromValues = useRef(null);
   const [src, setSrc] = useState(null);
   const [text, setText] = useState(null);
-  const [buttonState, setButtonState] = useState(true); //Launches AppCreateImage
+  const [buttonState, setButtonState] = useState(true); //Launches AppCreateImage that requires a rerender
   const [buttonShare, setButtonShare] = useState(false);
 
   const share = async () => {
     if (imageUri && buttonShare) {
-      const filename = "share.jpg"; // or some other way to generate filename
+      const filename = "Image.jpg"; // or some other way to generate filename
       const filepath = `${FileSystem.documentDirectory}/${filename}`;
       await FileSystem.writeAsStringAsync(filepath, removePrefix(imageUri), {
         encoding: "base64",
       });
 
-      const options = Platform.select({
-        // ios: {
-        //   activityItemSources: [
-        //     {
-        //       thumbnailImage: {
-        //         default: imageUri,
-        //       },
-        //       placeholderItem: {
-        //         type: "url",
-        //         content: imageUri,
-        //       },
-        //       item: {
-        //         default: {
-        //           type: "url",
-        //           content: imageUri, //"https://picsum.photos/200/300",
-        //         },
-        //       },
-        //     },
-        //   ],
-        // },
-        default: {
-          title: "Single image",
-          // message: "",
-          url: filepath, //imageUri,
-          // urls: [filepath, filepath],
-          type: "image/jpg",
-        },
-      });
+      const options = {
+        title: "Single image",
+        // message: "",
+        url: filepath, //imageUri,
+        // urls: [filepath, filepath],
+        type: "image/jpg",
+      };
 
       try {
         await Share.open({ ...options, failOnCancel: false });
+        Toast.show("sent successfully", {
+          backgroundColor: themes.colors.success,
+          textColor: themes.colors.errorText,
+          opacity: 1,
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.BOTTOM,
+          shadow: true,
+          animation: true,
+          hideOnPress: true,
+        });
       } catch (error) {
-        alert(error.message);
+        // alert(error.message);
+        Toast.show("something went wrong, please try again", {
+          backgroundColor: themes.colors.error,
+          textColor: themes.colors.errorText,
+          opacity: 1,
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.BOTTOM,
+          shadow: true,
+          animation: true,
+          hideOnPress: true,
+        });
       }
       await FileSystem.deleteAsync(filepath);
       // try {
@@ -103,6 +90,7 @@ function AppThreeButtonsForm({ setVisible, setImageUri, imageUri }) {
     share();
   }, [imageUri]);
 
+  //  This function will call on each burron press of three button form exept Share ALL button
   const handleButton = () => {
     Keyboard.dismiss();
 
@@ -141,6 +129,7 @@ function AppThreeButtonsForm({ setVisible, setImageUri, imageUri }) {
   };
 
   const handlePreview = () => {
+    if (imageUri) setImageUri(null);
     setVisible(true);
     handleButton();
   };
@@ -152,7 +141,6 @@ function AppThreeButtonsForm({ setVisible, setImageUri, imageUri }) {
   };
   //-----------------------------------Share All---------------------------------------------
 
-  imageUri ? console.log("imageUri") : null;
   const [position, setPosition] = useState(0);
   const [buttonShareAll, setButtonShareAll] = useState(false);
   const [imageUrisFromValues, setImageUrisFromValues] = useState([]);
@@ -161,14 +149,8 @@ function AppThreeButtonsForm({ setVisible, setImageUri, imageUri }) {
 
   useEffect(() => {
     if (imageUri && buttonShareAll) {
-      // setIsImageReady(true);
-      // imageUris = [...imageUris, imageUri];
-      console.log("setting isImageReady");
-      // console.log(src);
       setImageUris([...imageUris, imageUri]);
       setImageUri(null);
-      // setSrc(null);
-      // setButtonState(!buttonState);
     }
   }, [imageUri]);
 
@@ -185,7 +167,6 @@ function AppThreeButtonsForm({ setVisible, setImageUri, imageUri }) {
         setPosition(position + 1);
       }
       if (imageUris.length === imageUrisFromValues.length) {
-        console.log("start sharing images");
         setImageUrisFromValues([]);
         setTextsFromValues([]);
 
@@ -218,8 +199,28 @@ function AppThreeButtonsForm({ setVisible, setImageUri, imageUri }) {
 
       try {
         await Share.open({ ...options, failOnCancel: false });
+        Toast.show("sent successfully", {
+          backgroundColor: themes.colors.success,
+          textColor: themes.colors.errorText,
+          opacity: 1,
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.BOTTOM,
+          shadow: true,
+          animation: true,
+          hideOnPress: true,
+        });
       } catch (error) {
-        alert(error.message);
+        // alert(error.message);
+        Toast.show("something went wrong, please try again", {
+          backgroundColor: themes.colors.error,
+          textColor: themes.colors.errorText,
+          opacity: 1,
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.BOTTOM,
+          shadow: true,
+          animation: true,
+          hideOnPress: true,
+        });
       }
 
       await asyncForEach(filepaths, async (element) => {

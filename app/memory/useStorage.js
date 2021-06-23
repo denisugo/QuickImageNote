@@ -43,8 +43,6 @@ const removeData = async (dataKeys, setStorageUsed, storageUsed) => {
 };
 
 const initStorage = async () => {
-  // setStorageUsed(!storageUsed);
-
   const keys = await getAllKeys();
   let isTextSettingsHere = false;
   let isSettingsHere = false;
@@ -57,7 +55,7 @@ const initStorage = async () => {
   if (!isSettingsHere) {
     await storeData(keyfields.SETTINGS, {
       [keyfields.PREMIUM]: false,
-      [keyfields.LIGHTS_OFF]: false,
+      // [keyfields.LIGHTS_OFF]: false,
     });
   }
 
