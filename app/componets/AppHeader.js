@@ -103,8 +103,12 @@ function AppHeader({ setVisible }) {
           }
 
           if (
-            values[keyfields.KEY] !== "empty" &&
-            values[keyfields.IMAGES] !== [null]
+            (values[keyfields.KEY] !== "empty" &&
+              JSON.stringify(values[keyfields.IMAGES]) !==
+                JSON.stringify([null])) ||
+            (values[keyfields.KEY] === "empty" &&
+              JSON.stringify(values[keyfields.IMAGES]) ===
+                JSON.stringify([null]))
           )
             navigation.navigate(routes.HOME_NAVIGATOR);
 

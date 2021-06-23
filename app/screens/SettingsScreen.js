@@ -6,6 +6,7 @@ import {
   FlatList,
   SafeAreaView,
   Alert,
+  Linking,
 } from "react-native";
 import AlertAsync from "react-native-alert-async";
 
@@ -18,6 +19,7 @@ import colors from "../config/colors";
 import AppTextSettings from "../componets/AppTextSettings";
 import { createList, getAllKeys, removeData } from "../memory/useStorage";
 import keyfields from "../memory/keyfields";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 // const defaultValues = {
 //   bold: true,
@@ -37,6 +39,9 @@ import keyfields from "../memory/keyfields";
 function SettingsScreen({ navigation, route }) {
   const storageUsed = route.params.storageUsed;
   const setStorageUsed = (value) => route.params.setStorageUsed(value);
+
+  const supportLink = "https://www.patreon.com";
+  const followUsLink = "https://www.instagram.com/night_sky_soft/";
 
   // useEffect(() => {
   //   navigation.addListener("blur", () => {
@@ -118,13 +123,25 @@ function SettingsScreen({ navigation, route }) {
         <View
           style={{ alignItems: "center", flex: 1, justifyContent: "flex-end" }}
         >
-          <AppText>Our Instagram</AppText>
+          <TouchableOpacity
+            onPress={async () => {
+              await Linking.openURL(followUsLink);
+            }}
+          >
+            <AppText>Our Instagram</AppText>
+          </TouchableOpacity>
         </View>
 
         <View
           style={{ alignItems: "center", flex: 1, justifyContent: "center" }}
         >
-          <AppText>support us</AppText>
+          <TouchableOpacity
+            onPress={async () => {
+              await Linking.openURL(supportLink);
+            }}
+          >
+            <AppText>support us</AppText>
+          </TouchableOpacity>
         </View>
       </View>
     </SafeAreaView>

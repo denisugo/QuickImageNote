@@ -46,17 +46,21 @@ function AppThreeButtonsForm({ setVisible, setImageUri, imageUri }) {
       };
 
       try {
-        await Share.open({ ...options, failOnCancel: false });
-        Toast.show("sent successfully", {
-          backgroundColor: themes.colors.success,
-          textColor: themes.colors.errorText,
-          opacity: 1,
-          duration: Toast.durations.SHORT,
-          position: Toast.positions.BOTTOM,
-          shadow: true,
-          animation: true,
-          hideOnPress: true,
+        const shareResponse = await Share.open({
+          ...options,
+          failOnCancel: false,
         });
+        if (shareResponse.success)
+          Toast.show("sent successfully", {
+            backgroundColor: themes.colors.success,
+            textColor: themes.colors.errorText,
+            opacity: 1,
+            duration: Toast.durations.SHORT,
+            position: Toast.positions.BOTTOM,
+            shadow: true,
+            animation: true,
+            hideOnPress: true,
+          });
       } catch (error) {
         // alert(error.message);
         Toast.show("something went wrong, please try again", {
@@ -146,6 +150,7 @@ function AppThreeButtonsForm({ setVisible, setImageUri, imageUri }) {
   const [imageUrisFromValues, setImageUrisFromValues] = useState([]);
   const [textsFromValues, setTextsFromValues] = useState([]);
   const [imageUris, setImageUris] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (imageUri && buttonShareAll) {
@@ -198,17 +203,21 @@ function AppThreeButtonsForm({ setVisible, setImageUri, imageUri }) {
       };
 
       try {
-        await Share.open({ ...options, failOnCancel: false });
-        Toast.show("sent successfully", {
-          backgroundColor: themes.colors.success,
-          textColor: themes.colors.errorText,
-          opacity: 1,
-          duration: Toast.durations.SHORT,
-          position: Toast.positions.BOTTOM,
-          shadow: true,
-          animation: true,
-          hideOnPress: true,
+        const shareResponse = await Share.open({
+          ...options,
+          failOnCancel: false,
         });
+        if (shareResponse.success)
+          Toast.show("sent successfully", {
+            backgroundColor: themes.colors.success,
+            textColor: themes.colors.errorText,
+            opacity: 1,
+            duration: Toast.durations.SHORT,
+            position: Toast.positions.BOTTOM,
+            shadow: true,
+            animation: true,
+            hideOnPress: true,
+          });
       } catch (error) {
         // alert(error.message);
         Toast.show("something went wrong, please try again", {
@@ -237,6 +246,8 @@ function AppThreeButtonsForm({ setVisible, setImageUri, imageUri }) {
 
   const handleShareAll = async () => {
     Keyboard.dismiss();
+
+    setLoading(true);
 
     let imageValues = [];
     let textValues = [];
@@ -275,10 +286,11 @@ function AppThreeButtonsForm({ setVisible, setImageUri, imageUri }) {
   };
   useEffect(() => {
     if (src) setSrc(null);
+    setLoading(false);
   }, [imageUri]);
   //---------------------------------------------------------------------------------------
 
-  if (src)
+  if (src || loading)
     return (
       <>
         <AppCreateImage

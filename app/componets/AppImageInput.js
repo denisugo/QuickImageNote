@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   View,
   StyleSheet,
@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import FastImage from "react-native-fast-image";
+import { launchImageLibrary } from "react-native-image-picker";
 
 import AppIcon from "./AppIcon";
 import themes from "../config/themes";
@@ -28,8 +29,8 @@ function AppImageInput({ imageUri, onChangeImage, onLongPress }) {
 
   const handlePress = () => {
     if (!imageUri) {
-      selectImage();
       setLoading(true);
+      selectImage();
     } else
       Alert.alert("Delete", "Are you sure you want to delete this image?", [
         { text: "Yes", onPress: () => onChangeImage(null) },
@@ -39,18 +40,28 @@ function AppImageInput({ imageUri, onChangeImage, onLongPress }) {
 
   const selectImage = async () => {
     try {
-      const result = await ImagePicker.launchImageLibraryAsync({
-        allowsEditing: false,
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      // const options = {
+      //   // allowsEditing: false,
+      //   mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      //   quality: 1,
+      //   // exif: false,
+      //   // base64: false,
+      // };
+      // const result = await ImagePicker.launchImageLibraryAsync(options);
+      // if (!result.cancelled && result.height !== 0) onChangeImage(result.uri);
+      // if (result.cancelled) setLoading(false);
+      const options = {
+        mediaType: "photo",
         quality: 1,
-        exif: false,
-        base64: false,
+      };
+      launchImageLibrary(options, (result) => {
+        console.log(result);
+        if (!result.didCancel && result.assets[0].height !== 0)
+          onChangeImage(result.assets[0].uri);
+        if (result.didCancel) setLoading(false);
       });
-
-      if (!result.cancelled && result.height !== 0) onChangeImage(result.uri);
-      if (result.cancelled) setLoading(false);
     } catch (error) {
-      console.log("Error occured while retrieving image", error);
+      setLoading(false);
     }
   };
   return (
@@ -71,9 +82,10 @@ function AppImageInput({ imageUri, onChangeImage, onLongPress }) {
             )}
           </>
         )}
+
         {imageUri && (
           <FastImage
-            onLoadStart={() => setLoading(true)}
+            // onLoadStart={() => setLoading(true)}
             onLoadEnd={() => setLoading(false)}
             style={styles.image}
             source={{ uri: imageUri, priority: FastImage.priority.high }}
