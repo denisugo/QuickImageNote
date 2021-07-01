@@ -77,6 +77,7 @@ export const placeText = async (
   size,
   fontSize,
   space,
+  _splitted = null,
   textColor = "##D35400",
   outline = false,
   bold = true,
@@ -85,16 +86,29 @@ export const placeText = async (
   font = "Menlo"
   // font = "Avenir"
 ) => {
-  const splitted = await separateText(
-    text,
-    size.width,
-    context,
-    bold,
-    italic,
-    // top,
-    font,
-    fontSize
-  );
+  var splitted = _splitted
+    ? _splitted
+    : await separateText(
+        text,
+        size.width,
+        context,
+        bold,
+        italic,
+
+        font,
+        fontSize
+      );
+
+  // const splitted = await separateText(
+  //   text,
+  //   size.width,
+  //   context,
+  //   bold,
+  //   italic,
+  //   // top,
+  //   font,
+  //   fontSize
+  // );
 
   const numberOfLines = splitted.length;
   var safeArea = size.width / SAFE_AREA_PERCENTAGE;
@@ -146,5 +160,5 @@ export const refactoredText = async (text, context, width, bold, italic) => {
       ? numberOfLines * fontSize * 1.5 + 5 //1.5-line space
       : 0;
 
-  return [fontSize, space];
+  return [fontSize, space, splitted];
 };

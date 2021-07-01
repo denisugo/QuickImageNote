@@ -70,3 +70,6 @@ buck-out/
 web-build/
 
 # @end expo-cli
+
+# Yarn
+.yarn/cache/

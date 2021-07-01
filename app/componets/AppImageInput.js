@@ -55,7 +55,6 @@ function AppImageInput({ imageUri, onChangeImage, onLongPress }) {
         quality: 1,
       };
       launchImageLibrary(options, (result) => {
-        console.log(result);
         if (!result.didCancel && result.assets[0].height !== 0)
           onChangeImage(result.assets[0].uri);
         if (result.didCancel) setLoading(false);
@@ -85,7 +84,7 @@ function AppImageInput({ imageUri, onChangeImage, onLongPress }) {
 
         {imageUri && (
           <FastImage
-            // onLoadStart={() => setLoading(true)}
+            onLoadStart={() => setLoading(true)}
             onLoadEnd={() => setLoading(false)}
             style={styles.image}
             source={{ uri: imageUri, priority: FastImage.priority.high }}

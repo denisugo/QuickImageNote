@@ -19,7 +19,8 @@ function AppImageInputForm({ imageUri, index }) {
   const updateStorage = async () => {
     // await nameAlreadyExists(values, setFieldValue);
     const setValue = () => {};
-    await reStore(setFieldValue, values, setValue);
+    reStore(setFieldValue, values, setValue);
+    // await reStore(setFieldValue, values, setValue);
     setIsChanged(false);
   };
 
