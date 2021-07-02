@@ -6,6 +6,8 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
   Image,
+  Platform,
+  PixelRatio,
 } from "react-native";
 import * as ImageManipulator from "expo-image-manipulator";
 import * as FileSystem from "expo-file-system";
@@ -45,15 +47,16 @@ function AppThreeButtonsForm({ setVisible, setImageUri, imageUri }) {
   //  Important constants
   const [marginVertical, setMarginVertical] = useState(0);
   const [marginHorizontal, setMarginHorizontal] = useState(0);
-  const [safeArea, setSafeArea] = useState(0);
+  // const [safeArea, setSafeArea] = useState(0);
   const SYMBOLS_PER_LINE = 40;
+  const SCALE_FACTOR = Platform.OS === "android" ? 4 : 1;
 
   const getSize = (image) => {
     Image.getSize(image, (width, height) => {
-      setSize({ width: width, height: height });
       setMarginHorizontal(width * 0.05);
       setMarginVertical(height * 0.025);
-      setSafeArea(height * 0.03);
+      // setSafeArea(height * 0.03);
+      setSize({ width: width, height: height });
     });
   };
 
@@ -128,25 +131,70 @@ function AppThreeButtonsForm({ setVisible, setImageUri, imageUri }) {
 
     // fontSize = fontSize * ((width - 2 * marginHorizontal) / textSize.width);
     let lineWidths = [];
+    let lineHeights = [];
     await asyncForEach(lines, async (line) => {
-      const lineWidth = await rnTextSize.measure({
+      const lineProperties = await rnTextSize.measure({
         text: line, // text to measure, can include symbols
         ...fontSpecs, // RN font specification
+        includeFontPadding: false,
       });
-      lineWidths = [...lineWidths, lineWidth.width];
+      lineWidths = [...lineWidths, lineProperties.width];
+      lineHeights = [...lineHeights, lineProperties.height];
     });
 
-    const maxLength = Math.max(...lineWidths);
+    const maxWidth = Math.max(...lineWidths);
+    let maxHeight = Math.max(...lineHeights);
 
-    fontSize = fontSize * ((width - 2 * marginHorizontal) / maxLength);
+    const transformFactor = (width - 2 * marginHorizontal) / maxWidth;
+
+    fontSize = fontSize * transformFactor;
+
+    maxHeight = maxHeight * transformFactor;
+
+    let heightOfLines = 0;
+    lineHeights.forEach((lineHeight) => {
+      heightOfLines = heightOfLines + lineHeight * transformFactor;
+    });
+
+    fontSpecs.fontSize = fontSize;
+
+    const textWithPadding =
+      Platform.OS === "android"
+        ? await rnTextSize.measure({
+            text: lines[lineHeights.indexOf(maxHeight / transformFactor)], // text to measure, can include symbols
+            ...fontSpecs, // RN font specification
+            includeFontPadding: true,
+          })
+        : { height: maxHeight };
+
+    const differenceHeights = textWithPadding.height - maxHeight; // Zero for IOS
+
+    const safeArea = differenceHeights + heightOfLines * 0.1;
 
     // Get height of additional space
     const height =
-      lines.length * fontSize +
-      2 * safeArea +
+      heightOfLines -
+      differenceHeights + //+
+      // lines.length * maxHeight +
+      // 2 * safeArea +
+      heightOfLines * 0.1 * 2 +
       (lines.length - 1) * marginVertical;
 
-    return { height: height, lines: lines, fontSize: fontSize };
+    console.log(
+      "fontSize",
+      fontSize,
+      "transformFactor",
+      transformFactor,
+      "font",
+      font
+    );
+
+    return {
+      height: height,
+      lines: lines,
+      fontSize: fontSize,
+      safeArea: safeArea,
+    };
   };
 
   const combine = async (image, _backgroundUri, text, _size) => {
@@ -160,66 +208,132 @@ function AppThreeButtonsForm({ setVisible, setImageUri, imageUri }) {
     const italic = values[keyfields.TEXT_SETTINGS][keyfields.ITALIC];
     const top = values[keyfields.TEXT_SETTINGS][keyfields.TOP];
 
+    const width = _size.width;
+    const height = _size.height;
+
+    // console.log(
+    //   "PixelRatio.get()",
+    //   PixelRatio.get(),
+    //   "getFontScale()",
+    //   PixelRatio.getFontScale()
+    // );
+
     const textProperties = await getLines(
       text,
       _size.width,
       fontResolver(text),
-      italic ? "italic" : "normal",
-      bold ? "bold" : "normal"
+      italic ? "italic" : "normal", //"italic" : "normal",
+      bold ? "bold" : "normal" //"bold" : "normal"
     );
 
+    const safeArea = textProperties.safeArea;
     const lines = textProperties.lines;
 
     const spaceHeight = textProperties.height;
 
+    const textSize = textProperties.fontSize;
+
     const imagePosition = top ? { x: 0, y: spaceHeight } : { x: 0, y: 0 };
 
     const textPosition = top
-      ? { x: marginHorizontal, y: safeArea }
-      : { x: marginHorizontal, y: _size.height + safeArea };
+      ? {
+          x: marginHorizontal,
+          y: safeArea,
+        }
+      : {
+          x: marginHorizontal,
+          y: height + safeArea,
+        };
 
+    //  Resizing of background
     const background = await ImageResizer.createResizedImage(
       _backgroundUri,
-      _size.width,
-      _size.height + spaceHeight,
+      width,
+      height + spaceHeight,
       "JPEG",
       10,
       0,
       null,
       false,
-      { mode: "stretch", onlyScaleDown: false }
+      {
+        mode: "stretch",
+        onlyScaleDown: false,
+      }
     );
 
-    const imageWithBackground = await PhotoManipulator.overlayImage(
-      background.uri,
-      image,
-      imagePosition
-    );
+    // const imageWithBackground = await PhotoManipulator.overlayImage(
+    //   background.uri,
+    //   image,
+    //   imagePosition
+    // );
 
     let textOptions = [];
+    // lines.forEach((line, index) => {
+    //   textOptions = [
+    //     ...textOptions,
+    //     {
+    //       position: {
+    //         x: textPosition.x,
+    //         y:
+    //           textPosition.y +
+    //           index * (marginVertical + textProperties.fontSize),
+    //       },
+    //       text: line,
+    //       textSize: textSize,
+    //       color: textColor,
+    //       fontName: fontResolver(text, bold, italic),
+    //       thickness: outline ? 4 : 0,
+    //     },
+    //   ];
+    // });
+
     lines.forEach((line, index) => {
       textOptions = [
         ...textOptions,
         {
-          position: {
-            x: textPosition.x,
-            y:
-              textPosition.y +
-              index * (marginVertical + textProperties.fontSize),
+          operation: "text",
+          options: {
+            position: {
+              x: textPosition.x,
+              y:
+                textPosition.y +
+                index * (marginVertical + textProperties.fontSize),
+            },
+            text: line,
+            textSize: textSize,
+            color: textColor,
+            fontName: fontResolver(text, bold, italic),
+            thickness: outline ? 4 : 0,
           },
-          text: line,
-          textSize: textProperties.fontSize,
-          color: textColor,
-          fontName: fontResolver(text, bold, italic),
-          thickness: outline ? 4 : 0,
         },
       ];
     });
 
-    const uri = await PhotoManipulator.printText(
-      imageWithBackground,
-      textOptions
+    const cropRegion = {
+      x: 0,
+      y: 0,
+      width: background.width,
+      height: background.height,
+    };
+    const targetSize = { width: background.width, height: background.height };
+    const quality = 100;
+    const operations = [
+      { operation: "overlay", overlay: image, position: imagePosition },
+      ...textOptions,
+    ];
+
+    const uri = await PhotoManipulator.batch(
+      background.uri,
+      operations,
+      cropRegion,
+      targetSize,
+      quality
     );
+
+    // const uri = await PhotoManipulator.printText(
+    //   imageWithBackground,
+    //   textOptions
+    // );
 
     return uri;
   };
@@ -422,9 +536,6 @@ function AppThreeButtonsForm({ setVisible, setImageUri, imageUri }) {
     // useEffect that is used for share handling
     if (backgroundUri && share && size) {
       prepareSingleImage();
-
-      setSize(null);
-      setBackgroundUri(null);
     }
   }, [backgroundUri, size]);
 
@@ -435,6 +546,8 @@ function AppThreeButtonsForm({ setVisible, setImageUri, imageUri }) {
       setLoading(null);
       setImageUri(null);
       setShare(null);
+      setSize(null);
+      setBackgroundUri(null);
     }
   }, [imageUri]);
 
