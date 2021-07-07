@@ -5,6 +5,7 @@ import DraggableFlatList, {
 } from "react-native-draggable-flatlist";
 import * as ImageManipulator from "expo-image-manipulator";
 import * as Haptics from "expo-haptics";
+import * as FileSystem from "expo-file-system";
 
 import AppListItem from "../componets/AppListItem";
 import AppText from "../componets/AppText";
@@ -55,6 +56,20 @@ function ImageRearrangeScreen({ route, navigation }) {
       setIsChanged(true);
     }
   }, [data]);
+
+  useEffect(() => {
+    navigation.addListener("blur", () => {
+      // Screen was unfocused
+      // Do something
+      if (data) {
+        try {
+          asyncForEach(data, async (element) => {
+            FileSystem.deleteAsync(element.thumb);
+          });
+        } catch (error) {}
+      }
+    });
+  }, [navigation, data]);
 
   const [key, setKey] = useState(null);
 

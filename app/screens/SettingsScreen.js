@@ -40,7 +40,7 @@ function SettingsScreen({ navigation, route }) {
   const storageUsed = route.params.storageUsed;
   const setStorageUsed = (value) => route.params.setStorageUsed(value);
 
-  const supportLink = "https://www.patreon.com";
+  const supportLink = "https://ko-fi.com";
   const followUsLink = "https://www.instagram.com/night_sky_soft/";
 
   // useEffect(() => {

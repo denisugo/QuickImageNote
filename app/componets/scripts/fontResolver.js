@@ -7,7 +7,7 @@ export default fontResolver = (text, bold = false, italic = false) => {
 
   if (english.test(text)) {
     font = Platform.OS === "android" ? "arial" : "Menlo";
-    if (bold) font = Platform.OS === "android" ? "arialbd" : "Menlo-Bold";
+    if (bold) font = Platform.OS === "android" ? "Zurich" : "Menlo-Bold";
     if (italic) font = Platform.OS === "android" ? "arialit" : "Menlo-Italic";
     if (bold && italic)
       font = Platform.OS === "android" ? "arialbdit" : "Menlo-BoldItalic";

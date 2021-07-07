@@ -37,6 +37,7 @@
     "react-native-canvas": "^0.1.37",
     "react-native-canvas-anonymous": "^1.0.2",
     "react-native-draggable-flatlist": "^2.6.1",
+    "react-native-exif": "^0.4.0",
     "react-native-expo-image-cache": "^4.1.0",
     "react-native-fast-image": "^8.3.4",
     "react-native-files-share": "^0.1.3",

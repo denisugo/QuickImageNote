@@ -10,6 +10,7 @@ import {
   Platform,
   LogBox,
 } from "react-native";
+import * as FileSystem from "expo-file-system";
 
 import AppButton from "../componets/AppButton";
 import AppCustomModal from "../componets/AppCustomModal";
@@ -116,7 +117,12 @@ function ImageShareScreen({ navigation, route }) {
         <AppCustomModal
           visible={visiblePreview}
           setVisible={setVisiblePreview}
-          onPress={() => setImageUri(null)}
+          onPress={() => {
+            try {
+              FileSystem.deleteAsync(imageUri);
+            } catch (error) {}
+            setImageUri(null);
+          }}
           //opacity={0.95}
           //imageUri={imageUri}
         >

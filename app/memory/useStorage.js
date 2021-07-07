@@ -1,5 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useContext, useState } from "react";
+import * as FileSystem from "expo-file-system";
+
 import asyncForEach from "../componets/scripts/asyncForEach";
 import keyfields from "./keyfields";
 
@@ -35,6 +37,10 @@ const removeData = async (dataKeys, setStorageUsed, storageUsed) => {
   //dataKeys should be an array
   const keys = [...dataKeys];
   try {
+    asyncForEach(keys, async (key) => {
+      const data = await getData(key);
+      FileSystem.deleteAsync(data[keyfields.THUMB]);
+    });
     await AsyncStorage.multiRemove(keys);
     setStorageUsed(!storageUsed);
   } catch (e) {
