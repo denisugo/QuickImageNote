@@ -39,10 +39,10 @@ function HomeScreen({ navigation }) {
   // }, []);
 
   useEffect(() => {
-    if (storageUsed) {
-      readStorage();
-      // setStorageUsed(false);
-    }
+    // if (storageUsed) {
+    readStorage();
+    // setStorageUsed(false);
+    // }
   }, [storageUsed]);
 
   const readStorage = async () => {

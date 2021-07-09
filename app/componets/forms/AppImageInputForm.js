@@ -2,6 +2,7 @@ import { useFormikContext } from "formik";
 import React, { useEffect, useRef, useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import * as FileSystem from "expo-file-system";
 
 import AppImageInput from "../AppImageInput";
 import routes from "../../navigation/routes";
@@ -49,6 +50,10 @@ function AppImageInputForm({ imageUri, index }) {
         keyfields.IMAGES,
         values[keyfields.IMAGES].filter((imageUri) => imageUri !== imageValue)
       );
+
+      // try {
+      //   if (imageUri) FileSystem.deleteAsync(imageUri);
+      // } catch (error) {}
 
       const textValue = values[keyfields.TEXTS][index];
       setFieldValue(

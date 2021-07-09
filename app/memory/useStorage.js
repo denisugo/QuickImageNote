@@ -39,7 +39,9 @@ const removeData = async (dataKeys, setStorageUsed, storageUsed) => {
   try {
     asyncForEach(keys, async (key) => {
       const data = await getData(key);
-      if (data[keyfields.THUMB]) FileSystem.deleteAsync(data[keyfields.THUMB]);
+      if (data)
+        if (data[keyfields.THUMB] !== null)
+          FileSystem.deleteAsync(data[keyfields.THUMB]);
     });
     await AsyncStorage.multiRemove(keys);
     setStorageUsed(!storageUsed);

@@ -103,9 +103,10 @@ function AppHeader({ setVisible }) {
           }
 
           if (
-            (values[keyfields.KEY] !== "empty" &&
-              JSON.stringify(values[keyfields.IMAGES]) !==
-                JSON.stringify([null])) ||
+            values[keyfields.KEY] !== "empty" ||
+            // &&
+            //   JSON.stringify(values[keyfields.IMAGES]) !==
+            //     JSON.stringify([null])
             (values[keyfields.KEY] === "empty" &&
               JSON.stringify(values[keyfields.IMAGES]) ===
                 JSON.stringify([null]))

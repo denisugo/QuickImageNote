@@ -35,6 +35,7 @@ function AppThreeButtonsForm({
   setVisibleAd,
   setImageUri,
   imageUri,
+  setRefImageUri,
 }) {
   const { values } = useFormikContext();
 
@@ -80,7 +81,8 @@ function AppThreeButtonsForm({
     let lines = [];
 
     userLines.forEach((userLine) => {
-      const words = userLine.split(" ");
+      let words = userLine.split(" ");
+      words = words.filter((word) => word !== "");
       let line = "";
       let lineLength = 0;
 
@@ -380,6 +382,7 @@ function AppThreeButtonsForm({
     const text = values[keyfields.TEXTS][parseInt(values[keyfields.POSITION])];
     const combinedImageUri = await combine(image, backgroundUri, text, size);
 
+    setRefImageUri(image);
     setImageUri(combinedImageUri);
   };
 
@@ -443,6 +446,14 @@ function AppThreeButtonsForm({
         hideOnPress: true,
       });
     }
+
+    try {
+      if (
+        imageUri !==
+        values[keyfields.IMAGES][parseInt(values[keyfields.POSITION])]
+      )
+        FileSystem.deleteAsync(imageUri);
+    } catch (error) {}
   };
 
   const shareMultipleImage = async (imageUris) => {
@@ -483,6 +494,12 @@ function AppThreeButtonsForm({
         hideOnPress: true,
       });
     }
+    try {
+      imageUris.forEach((element, index) => {
+        if (element !== values[keyfields.IMAGES][index])
+          FileSystem.deleteAsync(element);
+      });
+    } catch (error) {}
   };
 
   const handlePreview = async () => {
@@ -583,9 +600,6 @@ function AppThreeButtonsForm({
       shareSingleImage(imageUri);
       setLoading(null);
       setImageUri(null);
-      try {
-        FileSystem.deleteAsync(imageUri);
-      } catch (error) {}
       setShare(null);
       setSize(null);
       setBackgroundUri(null);
@@ -630,11 +644,6 @@ function AppThreeButtonsForm({
 
       setLoading(null);
       setImageUris([]);
-      try {
-        imageUris.forEach((element) => {
-          FileSystem.deleteAsync(element);
-        });
-      } catch (error) {}
       setSizes([]);
       setShareAll(null);
       setPosition(0);
@@ -650,6 +659,7 @@ function AppThreeButtonsForm({
           height: 100,
           width: 100,
           justifyContent: "center",
+          paddingBottom: 20,
         }}
       >
         <AppCreateBackground

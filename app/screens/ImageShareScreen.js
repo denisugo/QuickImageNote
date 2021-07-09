@@ -45,6 +45,7 @@ function ImageShareScreen({ navigation, route }) {
   const [visibleRename, setVisibleRename] = useState(false);
   const [visibleAd, setVisibleAd] = useState(false);
   const [imageUri, setImageUri] = useState(null);
+  const [refImageUri, setRefImageUri] = useState(null);
 
   const images = route.params ? route.params.images : null;
   const texts = route.params ? route.params.texts : null;
@@ -134,6 +135,7 @@ function ImageShareScreen({ navigation, route }) {
                           setImageUri={setImageUri} //for preview
                           setVisibleAd={setVisibleAd}
                           imageUri={imageUri} //for preview
+                          setRefImageUri={setRefImageUri}
                         />
                       </View>
                     </View>
@@ -152,7 +154,8 @@ function ImageShareScreen({ navigation, route }) {
           setVisible={setVisiblePreview}
           onPress={() => {
             try {
-              if (imageUri) FileSystem.deleteAsync(imageUri);
+              if (imageUri !== refImageUri)
+                if (imageUri) FileSystem.deleteAsync(imageUri);
             } catch (error) {}
             setVisibleAd(true);
             setImageUri(null);

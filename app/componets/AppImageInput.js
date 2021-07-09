@@ -33,7 +33,10 @@ function AppImageInput({ imageUri, onChangeImage, onLongPress }) {
       selectImage();
     } else
       Alert.alert("Delete", "Are you sure you want to delete this image?", [
-        { text: "Yes", onPress: () => onChangeImage(null) },
+        {
+          text: "Yes",
+          onPress: () => onChangeImage(null),
+        },
         { text: "No" },
       ]);
   };
