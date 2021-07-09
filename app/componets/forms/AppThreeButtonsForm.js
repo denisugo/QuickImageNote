@@ -659,7 +659,6 @@ function AppThreeButtonsForm({
           height: 100,
           width: 100,
           justifyContent: "center",
-          paddingBottom: 20,
         }}
       >
         <AppCreateBackground

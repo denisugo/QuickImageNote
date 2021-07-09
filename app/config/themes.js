@@ -185,6 +185,7 @@ export default {
     ...shadow,
     shadowOpacity: 0.3,
     width: "95%",
+    marginBottom: 20,
   },
   settingButton: {
     alignSelf: "flex-end",

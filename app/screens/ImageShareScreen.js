@@ -55,7 +55,7 @@ function ImageShareScreen({ navigation, route }) {
 
   const adShow = async () => {
     const availability = await isAvailableAsync();
-    console.log(availability);
+
     if (availability) {
       // Set global test device ID
       await setTestDeviceIDAsync("EMULATOR");
