@@ -11,6 +11,16 @@ import {
   LogBox,
 } from "react-native";
 import * as FileSystem from "expo-file-system";
+import {
+  AdMobBanner,
+  AdMobInterstitial,
+  PublisherBanner,
+  AdMobRewarded,
+  setTestDeviceIDAsync,
+  // requestPermissionsAsync,
+  // getPermissionsAsync,
+  isAvailableAsync,
+} from "expo-ads-admob";
 
 import AppButton from "../componets/AppButton";
 import AppCustomModal from "../componets/AppCustomModal";
@@ -33,6 +43,7 @@ LogBox.ignoreLogs(["Sending", "Error evaluating injectedJavaScript"]);
 function ImageShareScreen({ navigation, route }) {
   const [visiblePreview, setVisiblePreview] = useState(false);
   const [visibleRename, setVisibleRename] = useState(false);
+  const [visibleAd, setVisibleAd] = useState(false);
   const [imageUri, setImageUri] = useState(null);
 
   const images = route.params ? route.params.images : null;
@@ -40,6 +51,27 @@ function ImageShareScreen({ navigation, route }) {
   const name = route.params ? route.params.name : null;
   const textSettings = route.params ? route.params.textSettings : null;
   const key = route.params ? route.params.key : null;
+
+  const adShow = async () => {
+    const availability = await isAvailableAsync();
+    console.log(availability);
+    if (availability) {
+      // Set global test device ID
+      await setTestDeviceIDAsync("EMULATOR");
+      // Display a rewarded ad
+      await AdMobRewarded.setAdUnitID("ca-app-pub-3940256099942544/5224354917"); // Test ID, Replace with your-admob-unit-id
+      await AdMobRewarded.requestAdAsync();
+      await AdMobRewarded.showAdAsync();
+      AdMobRewarded.addEventListener("rewardedVideoDidRewardUser", () => {
+        //  Earned a reward
+      });
+      setVisibleAd(false);
+    }
+  };
+
+  useEffect(() => {
+    //if (visibleAd) adShow(); only for free version
+  }, [visibleAd]);
 
   return (
     <View
@@ -100,6 +132,7 @@ function ImageShareScreen({ navigation, route }) {
                         <AppThreeButtonsForm
                           setVisible={setVisiblePreview} //for preview
                           setImageUri={setImageUri} //for preview
+                          setVisibleAd={setVisibleAd}
                           imageUri={imageUri} //for preview
                         />
                       </View>
@@ -119,8 +152,9 @@ function ImageShareScreen({ navigation, route }) {
           setVisible={setVisiblePreview}
           onPress={() => {
             try {
-              FileSystem.deleteAsync(imageUri);
+              if (imageUri) FileSystem.deleteAsync(imageUri);
             } catch (error) {}
+            setVisibleAd(true);
             setImageUri(null);
           }}
           //opacity={0.95}

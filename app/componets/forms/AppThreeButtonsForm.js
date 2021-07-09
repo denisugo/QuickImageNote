@@ -30,7 +30,12 @@ import AppCreateBackground from "../AppCreateBackground";
 import { set } from "react-native-reanimated";
 import fontResolver from "../scripts/fontResolver";
 
-function AppThreeButtonsForm({ setVisible, setImageUri, imageUri }) {
+function AppThreeButtonsForm({
+  setVisible,
+  setVisibleAd,
+  setImageUri,
+  imageUri,
+}) {
   const { values } = useFormikContext();
 
   const [backgroundUri, setBackgroundUri] = useState(null);
@@ -361,7 +366,9 @@ function AppThreeButtonsForm({ setVisible, setImageUri, imageUri }) {
       textOptions
     );
 
-    FileSystem.deleteAsync(background.uri);
+    try {
+      FileSystem.deleteAsync(background.uri);
+    } catch (error) {}
 
     return uri;
   };
@@ -422,6 +429,8 @@ function AppThreeButtonsForm({ setVisible, setImageUri, imageUri }) {
           animation: true,
           hideOnPress: true,
         });
+
+      setVisibleAd(true);
     } catch (error) {
       Toast.show("something went wrong, please try again", {
         backgroundColor: themes.colors.error,
@@ -461,6 +470,7 @@ function AppThreeButtonsForm({ setVisible, setImageUri, imageUri }) {
           animation: true,
           hideOnPress: true,
         });
+      setVisibleAd(true);
     } catch (error) {
       Toast.show("something went wrong, please try again", {
         backgroundColor: themes.colors.error,
@@ -573,7 +583,9 @@ function AppThreeButtonsForm({ setVisible, setImageUri, imageUri }) {
       shareSingleImage(imageUri);
       setLoading(null);
       setImageUri(null);
-      FileSystem.deleteAsync(imageUri);
+      try {
+        FileSystem.deleteAsync(imageUri);
+      } catch (error) {}
       setShare(null);
       setSize(null);
       setBackgroundUri(null);
@@ -618,9 +630,11 @@ function AppThreeButtonsForm({ setVisible, setImageUri, imageUri }) {
 
       setLoading(null);
       setImageUris([]);
-      imageUris.forEach((element) => {
-        FileSystem.deleteAsync(element);
-      });
+      try {
+        imageUris.forEach((element) => {
+          FileSystem.deleteAsync(element);
+        });
+      } catch (error) {}
       setSizes([]);
       setShareAll(null);
       setPosition(0);

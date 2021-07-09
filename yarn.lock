@@ -3097,6 +3097,7 @@ __metadata:
     babel-jest: ~25.2.6
     canvas: ^2.7.0
     expo: ~40.0.0
+    expo-ads-admob: ~8.4.0
     expo-app-loading: ^1.0.3
     expo-blur: ~8.2.2
     expo-file-system: ~9.3.0
@@ -6010,6 +6011,17 @@ __metadata:
     jest-message-util: ^25.5.0
     jest-regex-util: ^25.2.6
   checksum: 280735acb42acbfec6f30440bd82963657ab1b7c231e48d9e2075636223bcc0528104d9647daba5e55c0bb885331bcd03c065930dcf03875045c1803bbb20cc2
+  languageName: node
+  linkType: hard
+
+"expo-ads-admob@npm:~8.4.0":
+  version: 8.4.0
+  resolution: "expo-ads-admob@npm:8.4.0"
+  peerDependencies:
+    "@unimodules/core": "*"
+    react: "*"
+    react-native: "*"
+  checksum: f0236a00b775e8a5b0c563cc955609526b70b5d7abf5bc9e11f4b13523a64e52fb826584c442b8e53a6caebee9f5f93da74f9f3ebab8bb8c0bc7a9e6144be3cf
   languageName: node
   linkType: hard
 
