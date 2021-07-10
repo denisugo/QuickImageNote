@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, createContext } from "react";
 import {
   View,
   StyleSheet,
@@ -36,6 +36,8 @@ import themes from "../config/themes";
 import keyfields from "../memory/keyfields";
 import { storeData } from "../memory/useStorage";
 import routes from "../navigation/routes";
+import visibleImageLoadingContext from "../componets/contexts/visibleImageLoadingContext";
+
 // import { createList, values } from "../test/homeScreenTestValues";
 
 LogBox.ignoreLogs(["Sending", "Error evaluating injectedJavaScript"]);
@@ -44,6 +46,7 @@ function ImageShareScreen({ navigation, route }) {
   const [visiblePreview, setVisiblePreview] = useState(false);
   const [visibleRename, setVisibleRename] = useState(false);
   const [visibleAd, setVisibleAd] = useState(false);
+  const [visibleImageLoading, setVisibleImageLoading] = useState(false);
   const [imageUri, setImageUri] = useState(null);
   const [refImageUri, setRefImageUri] = useState(null);
 
@@ -119,13 +122,21 @@ function ImageShareScreen({ navigation, route }) {
                 <ScrollView showsVerticalScrollIndicator={false}>
                   <TouchableWithoutFeedback onPress={() => {}}>
                     <View>
-                      <AppHeader setVisible={setVisibleRename} />
+                      <visibleImageLoadingContext.Provider
+                        value={visibleImageLoading}
+                      >
+                        <AppHeader setVisible={setVisibleRename} />
+                      </visibleImageLoadingContext.Provider>
 
                       <KeyboardAvoidingView
                         behavior={Platform.OS === "ios" ? "position" : null}
                         keyboardVerticalOffset={0}
                       >
-                        <AppCarouselForm />
+                        <visibleImageLoadingContext.Provider
+                          value={[visibleImageLoading, setVisibleImageLoading]}
+                        >
+                          <AppCarouselForm />
+                        </visibleImageLoadingContext.Provider>
                       </KeyboardAvoidingView>
 
                       {/* <View style={{ flex: 1 }}> */}

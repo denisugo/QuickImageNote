@@ -7,8 +7,10 @@ import {
   SafeAreaView,
   Alert,
   Linking,
+  TouchableOpacity,
 } from "react-native";
 import AlertAsync from "react-native-alert-async";
+import * as FileSystem from "expo-file-system";
 
 import AppText from "../componets/AppText";
 import AppIcon from "../componets/AppIcon";
@@ -19,7 +21,6 @@ import colors from "../config/colors";
 import AppTextSettings from "../componets/AppTextSettings";
 import { createList, getAllKeys, removeData } from "../memory/useStorage";
 import keyfields from "../memory/keyfields";
-import { TouchableOpacity } from "react-native-gesture-handler";
 
 // const defaultValues = {
 //   bold: true,
@@ -79,7 +80,7 @@ function SettingsScreen({ navigation, route }) {
                     keys = keys.filter((key) => key !== keyfields.SETTINGS);
                     keys = keys.filter((key) => key !== keyfields.EMPTY);
 
-                    await removeData(keys, setStorageUsed, storageUsed);
+                    await removeData(keys, setStorageUsed, storageUsed, true);
                     // await removeData(keys);
                     // setStorageUsed(true); //calls a rerender on homescreen
                   },
@@ -105,7 +106,7 @@ function SettingsScreen({ navigation, route }) {
             justifyContent: "center",
           }}
         >
-          <AppIcon
+          {/* <AppIcon
             name="star-four-points-outline"
             size={100}
             iconColor={themes.colors.premium}
@@ -115,7 +116,7 @@ function SettingsScreen({ navigation, route }) {
             name="star-four-points-outline"
             size={100}
             iconColor={themes.colors.premium}
-          />
+          /> */}
         </View>
       </View>
 
@@ -128,7 +129,7 @@ function SettingsScreen({ navigation, route }) {
               await Linking.openURL(followUsLink);
             }}
           >
-            <AppText>Our Instagram</AppText>
+            <AppText>our instagram</AppText>
           </TouchableOpacity>
         </View>
 

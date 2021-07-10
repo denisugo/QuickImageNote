@@ -6,7 +6,9 @@ export default async (values, setFieldValue) => {
   const key = Date.now().toString();
   setFieldValue(keyfields.KEY, key);
   try {
-    const thumb = await createThumb(100, 1, values[keyfields.IMAGES][0]);
+    const thumb = values[keyfields.IMAGES][0]
+      ? await createThumb(100, 1, values[keyfields.IMAGES][0])
+      : { uri: null };
     await storeData(key, {
       [keyfields.NAME]: values[keyfields.NAME],
       [keyfields.IMAGES]: values[keyfields.IMAGES],

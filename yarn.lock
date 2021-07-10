@@ -3126,6 +3126,7 @@ __metadata:
     react-native-expo-image-cache: ^4.1.0
     react-native-fast-image: ^8.3.4
     react-native-files-share: ^0.1.3
+    react-native-fs: ^2.18.0
     react-native-gesture-handler: ~1.8.0
     react-native-image-base64: ^0.1.4
     react-native-image-picker: ^4.0.4
@@ -4098,6 +4099,13 @@ __metadata:
   version: 1.0.2
   resolution: "balanced-match@npm:1.0.2"
   checksum: 690643f3009a04289ac401079de5a780aae452f7625fb2884051cc847b231e6521ee15dd6430b066d3cf4bd8bb00bb7ff55b7d134f34b8f0b8c043806796f94e
+  languageName: node
+  linkType: hard
+
+"base-64@npm:^0.1.0":
+  version: 0.1.0
+  resolution: "base-64@npm:0.1.0"
+  checksum: 0051037083d6ce2978d7d5f828309e0ddfc929a2e9f3cf3567d4518a635deb534654ffb37e883c77f926bb95f1ba80eed85a99fee681d1592128ac4fef0fdc7e
   languageName: node
   linkType: hard
 
@@ -11881,6 +11889,19 @@ fsevents@^2.1.2:
   languageName: node
   linkType: hard
 
+"react-native-fs@npm:^2.18.0":
+  version: 2.18.0
+  resolution: "react-native-fs@npm:2.18.0"
+  dependencies:
+    base-64: ^0.1.0
+    utf8: ^3.0.0
+  peerDependencies:
+    react-native: "*"
+    react-native-windows: "*"
+  checksum: 51cbfd8306e200d5cefbb40c393786dc40d9efc6c54fb881928749d5744f832cdee046651feee7cb657cc74d1f39d232cb9af496422d51b57c22406a6433cb6e
+  languageName: node
+  linkType: hard
+
 "react-native-gesture-handler@npm:~1.8.0":
   version: 1.8.0
   resolution: "react-native-gesture-handler@npm:1.8.0"
@@ -14513,6 +14534,13 @@ resolve@1.1.7:
   version: 3.1.1
   resolution: "use@npm:3.1.1"
   checksum: 8dd3bdeeda53864c779e0fa8d799064739708f80b45d06fa48a1a6ba192dc3f9e3266d4556f223cd718d27aedfd957922152e7463c00ac46e185f8331353fb6f
+  languageName: node
+  linkType: hard
+
+"utf8@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "utf8@npm:3.0.0"
+  checksum: 5a82761c09db35965210fcd10edc92b52a3ed2be7756858856341d5c4cf029a25b2d96b0c79fd1b8cd38a339913d0536e8918130f150e7fe2d9b8e3954bb9dac
   languageName: node
   linkType: hard
 

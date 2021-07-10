@@ -1,5 +1,5 @@
 import { useFormikContext } from "formik";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { View, StyleSheet, Alert, Platform } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
@@ -9,15 +9,23 @@ import AppIconButton from "./AppIconButton";
 import AppCustomModal from "./AppCustomModal";
 import AppNameImputForm from "./forms/AppNameInputForm";
 import themes from "../config/themes";
-import { getAllKeys, storeData } from "../memory/useStorage";
+import {
+  getAllKeys,
+  getData,
+  removeData,
+  storeData,
+} from "../memory/useStorage";
 import keyfields from "../memory/keyfields";
 import { nameAlreadyExists, reStore } from "../memory/namesStorageHandler";
 import saveDataForm from "../memory/saveDataForm";
+import visibleImageLoadingContext from "./contexts/visibleImageLoadingContext";
 
 function AppHeader({ setVisible }) {
   const navigation = useNavigation();
 
   const { setFieldValue, values } = useFormikContext();
+
+  const loading = useContext(visibleImageLoadingContext);
   // console.log(values[keyfields.UNSAVED]);
 
   // const [visible, setVisible] = useState(false);
@@ -102,16 +110,33 @@ function AppHeader({ setVisible }) {
             keys = await getAllKeys();
           }
 
-          if (
-            values[keyfields.KEY] !== "empty" ||
-            // &&
-            //   JSON.stringify(values[keyfields.IMAGES]) !==
-            //     JSON.stringify([null])
-            (values[keyfields.KEY] === "empty" &&
+          if (!loading)
+            if (
+              // (values[keyfields.KEY] !== "empty" &&
+              //   JSON.stringify(values[keyfields.IMAGES]) !==
+              //     JSON.stringify([null])) ||
+              values[keyfields.KEY] === "empty" &&
               JSON.stringify(values[keyfields.IMAGES]) ===
-                JSON.stringify([null]))
-          )
-            navigation.navigate(routes.HOME_NAVIGATOR);
+                JSON.stringify([null])
+            )
+              navigation.navigate(routes.HOME_NAVIGATOR);
+            else {
+              const data = await getData(values[keyfields.KEY]);
+              if (data)
+                if (
+                  (data[keyfields.THUMB] && values[keyfields.IMAGES][0]) ||
+                  (!data[keyfields.THUMB] && !values[keyfields.IMAGES][0])
+                )
+                  navigation.navigate(routes.HOME_NAVIGATOR);
+            }
+
+          // else if (
+          //   values[keyfields.KEY] !== "empty" &&
+          //   JSON.stringify(values[keyfields.IMAGES]) === JSON.stringify([null])
+          // ) {
+          //   await removeData([values[keyfields.KEY]], () => {}, null, true);
+          //   navigation.navigate(routes.HOME_NAVIGATOR);
+          // }
 
           // if (values[keyfields.ORIGINAL_NAME] !== values[keyfields.NAME]) {
           //   await isRenamed(values[keyfields.ORIGINAL_NAME], values);

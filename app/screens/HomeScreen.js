@@ -39,10 +39,10 @@ function HomeScreen({ navigation }) {
   // }, []);
 
   useEffect(() => {
-    // if (storageUsed) {
-    readStorage();
+    if (data)
+      // to prevent using of this hook after app installation
+      readStorage();
     // setStorageUsed(false);
-    // }
   }, [storageUsed]);
 
   const readStorage = async () => {

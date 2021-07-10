@@ -370,6 +370,7 @@ function AppThreeButtonsForm({
 
     try {
       FileSystem.deleteAsync(background.uri);
+      FileSystem.deleteAsync(imageWithBackground);
     } catch (error) {}
 
     return uri;

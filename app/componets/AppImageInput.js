@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import {
   View,
   StyleSheet,
@@ -7,20 +7,21 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import FastImage from "react-native-fast-image";
 import { launchImageLibrary } from "react-native-image-picker";
 
 import AppIcon from "./AppIcon";
 import themes from "../config/themes";
 import AppActivityIndicator from "../componets/AppActivityIndicator";
 import { addPrefix } from "./scripts/base64Processing";
+import visibleImageLoadingContext from "./contexts/visibleImageLoadingContext";
 
 function AppImageInput({ imageUri, onChangeImage, onLongPress }) {
   useEffect(() => {
     requestPermission();
   }, []);
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useContext(visibleImageLoadingContext);
+  // const [loading, setLoading] = useState(false);
 
   const requestPermission = async () => {
     const { granted } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -86,11 +87,11 @@ function AppImageInput({ imageUri, onChangeImage, onLongPress }) {
         )}
 
         {imageUri && (
-          <FastImage
+          <Image
             onLoadStart={() => setLoading(true)}
             onLoadEnd={() => setLoading(false)}
             style={styles.image}
-            source={{ uri: imageUri, priority: FastImage.priority.high }}
+            source={{ uri: imageUri }}
           />
         )}
         <AppActivityIndicator visible={loading} />

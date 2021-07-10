@@ -1,14 +1,16 @@
 import { useFormikContext } from "formik";
 import React, { useEffect, useRef, useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Platform } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import * as FileSystem from "expo-file-system";
+import RNFS from "react-native-fs";
 
 import AppImageInput from "../AppImageInput";
 import routes from "../../navigation/routes";
 import keyfields from "../../memory/keyfields";
 import { nameAlreadyExists, reStore } from "../../memory/namesStorageHandler";
 import { getAllKeys } from "../../memory/useStorage";
+import asyncForEach from "../scripts/asyncForEach";
 
 function AppImageInputForm({ imageUri, index }) {
   const navigation = useNavigation();
@@ -39,8 +41,23 @@ function AppImageInputForm({ imageUri, index }) {
   const handleChange = async (uri) => {
     if (uri) {
       //Returns image from image gallery
+      let filename = uri.split("/");
+      filename = filename[filename.length - 1];
+      filename = "/" + filename;
+
+      const pathPrefix = Platform.OS === "android" ? "file://" : "";
+
+      const path = pathPrefix + RNFS.DocumentDirectoryPath + filename;
+      // const path = RNFS.DocumentDirectoryPath + filename;
+
+      try {
+        await RNFS.copyFile(uri, path);
+        await RNFS.unlink(uri);
+      } catch (error) {}
+
       updatedValue.current = values[keyfields.IMAGES];
-      updatedValue.current[index] = uri;
+      updatedValue.current[index] = path;
+      // updatedValue.current[index] = uri;
       setFieldValue(keyfields.IMAGES, [...updatedValue.current, null]);
       setFieldValue(keyfields.TEXTS, [...values[keyfields.TEXTS], ""]);
     } else {
@@ -51,9 +68,9 @@ function AppImageInputForm({ imageUri, index }) {
         values[keyfields.IMAGES].filter((imageUri) => imageUri !== imageValue)
       );
 
-      // try {
-      //   if (imageUri) FileSystem.deleteAsync(imageUri);
-      // } catch (error) {}
+      try {
+        if (imageUri) RNFS.unlink(imageUri); //FileSystem.deleteAsync(imageUri);
+      } catch (error) {}
 
       const textValue = values[keyfields.TEXTS][index];
       setFieldValue(

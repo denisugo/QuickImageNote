@@ -37,7 +37,8 @@ function AppImageListItem({ item, navigation, setStorageUsed, storageUsed }) {
                 await removeData(
                   [item[keyfields.KEY]],
                   setStorageUsed,
-                  storageUsed
+                  storageUsed,
+                  true
                 );
                 // await removeData([item[keyfields.KEY]]);
               },
